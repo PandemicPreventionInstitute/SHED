@@ -24,6 +24,7 @@ if [ $installed ]
 		echo Installing Miniconda
 		wget https://repo.anaconda.com/miniconda/Miniconda3-py${versionnodot}_4.11.0-Linux-x86_64.sh
 		bash Miniconda3-py${versionnodot}_4.11.0-Linux-x86_64.sh
+		rm Miniconda3-py${versionnodot}_4.11.0-Linux-x86_64.sh
 		else
 		echo Please install python 3.7+ and rerun.
 	fi
