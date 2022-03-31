@@ -2,10 +2,10 @@
 
 '''
 Writen by Devon Gregory
-This script will download fastq files from NCBI SRA for the samples listed a provided file or 
-in 'SraRunTable.csv' or 'SraRunTable.txt'.  
+This script will download fastq files from NCBI SRA for the samples listed a argument 
+provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.  
 The fastq files will allow further analysis by bioinformatic pipelines.
-Last edited on 3-29-22
+Last edited on 3-30-22
 todo: add check for sta toolkit config and config option for first time use
 '''
 import os
@@ -46,6 +46,6 @@ if filename:
         # may need to be updated for paths
         os.system(f"prefetch {sra_acc}")
         os.system(f"fastq-dump {sra_acc} --split-files -O ./fastqs/")
-        time.sleep(2)
+        time.sleep(1)
     
     run_list_fh.close()
