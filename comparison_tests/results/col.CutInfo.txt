@@ -1,0 +1,6316 @@
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o ERR5996055.col.cut1.fa ERR5996055.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 9.53 s (45 µs/read; 1.34 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 212,180
+Reads with adapters:                   152,830 (72.0%)
+Reads written (passing filters):       212,180 (100.0%)
+
+Total basepairs processed:    63,021,813 bp
+Total written (filtered):     59,313,202 bp (94.1%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 643 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	13	0.0	2	0 13
+24	621	0.0	2	546 68 7
+25	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 617 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	7	0.0	2	0 7
+22	604	0.0	2	575 29
+23	5	0.0	2	0 5
+
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 2144 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	15	0.0	2	0 15
+22	2104	0.0	2	1982 118 4
+23	23	0.0	2	0 22 1
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 1259 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	15	0.0	2	0 15
+22	1231	0.0	2	1166 61 4
+23	11	0.0	2	0 11
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 2512 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	29	0.0	2	0 29
+22	2450	0.0	2	2335 109 6
+23	32	0.0	2	0 32
+
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 2188 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	23	0.0	2	0 22 1
+22	2145	0.0	2	2022 117 6
+23	20	0.0	2	0 20
+
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 1569 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	26	0.0	2	0 24 2
+22	1525	0.0	2	1429 93 3
+23	12	0.0	2	0 11 1
+24	6	0.0	2	0 0 6
+
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 1243 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	2	0.0	2	0 0 2
+23	9	0.0	2	0 9
+24	1215	0.0	2	1115 97 3
+25	16	0.0	2	0 16
+26	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 1499 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	6	0.0	2	4 2
+25	1490	0.0	2	0 1490
+26	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 106 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	8	0.0	2	0 8
+24	78	0.0	2	0 76 2
+25	20	0.0	2	0 19 1
+
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 1995 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	2	0.0	2	0 0 2
+23	16	0.0	2	0 16
+24	1961	0.0	2	1845 109 7
+25	16	0.0	2	0 16
+
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 2519 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	24	0.0	2	0 22 2
+22	2457	0.0	2	2227 213 17
+23	32	0.0	2	0 30 2
+24	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 1806 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	23	0.0	2	0 23
+22	1758	0.0	2	1665 90 3
+23	25	0.0	2	0 25
+
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 500 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	5	0.0	2	0 5
+24	490	0.0	2	460 30
+25	4	0.0	2	0 4
+
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 1623 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	21	0.0	2	0 20 1
+24	1582	0.0	2	1495 83 4
+25	19	0.0	2	0 19
+
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 1407 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 0 1
+25	19	0.0	2	0 19
+26	1375	0.0	2	1295 76 4
+27	11	0.0	2	0 9 2
+28	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 1009 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	9	0.0	2	0 8 1
+22	990	0.0	2	914 70 6
+23	5	0.0	2	0 5
+24	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 1245 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 0 3
+26	16	0.0	2	0 16
+27	1212	0.0	2	1112 96 4
+28	13	0.0	2	0 12 1
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 582 times
+
+No. of allowed errors: 3
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 0 1
+28	2	0.0	2	0 0 2
+29	12	0.0	2	0 12
+30	559	0.0	3	511 43 5
+31	8	0.0	3	0 7 1
+
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 2039 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	4	0.0	2	0 0 4
+22	60	0.0	2	0 59 1
+23	1959	0.0	2	1849 106 4
+24	16	0.0	2	0 15 1
+
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 2251 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	2	0.0	2	0 0 2
+26	25	0.0	2	0 25
+27	2213	0.0	2	2071 127 15
+28	10	0.0	2	0 10
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 602 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	6	0.0	2	0 6
+29	39	0.0	2	0 35 4
+30	548	0.0	2	0 548
+31	8	0.0	2	0 0 8
+
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 3596 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	55	0.0	2	0 55
+29	3491	0.0	2	3228 243 20
+30	50	0.0	2	0 50
+
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 2078 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	21	0.0	2	0 19 2
+27	2042	0.0	2	1930 108 4
+28	15	0.0	2	0 13 2
+
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 921 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	5	0.0	2	0 5
+23	903	0.0	2	846 54 3
+24	13	0.0	2	0 13
+
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 993 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	1	0.0	2	0 0 1
+26	10	0.0	2	0 10
+27	974	0.0	2	906 64 4
+28	7	0.0	2	0 7
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 2330 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	31	0.0	2	0 31
+25	2285	0.0	2	2118 159 8
+26	14	0.0	2	0 14
+
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 1958 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	2	0.0	2	0 0 2
+24	18	0.0	2	0 18
+25	1914	0.0	2	1793 109 12
+26	24	0.0	2	0 24
+
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 660 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	21	0.0	2	0 19 2
+26	623	0.0	2	545 77 1
+27	16	0.0	2	0 16
+
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 455 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	11	0.0	2	0 11
+24	436	0.0	2	415 20 1
+25	8	0.0	2	0 7 1
+
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 2159 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	29	0.0	2	0 29
+25	2117	0.0	2	1993 118 6
+26	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 185 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	4	0.0	2	0 4
+22	178	0.0	2	159 19
+23	2	0.0	2	0 2
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 410 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	4	0.0	2	0 4
+25	396	0.0	2	374 21 1
+26	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 549 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	7	0.0	2	0 5 2
+22	540	0.0	2	501 38 1
+23	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 1972 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	3	0.0	2	0 0 3
+22	18	0.0	2	0 17 1
+23	1912	0.0	2	1770 136 6
+24	38	0.0	2	0 37 1
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 1486 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	13	0.0	2	0 13
+22	1465	0.0	2	1369 92 4
+23	7	0.0	2	0 6 1
+
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 43 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+22	41	0.0	2	37 4
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 2590 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	2	0.0	2	0 0 2
+22	14	0.0	2	0 14
+23	2562	0.0	2	2436 118 8
+24	11	0.0	2	0 11
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 689 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	20	0.0	2	0 20
+25	665	0.0	2	615 49 1
+26	3	0.0	2	0 3
+
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 2530 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	8	0.0	2	0 0 8
+28	66	0.0	2	0 61 5
+29	2440	0.0	2	2189 230 21
+30	16	0.0	2	0 16
+
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 3017 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	2	0.0	2	0 0 2
+25	44	0.0	2	0 43 1
+26	2937	0.0	2	2732 193 12
+27	34	0.0	2	0 33 1
+
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 382 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	5	0.0	2	0 5
+23	373	0.0	2	353 19 1
+24	4	0.0	2	0 4
+
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 1669 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	23	0.0	2	0 23
+22	1636	0.0	2	1539 97
+23	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 247 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+22	240	0.0	2	225 15
+23	6	0.0	2	0 5 1
+
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 1718 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	24	0.0	2	0 24
+22	1682	0.0	2	1558 117 7
+23	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 636 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	13	0.0	2	0 13
+29	612	0.0	2	565 41 6
+30	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 407 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	5	0.0	2	0 5
+23	398	0.0	2	377 19 2
+24	4	0.0	2	0 4
+
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 1414 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	2	0.0	2	0 0 2
+27	17	0.0	2	0 17
+28	1376	0.0	2	1227 135 14
+29	19	0.0	2	0 17 2
+
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 260 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	3	0.0	2	0 3
+25	255	0.0	2	237 18
+26	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 1462 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	3	0.0	2	0 0 3
+24	12	0.0	2	0 12
+25	1434	0.0	2	1332 97 5
+26	12	0.0	2	0 12
+27	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 1782 times
+
+No. of allowed errors: 3
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	3	0.0	2	0 0 3
+29	27	0.0	2	0 24 3
+30	1735	0.0	3	1574 148 11 2
+31	15	0.0	3	0 15
+33	2	0.0	3	0 0 0 2
+
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 1631 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	21	0.0	2	0 20 1
+22	1592	0.0	2	1472 112 8
+23	17	0.0	2	0 17
+
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 3629 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	39	0.0	2	0 39
+22	3566	0.0	2	3338 217 11
+23	22	0.0	2	0 21 1
+
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 1451 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	4	0.0	2	0 0 4
+23	13	0.0	2	0 12 1
+24	1413	0.0	2	1337 74 2
+25	21	0.0	2	0 21
+
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 96 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	95	0.0	2	92 2 1
+27	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 1652 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	5	0.0	2	0 0 5
+27	28	0.0	2	0 27 1
+28	1597	0.0	2	1401 179 17
+29	17	0.0	2	0 17
+30	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 1784 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	15	0.0	2	0 14 1
+22	1759	0.0	2	1642 109 8
+23	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 1704 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	3	0.0	2	0 0 3
+21	19	0.0	2	0 19
+22	1671	0.0	2	1554 108 9
+23	11	0.0	2	0 11
+
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 1824 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	2	0.0	2	0 0 2
+24	24	0.0	2	0 23 1
+25	1786	0.0	2	1659 117 10
+26	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 570 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	3	0.0	2	0 3
+23	564	0.0	2	527 35 2
+24	3	0.0	2	0 3
+
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 1235 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	5	0.0	2	0 0 5
+26	34	0.0	2	0 34
+27	1171	0.0	2	1064 99 8
+28	20	0.0	2	0 19 1
+29	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 2165 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	26	0.0	2	0 25 1
+22	2119	0.0	2	1915 190 14
+23	18	0.0	2	0 18
+
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 2284 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	23	0.0	2	0 23
+22	2228	0.0	2	2074 147 7
+23	32	0.0	2	0 32
+
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 2536 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	4	0.0	2	0 0 4
+21	36	0.0	2	0 35 1
+22	2460	0.0	2	2323 135 2
+23	33	0.0	2	0 33
+24	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 506 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	2	0.0	2	0 0 2
+27	12	0.0	2	0 11 1
+28	478	0.0	2	425 52 1
+29	13	0.0	2	0 13
+30	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 1474 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	16	0.0	2	0 16
+22	1448	0.0	2	1354 91 3
+23	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 564 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	12	0.0	2	0 12
+22	540	0.0	2	510 30
+23	12	0.0	2	0 8 4
+
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 3383 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	5	0.0	2	0 0 5
+27	56	0.0	2	0 55 1
+28	3302	0.0	2	3104 181 17
+29	20	0.0	2	0 17 3
+
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 2003 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	27	0.0	2	0 26 1
+24	1932	0.0	2	1772 152 8
+25	44	0.0	2	0 44
+
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 2106 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	2	0.0	2	0 0 2
+26	25	0.0	2	0 24 1
+27	2047	0.0	2	1912 128 7
+28	31	0.0	2	0 29 2
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 3637 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	2	0.0	2	0 0 2
+28	26	0.0	2	0 25 1
+29	3544	0.0	2	3296 224 24
+30	64	0.0	2	0 55 9
+31	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 947 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	13	0.0	2	0 13
+29	919	0.0	2	854 61 4
+30	14	0.0	2	0 14
+
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 144 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+24	139	0.0	2	128 11
+25	4	0.0	2	0 4
+
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 542 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	11	0.0	2	0 10 1
+29	520	0.0	2	483 34 3
+30	11	0.0	2	0 11
+
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 2041 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	4	0.0	2	0 0 4
+27	27	0.0	2	0 26 1
+28	1991	0.0	2	1830 156 5
+29	18	0.0	2	0 16 2
+30	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 1823 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 0 1
+25	17	0.0	2	0 17
+26	1793	0.0	2	1676 106 11
+27	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 855 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	12	0.0	2	0 12
+23	837	0.0	2	779 57 1
+24	6	0.0	2	0 6
+
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 2297 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	15	0.0	2	0 15
+22	2268	0.0	2	2136 124 8
+23	14	0.0	2	0 13 1
+
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 2009 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	17	0.0	2	0 16 1
+23	1973	0.0	2	1861 107 5
+24	17	0.0	2	0 16 1
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 294 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	7	0.0	2	0 7
+23	283	0.0	2	265 17 1
+24	4	0.0	2	0 4
+
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 1673 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	12	0.0	2	0 12
+22	1651	0.0	2	1541 106 4
+23	7	0.0	2	0 7
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 1639 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	23	0.0	2	0 22 1
+25	1599	0.0	2	1476 118 5
+26	17	0.0	2	0 17
+
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 2062 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	4	0.0	2	0 0 4
+24	24	0.0	2	0 23 1
+25	2020	0.0	2	1849 162 9
+26	14	0.0	2	0 14
+
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 1330 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	2	0.0	2	0 0 2
+24	4	0.0	2	0 4
+25	1315	0.0	2	1258 55 2
+26	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 3193 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	27	0.0	2	0 27
+22	3143	0.0	2	2943 192 8
+23	17	0.0	2	0 17
+24	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 156 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	4	0.0	2	0 4
+22	148	0.0	2	146 2
+23	3	0.0	2	0 3
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 2220 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	45	0.0	2	0 45
+22	2136	0.0	2	1978 152 6
+23	37	0.0	2	0 37
+
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 1923 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	10	0.0	2	0 10
+22	1902	0.0	2	1768 128 6
+23	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 3162 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	20	0.0	2	0 20
+22	3136	0.0	2	2990 135 11
+23	5	0.0	2	0 5
+
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 1403 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	16	0.0	2	0 16
+22	1378	0.0	2	1288 87 3
+23	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 2857 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	30	0.0	2	0 29 1
+23	2812	0.0	2	2618 184 10
+24	15	0.0	2	0 14 1
+
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 1484 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	16	0.0	2	0 15 1
+25	1454	0.0	2	1354 97 3
+26	13	0.0	2	0 13
+27	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 1843 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	2	0.0	2	0 0 2
+23	18	0.0	2	0 17 1
+24	1806	0.0	2	1692 106 8
+25	12	0.0	2	0 12
+26	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 2089 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	39	0.0	2	0 38 1
+23	2036	0.0	2	1908 123 5
+24	13	0.0	2	0 12 1
+
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 2091 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	10	0.0	2	0 10
+22	2059	0.0	2	1961 97 1
+23	19	0.0	2	0 18 1
+24	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 315 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	3	0.0	2	0 3
+22	310	0.0	2	297 13
+23	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 3460 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	64	0.0	2	0 64
+22	3371	0.0	2	3154 207 10
+23	23	0.0	2	0 23
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 1151 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	2	0.0	2	0 0 2
+27	29	0.0	2	0 29
+28	1109	0.0	2	1024 81 4
+29	11	0.0	2	0 11
+
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 1635 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	14	0.0	2	0 14
+24	1609	0.0	2	1497 103 9
+25	12	0.0	2	0 12
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o ERR5996055.col.cut.fa ERR5996055.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o ERR6008925.col.cut1.fa ERR6008925.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 12.16 s (32 µs/read; 1.87 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 378,806
+Reads with adapters:                   254,913 (67.3%)
+Reads written (passing filters):       378,806 (100.0%)
+
+Total basepairs processed:   108,185,182 bp
+Total written (filtered):    102,003,065 bp (94.3%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 1591 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	3	0.0	2	0 0 3
+23	24	0.0	2	0 24
+24	1555	0.0	2	1412 136 7
+25	9	0.0	2	0 8 1
+
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 1517 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	10	0.0	2	0 10
+22	1498	0.0	2	1440 57 1
+23	7	0.0	2	0 7
+
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 3516 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	37	0.0	2	0 37
+22	3443	0.0	2	3282 157 4
+23	36	0.0	2	0 36
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 1788 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	15	0.0	2	0 15
+22	1752	0.0	2	1685 66 1
+23	21	0.0	2	0 21
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 4450 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	3	0.0	2	0 0 3
+21	45	0.0	2	0 45
+22	4357	0.0	2	4219 135 3
+23	45	0.0	2	0 43 2
+
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 3289 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	27	0.0	2	0 25 2
+22	3236	0.0	2	3106 126 4
+23	24	0.0	2	0 23 1
+
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 2544 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	26	0.0	2	0 25 1
+22	2496	0.0	2	2380 112 4
+23	7	0.0	2	0 7
+24	13	0.0	2	0 0 13
+
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 1751 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	15	0.0	2	0 15
+24	1710	0.0	2	1568 139 3
+25	26	0.0	2	0 26
+
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 3240 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	19	0.0	2	8 11
+25	3216	0.0	2	0 3216
+26	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 165 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	16	0.0	2	0 16
+24	131	0.0	2	1 129 1
+25	18	0.0	2	0 18
+
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 2545 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	22	0.0	2	0 22
+24	2502	0.0	2	2369 128 5
+25	20	0.0	2	0 20
+
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 3379 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	33	0.0	2	0 33
+22	3305	0.0	2	3101 194 10
+23	30	0.0	2	0 28 2
+24	10	0.0	2	0 0 10
+
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 2681 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	15	0.0	2	0 15
+22	2632	0.0	2	2498 128 6
+23	33	0.0	2	0 31 2
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 1472 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	12	0.0	2	0 12
+24	1452	0.0	2	1402 47 3
+25	7	0.0	2	0 7
+26	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 2238 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	25	0.0	2	0 24 1
+24	2184	0.0	2	2079 101 4
+25	28	0.0	2	0 25 3
+
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 2164 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	15	0.0	2	0 15
+26	2144	0.0	2	2044 99 1
+27	5	0.0	2	0 5
+
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 1829 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	15	0.0	2	0 15
+22	1799	0.0	2	1690 106 3
+23	8	0.0	2	0 7 1
+24	6	0.0	2	0 0 6
+
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 2090 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	2	0.0	2	0 0 2
+26	10	0.0	2	0 10
+27	2052	0.0	2	1946 101 5
+28	23	0.0	2	0 23
+29	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 819 times
+
+No. of allowed errors: 3
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	2	0.0	2	0 0 2
+29	9	0.0	2	0 9
+30	791	0.0	3	731 54 5 1
+31	17	0.0	3	0 17
+
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 3795 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	4	0.0	2	0 0 4
+22	93	0.0	2	0 89 4
+23	3675	0.0	2	3514 157 4
+24	23	0.0	2	0 23
+
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 2963 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	39	0.0	2	0 39
+27	2901	0.0	2	2746 148 7
+28	22	0.0	2	0 22
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 5 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	4	0.0	2	0 4
+29	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 1470 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	19	0.0	2	0 19
+29	78	0.0	2	0 66 12
+30	1348	0.0	2	0 1348
+31	24	0.0	2	0 0 24
+
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 4405 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	3	0.0	2	0 0 3
+28	67	0.0	2	0 66 1
+29	4278	0.0	2	4037 221 20
+30	57	0.0	2	0 54 3
+
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 4380 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	2	0.0	2	0 0 2
+26	35	0.0	2	0 34 1
+27	4316	0.0	2	4176 136 4
+28	27	0.0	2	0 27
+
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 2051 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	19	0.0	2	0 19
+23	2014	0.0	2	1946 67 1
+24	17	0.0	2	0 17
+
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 2436 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	5	0.0	2	0 0 5
+26	23	0.0	2	0 23
+27	2392	0.0	2	2263 125 4
+28	12	0.0	2	0 12
+29	4	0.0	2	0 0 4
+
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 3230 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	16	0.0	2	0 16
+25	3193	0.0	2	3023 160 10
+26	21	0.0	2	0 21
+
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 3791 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	2	0.0	2	0 0 2
+24	37	0.0	2	0 37
+25	3714	0.0	2	3538 171 5
+26	38	0.0	2	0 36 2
+
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 1241 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 0 1
+25	21	0.0	2	0 21
+26	1205	0.0	2	1094 108 3
+27	14	0.0	2	0 14
+
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 2103 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	10	0.0	2	0 0 10
+23	43	0.0	2	0 42 1
+24	2023	0.0	2	1889 129 5
+25	27	0.0	2	0 25 2
+
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 2666 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	19	0.0	2	0 19
+25	2632	0.0	2	2485 142 5
+26	15	0.0	2	0 15
+
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 655 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	9	0.0	2	0 9
+22	641	0.0	2	587 52 2
+23	4	0.0	2	0 4
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 1501 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	12	0.0	2	0 12
+25	1471	0.0	2	1397 73 1
+26	17	0.0	2	0 17
+
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 1233 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	7	0.0	2	0 7
+22	1218	0.0	2	1149 64 5
+23	8	0.0	2	0 8
+
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 2710 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	2	0.0	2	0 0 2
+22	13	0.0	2	0 13
+23	2663	0.0	2	2503 153 7
+24	31	0.0	2	0 31
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 2912 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	22	0.0	2	0 22
+22	2882	0.0	2	2760 118 4
+23	7	0.0	2	0 7
+
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 125 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	5	0.0	2	0 5
+22	119	0.0	2	93 25 1
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 4181 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	3	0.0	2	0 0 3
+22	16	0.0	2	0 16
+23	4152	0.0	2	3959 186 7
+24	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 1607 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	41	0.0	2	0 41
+25	1553	0.0	2	1459 87 7
+26	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 4033 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	10	0.0	2	0 0 10
+28	101	0.0	2	0 97 4
+29	3907	0.0	2	3635 254 18
+30	15	0.0	2	0 15
+
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 3698 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	4	0.0	2	0 0 4
+25	35	0.0	2	0 35
+26	3622	0.0	2	3453 165 4
+27	37	0.0	2	0 35 2
+
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 901 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	10	0.0	2	0 10
+23	887	0.0	2	852 32 3
+24	4	0.0	2	0 3 1
+
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 2235 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	3	0.0	2	0 0 3
+21	18	0.0	2	0 17 1
+22	2195	0.0	2	2098 95 2
+23	19	0.0	2	0 19
+
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 973 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	12	0.0	2	0 11 1
+22	951	0.0	2	914 35 2
+23	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 1977 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	24	0.0	2	0 23 1
+22	1942	0.0	2	1845 90 7
+23	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 1277 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	23	0.0	2	0 22 1
+29	1244	0.0	2	1171 70 3
+30	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 1440 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	9	0.0	2	0 9
+23	1405	0.0	2	1344 59 2
+24	21	0.0	2	0 21
+25	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 2180 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	3	0.0	2	0 0 3
+27	25	0.0	2	0 25
+28	2125	0.0	2	1964 144 17
+29	26	0.0	2	0 24 2
+30	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 156 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	4	0.0	2	0 4
+25	152	0.0	2	147 5
+
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 2484 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	24	0.0	2	0 24
+25	2438	0.0	2	2315 120 3
+26	20	0.0	2	0 20
+27	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 3224 times
+
+No. of allowed errors: 3
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 0 1
+28	2	0.0	2	0 0 2
+29	32	0.0	2	0 31 0 1
+30	3162	0.0	3	2946 201 13 2
+31	18	0.0	3	0 17 1
+32	5	0.0	3	0 0 3 2
+33	4	0.0	3	0 0 0 4
+
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 3530 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	33	0.0	2	0 32 1
+22	3471	0.0	2	3302 167 2
+23	24	0.0	2	0 24
+
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 3869 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	7	0.0	2	0 0 7
+21	37	0.0	2	0 37
+22	3803	0.0	2	3635 159 9
+23	22	0.0	2	0 22
+
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 2360 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	5	0.0	2	0 0 5
+23	26	0.0	2	0 25 1
+24	2305	0.0	2	2182 121 2
+25	24	0.0	2	0 23 1
+
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 494 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 3
+26	489	0.0	2	463 25 1
+27	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 2359 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	35	0.0	2	0 33 2
+28	2294	0.0	2	2048 223 23
+29	24	0.0	2	0 23 1
+30	6	0.0	2	0 0 6
+
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 3310 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	21	0.0	2	0 21
+22	3280	0.0	2	3083 181 16
+23	8	0.0	2	0 8
+
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 2982 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	28	0.0	2	0 28
+22	2941	0.0	2	2788 145 8
+23	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 2371 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	24	0.0	2	0 23 1
+25	2329	0.0	2	2209 115 5
+26	13	0.0	2	0 12 1
+27	4	0.0	2	0 0 4
+
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 1543 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	3	0.0	2	0 3
+23	1532	0.0	2	1470 58 4
+24	8	0.0	2	0 8
+
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 2085 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	5	0.0	2	0 0 5
+26	47	0.0	2	0 47
+27	2003	0.0	2	1894 105 4
+28	30	0.0	2	0 29 1
+
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 3058 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	37	0.0	2	0 37
+22	2989	0.0	2	2736 238 15
+23	31	0.0	2	0 31
+
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 2749 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	25	0.0	2	0 25
+22	2689	0.0	2	2537 145 7
+23	34	0.0	2	0 33 1
+
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 4649 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	4	0.0	2	0 0 4
+21	51	0.0	2	0 51
+22	4542	0.0	2	4340 197 5
+23	42	0.0	2	0 40 2
+24	10	0.0	2	0 0 10
+
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 1516 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	2	0.0	2	0 0 2
+27	25	0.0	2	0 25
+28	1457	0.0	2	1313 136 8
+29	32	0.0	2	0 27 5
+
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 2803 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	19	0.0	2	0 18 1
+22	2769	0.0	2	2590 171 8
+23	14	0.0	2	0 13 1
+
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 2428 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	27	0.0	2	0 27
+22	2356	0.0	2	2242 106 8
+23	45	0.0	2	0 22 23
+
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 5767 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	3	0.0	2	0 0 3
+27	62	0.0	2	0 56 6
+28	5666	0.0	2	5420 233 13
+29	36	0.0	2	0 32 4
+
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 3607 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	25	0.0	2	0 25
+24	3522	0.0	2	3291 223 8
+25	59	0.0	2	0 57 2
+26	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 3354 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 0 3
+26	55	0.0	2	0 52 3
+27	3222	0.0	2	3047 170 5
+28	74	0.0	2	0 72 2
+
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 5904 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	6	0.0	2	0 0 6
+28	46	0.0	2	0 46
+29	5763	0.0	2	5467 281 15
+30	87	0.0	2	0 79 8
+31	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 1546 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	8	0.0	2	0 8
+29	1524	0.0	2	1430 87 7
+30	13	0.0	2	0 13
+
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 2979 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	27	0.0	2	0 26 1
+24	2926	0.0	2	2763 153 10
+25	25	0.0	2	0 24 1
+
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 1170 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	16	0.0	2	0 16
+29	1147	0.0	2	1094 52 1
+30	7	0.0	2	0 6 1
+
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 2788 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	6	0.0	2	0 0 6
+27	38	0.0	2	0 38
+28	2725	0.0	2	2561 154 10
+29	19	0.0	2	0 17 2
+
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 3255 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	2	0.0	2	0 0 2
+25	28	0.0	2	0 28
+26	3218	0.0	2	3070 142 6
+27	7	0.0	2	0 6 1
+
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 1009 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	11	0.0	2	0 11
+23	992	0.0	2	929 63
+24	6	0.0	2	0 6
+
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 4268 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	19	0.0	2	0 18 1
+22	4226	0.0	2	4037 185 4
+23	18	0.0	2	0 17 1
+24	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 2746 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	24	0.0	2	0 23 1
+23	2708	0.0	2	2603 101 4
+24	13	0.0	2	0 12 1
+
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 1324 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	15	0.0	2	0 14 1
+23	1297	0.0	2	1214 82 1
+24	12	0.0	2	0 12
+
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 2573 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	15	0.0	2	0 15
+22	2537	0.0	2	2412 119 6
+23	14	0.0	2	0 13 1
+24	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 3355 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	3	0.0	2	0 0 3
+24	53	0.0	2	0 52 1
+25	3270	0.0	2	3078 187 5
+26	29	0.0	2	0 28 1
+
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 2635 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	2	0.0	2	0 0 2
+24	22	0.0	2	0 22
+25	2591	0.0	2	2428 157 6
+26	20	0.0	2	0 20
+
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 2191 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+24	8	0.0	2	0 8
+25	2168	0.0	2	2113 55
+26	11	0.0	2	0 11
+27	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 3891 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	23	0.0	2	0 20 3
+22	3839	0.0	2	3621 213 5
+23	23	0.0	2	0 23
+24	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 1026 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	8	0.0	2	0 8
+22	1010	0.0	2	964 45 1
+23	8	0.0	2	0 8
+
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 3433 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	5	0.0	2	0 0 5
+21	63	0.0	2	0 63
+22	3333	0.0	2	3108 216 9
+23	30	0.0	2	0 29 1
+24	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 2920 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	12	0.0	2	0 12
+22	2880	0.0	2	2761 113 6
+23	27	0.0	2	0 27
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 3767 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	15	0.0	2	0 15
+22	3742	0.0	2	3600 132 10
+23	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 2860 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	21	0.0	2	0 21
+22	2825	0.0	2	2669 153 3
+23	12	0.0	2	0 10 2
+
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 3969 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	3	0.0	2	0 0 3
+22	42	0.0	2	0 41 1
+23	3902	0.0	2	3682 211 9
+24	22	0.0	2	0 21 1
+
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 870 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	5	0.0	2	0 5
+25	859	0.0	2	817 41 1
+26	6	0.0	2	0 6
+
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 2750 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	19	0.0	2	0 18 1
+24	2721	0.0	2	2612 102 7
+25	6	0.0	2	0 6
+26	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 3147 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	2	0.0	2	0 0 2
+22	52	0.0	2	0 50 2
+23	3077	0.0	2	2943 130 4
+24	16	0.0	2	0 16
+
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 3899 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	27	0.0	2	0 27
+22	3837	0.0	2	3679 150 8
+23	23	0.0	2	0 23
+24	11	0.0	2	0 0 11
+
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 1341 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	9	0.0	2	0 9
+22	1322	0.0	2	1262 56 4
+23	10	0.0	2	0 10
+
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 6704 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	75	0.0	2	0 72 3
+22	6588	0.0	2	6325 251 12
+23	41	0.0	2	0 39 2
+
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 2293 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	0 0 1
+27	41	0.0	2	0 40 1
+28	2231	0.0	2	2102 124 5
+29	20	0.0	2	0 20
+
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 2358 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	11	0.0	2	0 11
+24	2327	0.0	2	2225 100 2
+25	20	0.0	2	0 19 1
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o ERR6008925.col.cut.fa ERR6008925.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o ERR7277155.col.cut1.fa ERR7277155.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 15.14 s (23 µs/read; 2.57 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 647,875
+Reads with adapters:                    41,232 (6.4%)
+Reads written (passing filters):       647,875 (100.0%)
+
+Total basepairs processed:   159,544,510 bp
+Total written (filtered):    158,543,853 bp (99.4%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 9 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	4	0.0	2	2 2
+25	4	0.0	2	0 2 2
+26	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 1825 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1823	0.0	2	0 0 1823
+21	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 3479 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	7	0.0	2	0 0 7
+21	3463	0.0	2	0 3318 145
+22	9	0.0	2	1 0 8
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 13 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	13	0.0	2	0 0 13
+
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 14291 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+23	34	0.0	2	0 33 1
+24	14197	0.0	2	13555 620 22
+25	59	0.0	2	0 56 3
+
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 4914 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	6	0.0	2	0 0 6
+28	65	0.0	2	0 61 4
+29	4803	0.0	2	4386 388 29
+30	40	0.0	2	0 39 1
+
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 3018 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	6	0.0	2	0 5 1
+25	3012	0.0	2	0 0 3012
+
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 2307 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 0 3
+26	33	0.0	2	0 33
+27	2245	0.0	2	2063 168 14
+28	24	0.0	2	0 24
+29	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 2120 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	15	0.0	2	0 0 15
+23	2084	0.0	2	0 1890 194
+24	20	0.0	2	0 4 16
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 814 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+24	813	0.0	2	0 0 813
+
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 1420 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	19	0.0	2	0 19
+23	1380	0.0	2	1265 114 1
+24	20	0.0	2	0 18 2
+
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 2769 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	23	0.0	2	0 0 23
+22	2734	0.0	2	0 2618 116
+23	12	0.0	2	0 2 10
+
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 1738 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	15	0.0	2	2 3 10
+26	1698	0.0	2	0 1507 191
+27	25	0.0	2	0 0 25
+
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 2512 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	36	0.0	2	0 0 36
+24	2461	0.0	2	0 2326 135
+25	15	0.0	2	0 2 13
+
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o ERR7277155.col.cut.fa ERR7277155.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o ERR7395993.col.cut1.fa ERR7395993.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 11.45 s (29 µs/read; 2.07 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 394,283
+Reads with adapters:                    30,107 (7.6%)
+Reads written (passing filters):       394,283 (100.0%)
+
+Total basepairs processed:   105,767,095 bp
+Total written (filtered):    105,027,104 bp (99.3%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 4 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 3
+26	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 949 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	948	0.0	2	0 0 948
+21	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 2141 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	13	0.0	2	0 0 13
+21	2118	0.0	2	0 1976 142
+22	10	0.0	2	3 1 6
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 7 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	7	0.0	2	0 0 7
+
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 8290 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	2	0.0	2	0 0 2
+23	30	0.0	2	0 29 1
+24	8201	0.0	2	7804 374 23
+25	57	0.0	2	0 55 2
+
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 2536 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	3	0.0	2	0 0 3
+28	45	0.0	2	0 43 2
+29	2450	0.0	2	2264 181 5
+30	38	0.0	2	0 36 2
+
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 831 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	2	0.0	2	0 2
+25	829	0.0	2	0 0 829
+
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 4594 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	8	0.0	2	0 0 8
+26	59	0.0	2	0 58 1
+27	4483	0.0	2	4087 359 37
+28	43	0.0	2	0 43
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 841 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	3	0.0	2	0 0 3
+23	832	0.0	2	0 769 63
+24	6	0.0	2	0 1 5
+
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 361 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	361	0.0	2	0 0 361
+
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 1438 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	15	0.0	2	0 14 1
+23	1400	0.0	2	1304 90 6
+24	19	0.0	2	0 17 2
+25	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 1898 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	7	0.0	2	0 0 7
+22	1884	0.0	2	0 1801 83
+23	7	0.0	2	0 1 6
+
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 3233 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 0 1
+25	40	0.0	2	8 3 29
+26	3155	0.0	2	0 2865 290
+27	37	0.0	2	0 0 37
+
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 0 1
+27	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 2979 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	32	0.0	2	0 0 32
+24	2923	0.0	2	0 2758 165
+25	24	0.0	2	2 1 21
+
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o ERR7395993.col.cut.fa ERR7395993.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o ERR7505063.col.cut1.fa ERR7505063.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 9.97 s (35 µs/read; 1.72 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 286,002
+Reads with adapters:                    24,182 (8.5%)
+Reads written (passing filters):       286,002 (100.0%)
+
+Total basepairs processed:    75,701,071 bp
+Total written (filtered):     75,113,750 bp (99.2%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 8 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	1
+25	5	0.0	2	0 4 1
+26	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 1775 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1770	0.0	2	0 0 1770
+21	5	0.0	2	0 3 2
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 310 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	307	0.0	2	0 281 26
+22	3	0.0	2	0 2 1
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 6 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	6	0.0	2	0 0 6
+
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 9227 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	3	0.0	2	0 0 3
+23	29	0.0	2	0 29
+24	9151	0.0	2	8776 363 12
+25	44	0.0	2	0 42 2
+
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 1447 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	26	0.0	2	0 25 1
+29	1397	0.0	2	1297 94 6
+30	24	0.0	2	0 24
+
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 1924 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 1
+25	1923	0.0	2	0 0 1923
+
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 2389 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	1	0.0	2	0 0 1
+26	38	0.0	2	0 37 1
+27	2323	0.0	2	2145 164 14
+28	25	0.0	2	0 24 1
+29	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 512 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	3	0.0	2	0 0 3
+23	507	0.0	2	0 450 57
+24	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 669 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	3	0.0	2	0 2 1
+24	666	0.0	2	0 0 666
+
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 369 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	3	0.0	2	0 3
+23	359	0.0	2	322 37
+24	6	0.0	2	0 6
+
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 2285 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	17	0.0	2	0 0 17
+22	2261	0.0	2	0 2149 112
+23	7	0.0	2	0 1 6
+
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 2067 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 0 1
+25	17	0.0	2	3 1 13
+26	2027	0.0	2	0 1833 194
+27	22	0.0	2	0 0 22
+
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 1194 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	6	0.0	2	0 0 6
+24	1185	0.0	2	0 1129 56
+25	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o ERR7505063.col.cut.fa ERR7505063.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o SRR15128978.col.cut1.fa SRR15128978.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 28.31 s (18 µs/read; 3.31 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:               1,561,865
+Reads with adapters:                     1,176 (0.1%)
+Reads written (passing filters):     1,561,865 (100.0%)
+
+Total basepairs processed:   185,043,162 bp
+Total written (filtered):    185,015,566 bp (100.0%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 4 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	3	0.0	2	0 0 3
+21	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 59 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	33	0.0	2	0 0 33
+21	4	0.0	2	0 4
+22	15	0.0	2	15
+23	2	0.0	2	0 2
+24	5	0.0	2	0 0 5
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 18 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	2	0.0	2	0 0 2
+21	5	0.0	2	0 5
+22	6	0.0	2	6
+23	5	0.0	2	0 5
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 8 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	8	0.0	2	0 0 8
+
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	1
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 279 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	57	0.0	2	0 0 57
+22	92	0.0	2	0 78 14
+23	112	0.0	2	92 16 4
+24	7	0.0	2	0 6 1
+25	11	0.0	2	0 0 11
+
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 10 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 1
+29	9	0.0	2	0 0 9
+
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 15 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	6	0.0	2	0 0 6
+25	9	0.0	2	0 9
+
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	3	0.0	2	0 3
+
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 8 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	1	0.0	2	0 0 1
+22	2	0.0	2	0 1 1
+23	3	0.0	2	0 1 2
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 14 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	2	0.0	2	0 0 2
+22	1	0.0	2	0 1
+23	9	0.0	2	8 1
+25	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 5 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+22	3	0.0	2	3
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 6 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	5	0.0	2	0 0 5
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 17 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	2	0.0	2	0 2
+22	12	0.0	2	10 2
+23	2	0.0	2	0 2
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 601 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	260	0.0	2	0 0 260
+24	172	0.0	2	0 136 36
+25	96	0.0	2	81 13 2
+26	11	0.0	2	0 11
+27	62	0.0	2	0 0 62
+
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 18 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	5	0.0	2	0 0 5
+28	5	0.0	2	0 4 1
+29	5	0.0	2	5
+30	2	0.0	2	0 2
+31	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 21 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	10	0.0	2	0 0 10
+24	6	0.0	2	0 5 1
+25	2	0.0	2	2
+26	1	0.0	2	0 1
+27	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 6 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	6	0.0	2	0 1 5
+
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 18 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	4	0.0	2	0 0 4
+27	3	0.0	2	3
+28	1	0.0	2	0 1
+29	10	0.0	2	0 0 10
+
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 9 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	4	0.0	2	0 0 4
+21	4	0.0	2	0 4
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 1
+23	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 16 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	8	0.0	2	0 0 8
+24	1	0.0	2	0 1
+25	7	0.0	2	0 0 7
+
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 6 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+23	4	0.0	2	0 4
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 4 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	3	0.0	2	0 3
+22	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+22	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 5 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	5	0.0	2	5
+
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 9 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	8	0.0	2	0 0 8
+25	1	0.0	2	0 1
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o SRR15128978.col.cut.fa SRR15128978.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_for_plus.fasta -o SRR15128983.col.cut1.fa SRR15128983.collapsed.fa
+Building index of 107 adapters ...
+WARNING: Adapters nCoV-2019_9_LEFT_plus 'TCCCACAGAAGTGTTAACAGAGGA' and nCoV-2019_9_LEFT_alt4_plus 'TTCCCACAGAAGTGTTAACAGAGG' are very similar. At 2 allowed errors, the sequence 'ATCCCACAGAAGTGTTAACAGAGG' cannot be assigned uniquely because the number of matches is 23 compared to both adapters.
+Built an index containing 1445738 strings.
+Processing reads on 1 core in single-end mode ...
+Finished in 18.33 s (22 µs/read; 2.77 M reads/minute).
+
+=== Summary ===
+
+Total reads processed:                 845,214
+Reads with adapters:                     1,126 (0.1%)
+Reads written (passing filters):       845,214 (100.0%)
+
+Total basepairs processed:   101,706,458 bp
+Total written (filtered):    101,681,112 bp (100.0%)
+
+=== Adapter nCoV-2019_1_LEFT_plus ===
+
+Sequence: ACCAACCAACTTTCGATCTCTTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_2_LEFT_plus ===
+
+Sequence: CTGTTTTACAGGTTCGCGACGT; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_3_LEFT_plus ===
+
+Sequence: CGGTAATAAAGGAGCTGGTGGC; Type: anchored 5'; Length: 22; Trimmed: 14 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	10	0.0	2	0 0 10
+21	1	0.0	2	0 1
+22	2	0.0	2	2
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_4_LEFT_plus ===
+
+Sequence: GGTGTATACTGCTGCCGTGAAC; Type: anchored 5'; Length: 22; Trimmed: 15 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	6	0.0	2	0 6
+22	5	0.0	2	5
+23	3	0.0	2	0 3
+
+
+=== Adapter nCoV-2019_5_LEFT_plus ===
+
+Sequence: TGGTGAAACTTCATGGCAGACG; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_6_LEFT_plus ===
+
+Sequence: GGTGTTGTTGGAGAAGGTTCCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_7_LEFT_plus ===
+
+Sequence: ATCAGAGGCTGCTCGTGTTGTA; Type: anchored 5'; Length: 22; Trimmed: 609 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	41	0.0	2	0 0 41
+21	60	0.0	2	0 46 14
+22	310	0.0	2	228 63 19
+23	164	0.0	2	0 131 33
+24	34	0.0	2	0 0 34
+
+
+=== Adapter nCoV-2019_7_LEFT_alt0_plus ===
+
+Sequence: CATTTGCATCAGAGGCTGCTCG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_8_LEFT_plus ===
+
+Sequence: AGAGTTTCTTAGAGACGGTTGGGA; Type: anchored 5'; Length: 24; Trimmed: 4 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	1	0.0	2	0 1
+26	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_9_LEFT_plus ===
+
+Sequence: TCCCACAGAAGTGTTAACAGAGGA; Type: anchored 5'; Length: 24; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_9_LEFT_alt4_plus ===
+
+Sequence: TTCCCACAGAAGTGTTAACAGAGG; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_10_LEFT_plus ===
+
+Sequence: TGAGAAGTGCTCTGCCTATACAGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_11_LEFT_plus ===
+
+Sequence: GGAATTTGGTGCCACTTCTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_12_LEFT_plus ===
+
+Sequence: AAACATGGAGGAGGTGTTGCAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_13_LEFT_plus ===
+
+Sequence: TCGCACAAATGTCTACTTAGCTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_14_LEFT_plus ===
+
+Sequence: CATCCAGATTCTGCCACTCTTGT; Type: anchored 5'; Length: 23; Trimmed: 287 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	63	0.0	2	0 0 63
+22	90	0.0	2	0 77 13
+23	107	0.0	2	92 13 2
+24	17	0.0	2	0 14 3
+25	10	0.0	2	0 0 10
+
+
+=== Adapter nCoV-2019_14_LEFT_alt4_plus ===
+
+Sequence: TGGCAATCTTCATCCAGATTCTGC; Type: anchored 5'; Length: 24; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_15_LEFT_plus ===
+
+Sequence: ACAGTGCTTAAAAAGTGTAAAAGTGCC; Type: anchored 5'; Length: 27; Trimmed: 13 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	0 1
+28	2	0.0	2	0 2
+29	10	0.0	2	0 0 10
+
+
+=== Adapter nCoV-2019_15_LEFT_alt1_plus ===
+
+Sequence: AGTGCTTAAAAAGTGTAAAAGTGCCT; Type: anchored 5'; Length: 26; Trimmed: 4 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	2	0.0	2	0 0 2
+25	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_16_LEFT_plus ===
+
+Sequence: AATTTGGAAGAAGCTGCTCGGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_17_LEFT_plus ===
+
+Sequence: CTTCTTTCTTTGAGAGAAGTGAGGACT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_plus ===
+
+Sequence: TGGAAATACCCACAAGTTAATGGTTTAAC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_18_LEFT_alt2_plus ===
+
+Sequence: ACTTCTATTAAATGGGCAGATAACAACTGT; Type: anchored 5'; Length: 30; Trimmed: 0 times
+
+=== Adapter nCoV-2019_19_LEFT_plus ===
+
+Sequence: GCTGTTATGTACATGGGCACACT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_20_LEFT_plus ===
+
+Sequence: ACAAAGAAAACAGTTACACAACAACCA; Type: anchored 5'; Length: 27; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	1	0.0	2	0 0 1
+27	2	0.0	2	2
+
+
+=== Adapter nCoV-2019_21_LEFT_plus ===
+
+Sequence: TGGCTATTGATTATAAACACTACACACCC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_21_LEFT_alt2_plus ===
+
+Sequence: GGCTATTGATTATAAACACTACACACCCT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_22_LEFT_plus ===
+
+Sequence: ACTACCGAAGTTGTAGGAGACATTATACT; Type: anchored 5'; Length: 29; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	1	0.0	2	0 0 1
+28	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_23_LEFT_plus ===
+
+Sequence: ACAACTACTAACATAGTTACACGGTGT; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_24_LEFT_plus ===
+
+Sequence: AGGCATGCCTTCTTACTGTACTG; Type: anchored 5'; Length: 23; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_25_LEFT_plus ===
+
+Sequence: GCAATTGTTTTTCAGCTATTTTGCAGT; Type: anchored 5'; Length: 27; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	0 1
+29	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_26_LEFT_plus ===
+
+Sequence: TTGTGATACATTCTGTGCTGGTAGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_27_LEFT_plus ===
+
+Sequence: ACTACAGTCAGCTTATGTGTCAACC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_28_LEFT_plus ===
+
+Sequence: ACATAGAAGTTACTGGCGATAGTTGT; Type: anchored 5'; Length: 26; Trimmed: 5 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	1	0.0	2	0 1
+26	4	0.0	2	4
+
+
+=== Adapter nCoV-2019_29_LEFT_plus ===
+
+Sequence: ACTTGTGTTCCTTTTTGTTGCTGC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_30_LEFT_plus ===
+
+Sequence: GCACAACTAATGGTGACTTTTTGCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_31_LEFT_plus ===
+
+Sequence: TTCTGAGTACTGTAGGCACGGC; Type: anchored 5'; Length: 22; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	1	0.0	2	0 1
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_32_LEFT_plus ===
+
+Sequence: TGGTGAATACAGTCATGTAGTTGCC; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_33_LEFT_plus ===
+
+Sequence: ACTTTTGAAGAAGCTGCGCTGT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_34_LEFT_plus ===
+
+Sequence: TCCCATCTGGTAAAGTTGAGGGT; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_35_LEFT_plus ===
+
+Sequence: TGTTCGCATTCAACCAGGACAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_36_LEFT_plus ===
+
+Sequence: TTAGCTTGGTTGTACGCTGCTG; Type: anchored 5'; Length: 22; Trimmed: 9 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	4	0.0	2	0 0 4
+23	5	0.0	2	0 3 2
+
+
+=== Adapter nCoV-2019_37_LEFT_plus ===
+
+Sequence: ACACACCACTGGTTGTTACTCAC; Type: anchored 5'; Length: 23; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	1
+24	1	0.0	2	0 1
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_38_LEFT_plus ===
+
+Sequence: ACTGTGTTATGTATGCATCAGCTGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_39_LEFT_plus ===
+
+Sequence: AGTATTGCCCTATTTTCTTCATAACTGGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_40_LEFT_plus ===
+
+Sequence: TGCACATCAGTAGTCTTACTCTCAGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_41_LEFT_plus ===
+
+Sequence: GTTCCCTTCCATCATATGCAGCT; Type: anchored 5'; Length: 23; Trimmed: 7 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	1	0.0	2	0 1
+23	3	0.0	2	3
+24	1	0.0	2	0 1
+25	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_42_LEFT_plus ===
+
+Sequence: TGCAAGAGATGGTTGTGTTCCC; Type: anchored 5'; Length: 22; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+22	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_43_LEFT_plus ===
+
+Sequence: TACGACAGATGTCTTGTGCTGC; Type: anchored 5'; Length: 22; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+23	2	0.0	2	0 1 1
+
+
+=== Adapter nCoV-2019_44_LEFT_plus ===
+
+Sequence: TGCCACAGTACGTCTACAAGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_44_LEFT_alt3_plus ===
+
+Sequence: CCACAGTACGTCTACAAGCTGG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_45_LEFT_plus ===
+
+Sequence: TACCTACAACTTGTGCTAATGACCC; Type: anchored 5'; Length: 25; Trimmed: 22 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	12	0.0	2	0 0 12
+24	6	0.0	2	0 4 2
+25	4	0.0	2	4
+
+
+=== Adapter nCoV-2019_45_LEFT_alt2_plus ===
+
+Sequence: AGTATGTACAAATACCTACAACTTGTGCT; Type: anchored 5'; Length: 29; Trimmed: 13 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+27	3	0.0	2	0 0 3
+28	5	0.0	2	0 3 2
+29	2	0.0	2	2
+30	3	0.0	2	0 3
+
+
+=== Adapter nCoV-2019_46_LEFT_plus ===
+
+Sequence: TGTCGCTTCCAAGAAAAGGACG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_46_LEFT_alt1_plus ===
+
+Sequence: CGCTTCCAAGAAAAGGACGAAGA; Type: anchored 5'; Length: 23; Trimmed: 0 times
+
+=== Adapter nCoV-2019_47_LEFT_plus ===
+
+Sequence: AGGACTGGTATGATTTTGTAGAAAACCC; Type: anchored 5'; Length: 28; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_48_LEFT_plus ===
+
+Sequence: TGTTGACACTGACTTAACAAAGCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_49_LEFT_plus ===
+
+Sequence: AGGAATTACTTGTGTATGCTGCTGA; Type: anchored 5'; Length: 25; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_50_LEFT_plus ===
+
+Sequence: GTTGATAAGTACTTTGATTGTTACGATGGT; Type: anchored 5'; Length: 30; Trimmed: 1 times
+
+No. of allowed errors: 3
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+29	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_51_LEFT_plus ===
+
+Sequence: TCAATAGCCGCCACTAGAGGAG; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_52_LEFT_plus ===
+
+Sequence: CATCAGGAGATGCCACAACTGC; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_53_LEFT_plus ===
+
+Sequence: AGCAAAATGTTGGACTGAGACTGA; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_54_LEFT_plus ===
+
+Sequence: TGAGTTAACAGGACACATGTTAGACA; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_55_LEFT_plus ===
+
+Sequence: ACTCAACTTTACTTAGGAGGTATGAGCT; Type: anchored 5'; Length: 28; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+28	1	0.0	2	1
+
+
+=== Adapter nCoV-2019_56_LEFT_plus ===
+
+Sequence: ACCTAGACCACCACTTAACCGA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_57_LEFT_plus ===
+
+Sequence: ATTCTACACTCCAGGGACCACC; Type: anchored 5'; Length: 22; Trimmed: 4 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	0 1
+24	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_58_LEFT_plus ===
+
+Sequence: TGATTTGAGTGTTGTCAATGCCAGA; Type: anchored 5'; Length: 25; Trimmed: 9 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	4	0.0	2	0 0 4
+24	4	0.0	2	0 4
+27	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_59_LEFT_plus ===
+
+Sequence: TCACGCATGATGTTTCATCTGCA; Type: anchored 5'; Length: 23; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	2	0.0	2	0 0 2
+
+
+=== Adapter nCoV-2019_60_LEFT_plus ===
+
+Sequence: TGATAGAGACCTTTATGACAAGTTGCA; Type: anchored 5'; Length: 27; Trimmed: 7 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+25	3	0.0	2	0 0 3
+28	1	0.0	2	0 1
+29	3	0.0	2	0 0 3
+
+
+=== Adapter nCoV-2019_61_LEFT_plus ===
+
+Sequence: TGTTTATCACCCGCGAAGAAGC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_62_LEFT_plus ===
+
+Sequence: GGCACATGGCTTTGAGTTGACA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_63_LEFT_plus ===
+
+Sequence: TGTTAAGCGTGTTGACTGGACT; Type: anchored 5'; Length: 22; Trimmed: 7 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	3	0.0	2	0 3
+22	2	0.0	2	2
+23	2	0.0	2	0 2
+
+
+=== Adapter nCoV-2019_64_LEFT_plus ===
+
+Sequence: TCGATAGATATCCTGCTAATTCCATTGT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_65_LEFT_plus ===
+
+Sequence: GCTGGCTTTAGCTTGTGGGTTT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_66_LEFT_plus ===
+
+Sequence: GGGTGTGGACATTGCTGCTAAT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_67_LEFT_plus ===
+
+Sequence: GTTGTCCAACAATTACCTGAAACTTACT; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_68_LEFT_plus ===
+
+Sequence: ACAGGTTCATCTAAGTGTGTGTGT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_69_LEFT_plus ===
+
+Sequence: TGTCGCAAAATATACTCAACTGTGTCA; Type: anchored 5'; Length: 27; Trimmed: 0 times
+
+=== Adapter nCoV-2019_70_LEFT_plus ===
+
+Sequence: ACAAAAGAAAATGACTCTAAAGAGGGTTT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_71_LEFT_plus ===
+
+Sequence: ACAAATCCAATTCAGTTGTCTTCCTATTC; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_72_LEFT_plus ===
+
+Sequence: ACACGTGGTGTTTATTACCCTGAC; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_73_LEFT_plus ===
+
+Sequence: CAATTTTGTAATGATCCATTTTTGGGTGT; Type: anchored 5'; Length: 29; Trimmed: 0 times
+
+=== Adapter nCoV-2019_74_LEFT_plus ===
+
+Sequence: ACATCACTAGGTTTCAAACTTTACTTGC; Type: anchored 5'; Length: 28; Trimmed: 0 times
+
+=== Adapter nCoV-2019_75_LEFT_plus ===
+
+Sequence: AGAGTCCAACCAACAGAATCTATTGT; Type: anchored 5'; Length: 26; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_plus ===
+
+Sequence: AGGGCAAACTGGAAAGATTGCT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_76_LEFT_alt3_plus ===
+
+Sequence: GGGCAAACTGGAAAGATTGCTGA; Type: anchored 5'; Length: 23; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+23	1	0.0	2	1
+24	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_77_LEFT_plus ===
+
+Sequence: CCAGCAACTGTTTGTGGACCTA; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_78_LEFT_plus ===
+
+Sequence: CAACTTACTCCTACTTGGCGTGT; Type: anchored 5'; Length: 23; Trimmed: 12 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	5	0.0	2	0 0 5
+22	1	0.0	2	0 1
+23	2	0.0	2	2
+25	4	0.0	2	0 0 4
+
+
+=== Adapter nCoV-2019_79_LEFT_plus ===
+
+Sequence: GTGGTGATTCAACTGAATGCAGC; Type: anchored 5'; Length: 23; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_80_LEFT_plus ===
+
+Sequence: TTGCCTTGGTGATATTGCTGCT; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_81_LEFT_plus ===
+
+Sequence: GCACTTGGAAAACTTCAAGATGTGG; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_82_LEFT_plus ===
+
+Sequence: GGGCTATCATCTTATGTCCTTCCCT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_83_LEFT_plus ===
+
+Sequence: TCCTTTGCAACCTGAATTAGACTCA; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_84_LEFT_plus ===
+
+Sequence: TGCTGTAGTTGTCTCAAGGGCT; Type: anchored 5'; Length: 22; Trimmed: 3 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+23	1	0.0	2	0 1
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_85_LEFT_plus ===
+
+Sequence: ACTAGCACTCTCCAAGGGTGTT; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_86_LEFT_plus ===
+
+Sequence: TCAGGTGATGGCACAACAAGTC; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_87_LEFT_plus ===
+
+Sequence: CGACTACTAGCGTGCCTTTGTA; Type: anchored 5'; Length: 22; Trimmed: 7 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	4	0.0	2	0 4
+22	1	0.0	2	1
+23	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_88_LEFT_plus ===
+
+Sequence: CCATGGCAGATTCCAACGGTAC; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_plus ===
+
+Sequence: GTACGCGTTCCATGTGGTCATT; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_89_LEFT_alt2_plus ===
+
+Sequence: CGCGTTCCATGTGGTCATTCAA; Type: anchored 5'; Length: 22; Trimmed: 0 times
+
+=== Adapter nCoV-2019_90_LEFT_plus ===
+
+Sequence: ACACAGACCATTCCAGTAGCAGT; Type: anchored 5'; Length: 23; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 0 1
+22	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_91_LEFT_plus ===
+
+Sequence: TCACTACCAAGAGTGTGTTAGAGGT; Type: anchored 5'; Length: 25; Trimmed: 0 times
+
+=== Adapter nCoV-2019_92_LEFT_plus ===
+
+Sequence: TTTGTGCTTTTTAGCCTTTCTGCT; Type: anchored 5'; Length: 24; Trimmed: 0 times
+
+=== Adapter nCoV-2019_93_LEFT_plus ===
+
+Sequence: TGAGGCTGGTTCTAAATCACCCA; Type: anchored 5'; Length: 23; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_94_LEFT_plus ===
+
+Sequence: GGCCCCAAGGTTTACCCAATAA; Type: anchored 5'; Length: 22; Trimmed: 8 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	7	0.0	2	0 0 7
+21	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_95_LEFT_plus ===
+
+Sequence: TGAGGGAGCCTTGAATACACCA; Type: anchored 5'; Length: 22; Trimmed: 5 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+20	1	0.0	2	0 0 1
+21	1	0.0	2	0 1
+23	2	0.0	2	0 2
+24	1	0.0	2	0 0 1
+
+
+=== Adapter nCoV-2019_96_LEFT_plus ===
+
+Sequence: GCCAACAACAACAAGGCCAAAC; Type: anchored 5'; Length: 22; Trimmed: 1 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+21	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_97_LEFT_plus ===
+
+Sequence: TGGATGACAAAGATCCAAATTTCAAAGA; Type: anchored 5'; Length: 28; Trimmed: 2 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+26	1	0.0	2	0 0 1
+27	1	0.0	2	0 1
+
+
+=== Adapter nCoV-2019_98_LEFT_plus ===
+
+Sequence: AACAATTGCAACAATCCATGAGCA; Type: anchored 5'; Length: 24; Trimmed: 16 times
+
+No. of allowed errors: 2
+
+Overview of removed sequences
+length	count	expect	max.err	error counts
+22	12	0.0	2	0 0 12
+24	2	0.0	2	1 0 1
+25	2	0.0	2	0 2
+This is cutadapt 3.5 with Python 3.8.5
+Command line parameters: -g file:NEBArticv3_rev_plus.fasta -o SRR15128983.col.cut.fa SRR15128983.col.cut1.fa
+Run "cutadapt --help" to see command-line options.
+See https://cutadapt.readthedocs.io/ for full documentation.
+
+cutadapt: error: Allowed placement restrictions for a 5' adapter are XADAPTER and ^ADAPTER

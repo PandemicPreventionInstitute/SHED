@@ -1,0 +1,22 @@
+starting ivar trim test on paired
+
+real    17m16.701s
+user    16m25.516s
+sys     0m38.406s
+
+starting ivar trim test on merged col
+
+real    2m8.597s
+user    1m55.703s
+sys     0m5.531s
+
+starting cutadapt trim test on paired
+
+real    8m19.714s
+user    7m3.516s
+sys     0m27.422s
+
+starting cutadapt trim test on merged col
+real    1m48.683s
+user    1m39.859s
+sys     0m7.594s

@@ -1,0 +1,31 @@
+starting ivar var test on paired
+
+real    16m41.523s
+user    22m45.094s
+sys     0m59.234s
+
+SAM Refiner var test on paired
+
+real    18m15.290s
+user    52m6.625s
+sys     0m34.766s
+
+starting ivar var test on all
+mapping
+real    7m55.950s
+user    14m32.063s
+sys     0m50.781s
+varcal
+real    19m1.914s
+user    24m12.406s
+sys     1m20.609s
+
+Sam Refiner var test on all
+repair, merge, cat, derep, mapping
+real    22m14.222s
+user    25m15.109s
+sys     1m28.141s
+sr
+real    3m55.460s
+user    11m30.359s
+sys     0m12.344s

@@ -1,0 +1,35 @@
+[main] CMD: bwa mem SARS2.fasta x.collapsed.fa
+[main] Real time: 30.444 sec; CPU: 30.766 sec
+
+real    5m29.268s
+user    5m26.516s
+sys     0m4.063s
+
+bwamem run time on collapsed: 121
+
+[M::main] CMD: minimap2 -a -o x.mm.col.sam SARS2.fasta x.collapsed.fa
+[M::main] Real time: 5.346 sec; CPU: 12.812 sec; Peak RSS: 0.247 GB
+
+real    0m59.105s
+user    2m27.969s
+sys     0m6.516s
+
+minimap2 run time on collapsed: 56
+
+[main] CMD: bwa mem SARS2.fasta x_1.rep.fastq x_2.rep.fastq
+[main] Real time: 99.821 sec; CPU: 103.672 sec
+
+real    17m44.166s
+user    17m54.375s
+sys     0m31.000s
+
+bwamem run time on paired: 411
+
+[M::main] CMD: minimap2 -a -o x.mm.pairs.sam SARS2.fasta x_1.rep.fastq x_2.rep.fastq
+[M::main] Real time: 40.027 sec; CPU: 57.469 sec; Peak RSS: 0.796 GB
+
+real    7m55.950s
+user    14m32.063s
+sys     0m50.781s
+
+minimap2 run time on paired: 351

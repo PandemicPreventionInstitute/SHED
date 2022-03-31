@@ -1,9 +1,11 @@
 #! /bin/bash
 
-# script for running variant calling with ivar and tracking time for each program/input
+# written by Devon Gregory
+# script for running variant calling with ivar (https://github.com/andersen-lab/ivar) and tracking time for each program/input
 # ivar reqires bam format to run
 # for more detailed time/computational load info, comment out all but one block and run $ time bash variantcallingtest.sh
-# SAM Refiner command is commented at end.  Should be run from command line in folder with just targed sams for timing info
+# SAM Refiner command is commented at end.  Should be run from command line in folder with just targeted sams for timing info
+# last edited on 3-31-22
 
 Sampid=''
 echo "starting ivar var test on paired"
@@ -54,5 +56,7 @@ done
 END="$(date +%s)"
 echo "ivar run time on merged reads: $[ ${END} - ${START} ]"
 
-## run in a folder with just the sams to be processed.  Provides 3 outputs, nt_call, nt_var and covars.  nt_var is most equivelent to ivar output. 
-# time python /mnt/d/Rockefeller/software/SAM_Refiner.py -r /mnt/g/MU_WW/SARS2/SARS2.gb --wgs 1 --collect 0 --seq 0 --indel 0 --covar 1 --max_covar 1 --nt_call 1 --ntvar 1 --read 0 --min_count 1 --min_samp_abund 0.03 --min_col_abund 0 --ntabund 0 --ntcover 1 --AAreport 1 --chim_rm 0 --deconv 0
+## run follwoing at the command line in a folder with just the sams to be processed.  Paths may need to be updated. 
+## Provides 3 outputs, nt_call, nt_var and covars.  nt_var is most equivelent to ivar output
+## https://github.com/degregory/SAM_Refiner
+# time python ../software/SAM_Refiner.py -r ../data/SARS2.gb --wgs 1 --collect 0 --seq 0 --indel 0 --covar 1 --max_covar 1 --nt_call 1 --ntvar 1 --read 0 --min_count 1 --min_samp_abund 0.03 --min_col_abund 0 --ntabund 0 --ntcover 1 --AAreport 1 --chim_rm 0 --deconv 0
