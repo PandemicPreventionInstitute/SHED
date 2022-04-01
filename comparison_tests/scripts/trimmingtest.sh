@@ -1,8 +1,11 @@
 #! /bin/bash
 
-# script for running primmer trimming processes, ivar and cutadapt, and tracking time for each program/input
-# ivar reqires bam format to run, cutadapt fastq/a
+# written by Devon Gregory
+# script for running primmer trimming processes, ivar (https://github.com/andersen-lab/ivar) and cutadapt (https://github.com/marcelm/cutadapt),
+# and tracking time for each program/input
+# ivar reqires bam format to run, cutadapt fastq/a.  Paths for primers may need to be updated.
 # for more detailed time/computational load info, comment out all but one block and run $ time bash trimmingtest.sh
+# last edited on 3-31-22
 
 
 Sampid=''
@@ -15,7 +18,8 @@ do
 		Sampid=$(echo $file | cut -d "." -f 1 )
 		echo $Sampid
 		samtools sort -o $Sampid.mm.pairs.sorted.bam $file && samtools index $Sampid.mm.pairs.sorted.bam # ivar required sorted bam
-		ivar trim -b nCoV-2019.primer.bed -p $Sampid.mm.pairs.trimmed -i $Sampid.mm.pairs.sorted.bam -e &>> mm.pairs.trimstats.txt # primers proved in bed format
+		# primers provided in bed format, writes program stdout etc to file
+		ivar trim -b ../data/nCoV-2019.primer.bed -p $Sampid.mm.pairs.trimmed -i $Sampid.mm.pairs.sorted.bam -e &>> mm.pairs.trimstats.txt 
 	fi
 done
 END="$(date +%s)"
@@ -31,7 +35,7 @@ do
 		Sampid=$(echo $file | cut -d "." -f 1 )
 		echo $Sampid
 		samtools sort -o $Sampid.mm.col.sorted.bam $file && samtools index $Sampid.mm.col.sorted.bam
-		ivar trim -b nCoV-2019.primer.bed -p $Sampid.mm.col.trimmed -i $Sampid.mm.col.sorted.bam -e &>> mm.col.trimstats.txt
+		ivar trim -b ../data/nCoV-2019.primer.bed -p $Sampid.mm.col.trimmed -i $Sampid.mm.col.sorted.bam -e &>> mm.col.trimstats.txt
 	fi
 done
 END="$(date +%s)"
@@ -46,8 +50,9 @@ do
 		then
 		Sampid=$(echo $file | cut -d "_" -f 1 )
 		echo $Sampid
-		cutadapt -g file:NEBArticv3_for_plus.fasta -o $Sampid.1.cut.fa $file &>> paired.CutInfo.txt # primers in fasta with sequences anchored at 5'
-		cutadapt -g file:NEBArticv3_rev_minus.fasta -o $Sampid.2.cut.fa ${Sampid}_2.rep.fastq &>> paired.CutInfo.txt 
+		# primers in fasta with sequences anchored at 5', writes program stdout etc to file
+		cutadapt -g file:../data/NEBArticv3_for_plus.fasta -o $Sampid.1.cut.fa $file &>> paired.CutInfo.txt 
+		cutadapt -g file:../data/NEBArticv3_rev_minus.fasta -o $Sampid.2.cut.fa ${Sampid}_2.rep.fastq &>> paired.CutInfo.txt 
 	fi
 done
 END="$(date +%s)"
@@ -62,9 +67,9 @@ do
 		then
 		Sampid=$(echo $file | cut -d "." -f 1 )
 		echo $Sampid
-		cutadapt -g file:NEBArticv3_for_plus.fasta -o $Sampid.col.cut1.fa $file &>> col.CutInfo.txt 
+		cutadapt -g file:../data/NEBArticv3_for_plus.fasta -o $Sampid.col.cut1.fa $file &>> col.CutInfo.txt 
 		# 3' anchored, can be run together, but I've had better results running them separatlye
-		cutadapt -a file:NEBArticv3_rev_plus.fasta -o $Sampid.col.cut.fa $Sampid.col.cut1.fa &>> col.CutInfo.txt 
+		cutadapt -a file:../data/NEBArticv3_rev_plus.fasta -o $Sampid.col.cut.fa $Sampid.col.cut1.fa &>> col.CutInfo.txt 
 	fi
 done
 END="$(date +%s)"

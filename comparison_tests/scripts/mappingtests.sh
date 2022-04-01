@@ -1,7 +1,10 @@
 #! /bin/bash
 
-# script for running mapping programs, bwa-mem or minimap2, on collapsed singleton or paired reads and reporting time elapse of the run
+# written by Devon Gregory
+# script for running mapping programs, bwa-mem (https://github.com/lh3/bwa) or minimap2 (https://github.com/lh3/minimap2),
+# on collapsed singleton or paired reads and reporting time elapse of the run
 # for more detailed time/computational load info, comment out all but one block and run $ time bash mappingtests.sh
+# last edited on 3-31-22
 
 Sampid=''
 echo "starting bwa mem test on collapsed"
@@ -13,9 +16,9 @@ do
 		Sampid=$(echo $file | cut -d "." -f 1 )
 		echo $Sampid
 		bwa mem SARS2.fasta $file -t 3 > $Sampid.bwamem.col.sam ## run bwa mem mapping
-		
+
 	fi
-	
+
 done
 END="$(date +%s)"
 echo "bwamem run time on collapsed: $[ ${END} - ${START} ]"
@@ -31,9 +34,9 @@ do
 		Sampid=$(echo $file | cut -d "." -f 1 )
 		echo $Sampid
 		minimap2 -a SARS2.fasta $file -o $Sampid.mm.col.sam
-		
+
 	fi
-	
+
 done
 END="$(date +%s)"
 echo "minimap2 run time on collapsed: $[ ${END} - ${START} ]"
@@ -49,9 +52,9 @@ do
 		Sampid=$(echo $file | cut -d "_" -f 1 )
 		echo $Sampid
 		bwa mem SARS2.fasta $file ${Sampid}_2.rep.fastq -t 3 > $Sampid.bwamem.pairs.sam
-		
+
 	fi
-	
+
 done
 END="$(date +%s)"
 echo "bwamem run time on paired: $[ ${END} - ${START} ]"
@@ -67,9 +70,9 @@ do
 		Sampid=$(echo $file | cut -d "_" -f 1 )
 		echo $Sampid
 		minimap2 -a SARS2.fasta $file ${Sampid}_2.rep.fastq -o $Sampid.mm.pairs.sam
-		
+
 	fi
-	
+
 done
 END="$(date +%s)"
 echo "minimap2 run time on paired: $[ ${END} - ${START} ]"
