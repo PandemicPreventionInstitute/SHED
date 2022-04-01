@@ -1,4 +1,4 @@
-
+to install run bash configure.sh'
 # iVar https://github.com/andersen-lab/ivar
 # cut_adapt https://github.com/marcelm/cutadapt
 # fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html

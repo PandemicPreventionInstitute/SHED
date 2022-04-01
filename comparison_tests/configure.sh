@@ -5,14 +5,14 @@
 # uses conda to install most of the programs
 # last edited on 3-31-22
 
-check to see if conda is installed, install if not
-#installed=$(command -v conda)
+# check to see if conda is installed, install if not
+installed=$(command -v conda)
 echo $installed
 if [ $installed ]
 	then
 	echo miniconda installed
 	else
-	# getting versino of python installed
+	# getting version of python installed
 	pythonversion=$(python -V)
 	echo $pythonversion
 	if [[ $pythonversion == Python*3.*.* && ! $pythonversion == Python*3.1.* ]]

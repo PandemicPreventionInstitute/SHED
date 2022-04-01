@@ -1,19 +1,25 @@
-Camparison testing of different programs that might be incorporated into the final backend pipeline.
+Camparison testing of different programs that might be incorporated into the final backend pipeline for pulling read files from NCBI's SRA and processing them to pull relevent sequence information that can be programatically queried.
+Seven SRA samples were chosen for testing: ERR5996055, ERR6008925, ERR7277155, ERR7395993, ERR7505063, SRR15128978, SRR15128983.  These represent both clinical and wastewater samples and different sequencing methods.  Programs were tested against each other for performing the same functions and compared for both speed of processing and similiarity of results.
+
 Currently tested are:
-iVar - variant calling and primer trimming
-SAM Refienr - variant calling
 BWA - mapping
 minimap2 - mapping
+
 cutadapt - primer trimming
+iVar - variant calling and primer trimming
+SAM Refienr - variant calling
 
 aditional required programs:
-SRA Toolkit - used to download fastq of SRA samples to run tests with
+SRA Toolkit - used to download fastq of SRA samples
 samtools - required for iVar
 BBTools - repair and merger of paired reads, potentially necessary for all and benificial for SAM Refiner respectively
 fastx toolkit - benificial for SAM Refiner
 
+All programs can be installed by running 'bash configure.sh'
+
 Preprocessing:
-paired reads were repaired (2 samples required repair), merged and collapsed. (./scripts/joinandcol.sh)
+Reads were downloaded with the SRA Toolkit commands 'prefetch <SRA_Accession>'and 'fastq-dump <SRA_Accession> --splitfiles'.
+Then paired reads were repaired (2 samples required repair), merged and collapsed. (./scripts/joinandcol.sh)
 
 Testing
 tests were run programatically.  see scripts folder
@@ -33,3 +39,4 @@ samlinecompare.py generates a more detailed comparison of reads mapped different
 
 results
 see report.rtf
+and results.gz.tar
