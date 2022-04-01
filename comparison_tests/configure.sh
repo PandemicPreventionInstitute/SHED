@@ -42,11 +42,14 @@ conda config --add channels conda-forge
 # minimap2 https://github.com/lh3/minimap2
 # bwa https://github.com/lh3/bwa
 # samtools https://github.com/samtools/samtools
+# bbtools https://github.com/kbaseapps/BBTools
+# sam refiner https://github.com/degregory/SAM_Refiner
 conda install -c bioconda samtools
 conda install -c bioconda ivar
 conda install -c bioconda cutadapt
 conda install -c bioconda fastx_toolkit
 conda install -c bioconda minimap2
 conda install -c bioconda bwa
-
+conda install -c agbiome bbtools 
+wget https://github.com/degregory/SAM_Refiner/blob/main/SAM_Refiner.py
 # set up paths for 

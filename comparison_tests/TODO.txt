@@ -1,2 +1,2 @@
-add scripts to install dependancies
+
 fix paths to work after set up

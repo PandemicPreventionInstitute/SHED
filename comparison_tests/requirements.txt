@@ -1,0 +1,9 @@
+
+# iVar https://github.com/andersen-lab/ivar
+# cut_adapt https://github.com/marcelm/cutadapt
+# fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html
+# minimap2 https://github.com/lh3/minimap2
+# bwa https://github.com/lh3/bwa
+# samtools https://github.com/samtools/samtools
+# bbtools https://github.com/kbaseapps/BBTools
+# sam refiner https://github.com/degregory/SAM_Refiner
