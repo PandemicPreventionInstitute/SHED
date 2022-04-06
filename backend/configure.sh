@@ -3,7 +3,7 @@
 # written by Devon Gregory
 # install dependencies and set up $PATHs
 # uses conda to install most of the programs
-# last edited on 4-5-22
+# last edited on 4-6-22
 
 # commented out req installs for yet to be implimented parts of pipeline
 
@@ -40,10 +40,12 @@
 # # minimap2 https://github.com/lh3/minimap2
 # # bbtools https://github.com/kbaseapps/BBTools
 # # sam refiner https://github.com/degregory/SAM_Refiner
+# # pytest https://docs.pytest.org/en/7.1.x/contents.html
 # conda install -c bioconda cutadapt
 # conda install -c bioconda fastx_toolkit
 # conda install -c bioconda minimap2
 # conda install -c agbiome bbtools 
+conda install -c conda-forge pytest 
 # if [ ! -f ./SAM_Refiner.py]
 	# then
 	# wget https://github.com/degregory/SAM_Refiner/blob/main/SAM_Refiner.py
@@ -60,14 +62,14 @@ if [ ! $sra_toolkit_installed ]
 		wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz
 		tar -xzf sratoolkit.3.0.0-centos_linux64.tar.gz
 		./sratoolkit.3.0.0-centos_linux64/bin/vdb-config --set repository/user/main/public/root=./
-		export PATH=$PATH:./sratoolkit.3.0.0-centos_linux64/bin/
 		rm sratoolkit.3.0.0-centos_linux64.tar.gz
+		export PATH=$PATH:./sratoolkit.3.0.0-centos_linux64/bin >> ~/.bash_profile
 	elif [ $linux_version ]
 		then
 		wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-ubuntu64.tar.gz
 		tar -xzf sratoolkit.3.0.0-ubuntu64.tar.gz
 		./sratoolkit.3.0.0-ubuntu64/bin/vdb-config --set repository/user/main/public/root=./
-		export PATH=$PATH:./sratoolkit.3.0.0-ubuntu64/bin/
 		rm sratoolkit.3.0.0-ubuntu64.tar.gz
+		export PATH=$PATH:./sratoolkit.3.0.0-ubuntu64/bin/ >> ~/.bash_profile
 	fi
 fi
