@@ -21,19 +21,19 @@ class TestGetAccessions:
 
     def test_empty_file_get(self):
     # empty file
-        assert fetch.get_accessions('./tests/TestEmptySraList.txt') == 2
+        assert fetch.get_accessions('TestEmptySraList.txt') == 2
 
     def test_bad_sra_acc_get(self):
     # no valid accessions
-        assert fetch.get_accessions('./tests/TestBadSraList.txt') == 2
+        assert fetch.get_accessions('TestBadSraList.txt') == 2
 
     def test_fake_sra_acc_get(self):
     # no real accessions
-        assert fetch.get_accessions('./tests/TestBadSraList2.txt') == ['SRR00000001']
+        assert fetch.get_accessions('TestBadSraList2.txt') == ['SRR00000001']
 
     def test_good_sra_acc_get(self):
     # good file, mix of good and bad SRAs
-        assert fetch.get_accessions('./tests/TestMixedSraList.txt') == ['ERR5019844', 'SRR15294802', 'SRR17888010', 'SRR15240439', 'SRR17887900']
+        assert fetch.get_accessions('TestMixedSraList.txt') == ['ERR5019844', 'SRR15294802', 'SRR17888010', 'SRR15240439', 'SRR17887900']
 
 class TestFetching:
     '''Tests of fetching function in sra_fetch'''
