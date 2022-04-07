@@ -15,7 +15,7 @@ rm ./fastqs/SRR15240439*.fastq
 rm ./fastqs/SRR17887900*.fastq
 
 # may need to update path
-python3 ../modules/sra_fetch.py -i TestSraList.txt
+python3 ../modules/sra_fetch.py -i ../TestSraList.txt
 test=1
 # make sure all the files were downloaded
 if [[ ! -f ./fastqs/ERR5019844_1.fastq ]]
@@ -64,9 +64,9 @@ if [[ ! -f ./fastqs/SRR17887900_2.fastq ]]
 	test=0
 fi
 
-if [test == 1]
+if test $test -eq 1
 	then
-	echo test passed, all fastqs downloaded
+	echo "test passed, all fastqs downloaded"
 fi
 
 rm ./fastqs/*
