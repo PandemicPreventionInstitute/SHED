@@ -3,7 +3,7 @@
 '''
 Writen by Devon Gregory
 This script tests the workings of the sra_fetch module using pytest
-Last edited on 4-6-22
+Last edited on 4-7-22
 '''
 
 import os
