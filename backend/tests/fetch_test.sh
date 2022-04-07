@@ -15,7 +15,7 @@ rm ./fastqs/SRR15240439*.fastq
 rm ./fastqs/SRR17887900*.fastq
 
 # may need to update path
-python ../modules/sra_fetch.py -i TestSraList.txt
+python3 ../modules/sra_fetch.py -i TestSraList.txt
 test=1
 # make sure all the files were downloaded
 if [[ ! -f ./fastqs/ERR5019844_1.fastq ]]
