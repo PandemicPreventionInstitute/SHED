@@ -13,7 +13,7 @@ sys.path.insert(0, os.getcwd().split('SHED')[0]+'SHED/backend' )
 import modules.sra_fetch as fetch
 
 class TestGetAccessions:
-# testing get_accessions function
+    '''Tests of get_accessions function in sra_fetch'''
 
     def test_non_existing_file_get(self):
     # bad filename
@@ -32,11 +32,11 @@ class TestGetAccessions:
         assert fetch.get_accessions('./tests/TestBadSraList2.txt') == ['SRR00000001']
 
     def test_good_sra_acc_get(self):
-    # good file
+    # good file, mix of good and bad SRAs
         assert fetch.get_accessions('./tests/TestMixedSraList.txt') == ['ERR5019844', 'SRR15294802', 'SRR17888010', 'SRR15240439', 'SRR17887900']
 
 class TestFetching:
-# testing fetching function
+    '''Tests of fetching function in sra_fetch'''
 
     def test_empty_list_fetch(self):
     # empty list

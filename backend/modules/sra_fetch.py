@@ -4,8 +4,8 @@
 Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
-The fastq files will allow further analysis by bioinformatic pipelines.
-Last edited on 4-6-22
+The fastq files will allow further analysis by bioinformatics pipelines.
+Last edited on 4-7-22
 '''
 import os
 import sys
@@ -59,14 +59,23 @@ def fetching(accession_list):
                 return(2)
             elif prefetch_code == 2 and fastq_dump_code == 0:
                 print('prefetch interupted, but fastq dump was successful.  Continuing...')
-            elif prefetch_code == 768 and fastq_dump_code == 768:
-                print('SRA accession was not found by SRA Toolkit.  Please verify.  Continuing with remaining accessions')
-            elif prefetch_code == 768 and fastq_dump_code == 16384:
-                print('Can not connect to NCBI SRA.  Please verify internet connection and restart.  If connection continues to fail, NCBI may be down, try again later.')
-                return(4)
+            elif prefetch_code == 768:
+                if fastq_dump_code == 768:
+                    print('SRA accession was not found by SRA Toolkit.  Please verify.  Continuing with remaining accessions')
+                elif fastq_dump_code == 16384:
+                    print('Can not connect to NCBI SRA.  Please verify internet connection and restart.  If connection continues to fail, NCBI may be down, try again later.')
+                    return(4)
+                elif fastq_dump_code == 0:
+                    print('prefetch failed, but fastq dump was successful.  Continuing...')
+                else:
+                    print('unknown error for fastq_dump: '+fastq_dump_code)
+                    return(fastq_dump_code)
             elif prefetch_code == 32512 or fastq_dump_code == 32512:
-                print('NCBI SRA Toolkit not properly installed/pathed.  Please run configure.sh')
+                print('NCBI SRA Toolkit not properly installed.  Please run configure.sh')
                 return(5)
+            else:
+                print('unknown errors: '+prefetch_code+' '+fastq_dump_code)
+                return(fastq_dump_code)
 
         return(0)
     else:
@@ -74,6 +83,7 @@ def fetching(accession_list):
         return(1)
 
 if __name__ == "__main__":
+    ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and downloads fastqs for those samples'''
     parser = argparse.ArgumentParser(
             description='File containing SRA accessions to be fetched.  Accessions to be at the start of a newline and separated from the remaining line with either a comma or tab '
     )
@@ -105,3 +115,5 @@ if __name__ == "__main__":
             fetch_code = fetching(accession_list)
             if fetch_code != 0:
                 print("Fetching failed.")
+        else:
+            print('Retrieval of SRA accessions from file failed')

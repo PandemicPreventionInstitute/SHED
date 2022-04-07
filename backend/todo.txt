@@ -1,5 +1,5 @@
 pre-proc module
-minimape2 module
+minimap2 module
 sam refiner module
 post-proc module
 
