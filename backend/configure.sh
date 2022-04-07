@@ -34,7 +34,7 @@
 # conda config --add channels bioconda
 # conda config --add channels conda-forge
 
-# # install programs 
+# # install programs
 # # cut_adapt https://github.com/marcelm/cutadapt
 # # fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html
 # # minimap2 https://github.com/lh3/minimap2
@@ -44,32 +44,11 @@
 # conda install -c bioconda cutadapt
 # conda install -c bioconda fastx_toolkit
 # conda install -c bioconda minimap2
-# conda install -c agbiome bbtools 
-conda install -c conda-forge pytest 
+# conda install -c agbiome bbtools
+conda install -c conda-forge pytest
+conda install -c bioconda sra-tools
 # if [ ! -f ./SAM_Refiner.py]
 	# then
 	# wget https://github.com/degregory/SAM_Refiner/blob/main/SAM_Refiner.py
 # fi
 
-# SRA Tool Kit https://github.com/ncbi/sra-tools
-sra_toolkit_installed=$(command -v prefetch)
-if [ ! $sra_toolkit_installed ]
-	then
-	linux_version=$(head -n 1 /etc/os-release)
-	
-	if [[ $linux_version == *CentOS* ]]
-		then
-		wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz
-		tar -xzf sratoolkit.3.0.0-centos_linux64.tar.gz
-		./sratoolkit.3.0.0-centos_linux64/bin/vdb-config --set repository/user/main/public/root=./
-		rm sratoolkit.3.0.0-centos_linux64.tar.gz
-		export PATH=$PATH:./sratoolkit.3.0.0-centos_linux64/bin >> ~/.bash_profile
-	elif [ $linux_version ]
-		then
-		wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-ubuntu64.tar.gz
-		tar -xzf sratoolkit.3.0.0-ubuntu64.tar.gz
-		./sratoolkit.3.0.0-ubuntu64/bin/vdb-config --set repository/user/main/public/root=./
-		rm sratoolkit.3.0.0-ubuntu64.tar.gz
-		export PATH=$PATH:./sratoolkit.3.0.0-ubuntu64/bin/ >> ~/.bash_profile
-	fi
-fi
