@@ -3,7 +3,7 @@
 # written by Devon Gregory
 # install dependencies and set up $PATHs
 # uses conda to install most of the programs
-# last edited on 4-6-22
+# last edited on 4-7-22
 
 # commented out req installs for yet to be implimented parts of pipeline
 
