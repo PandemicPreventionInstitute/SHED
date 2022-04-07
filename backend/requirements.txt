@@ -1,1 +1,10 @@
-SRA Toolkit
+to install run 'bash configure.sh'
+# python 
+# miniconda 
+# SRA Toolkit https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software
+# cut_adapt https://github.com/marcelm/cutadapt
+# fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html
+# minimap2 https://github.com/lh3/minimap2
+# bbtools https://github.com/kbaseapps/BBTools
+# sam refiner https://github.com/degregory/SAM_Refiner
+# pytest https://docs.pytest.org/en/7.1.x/
