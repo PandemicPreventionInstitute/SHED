@@ -5,39 +5,11 @@ Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-7-22
+Last edited on 4-9-22
 '''
 import os
 import sys
-import argparse
 import time
-
-def get_accessions(filename):
-    '''get and return SRA accessions from provided file'''
-    try:
-        run_list_fh = open(filename, 'r')
-    except Exception as e:
-        print(e)
-        return(1)
-    else:
-        accession_list = []
-        for line in run_list_fh:
-            # assumes SRA accessions are listed first on a new line with the possibility of file being tab or comma separated
-            # file will have been generated either manually or by the yet to be implimented query module
-            sra_acc = line.split(',')[0].split('\t')[0].strip('\n\r').upper()
-            try:
-                assert (sra_acc.startswith('SRR') or sra_acc.startswith('ERR')), "Incorrect prefix"
-                assert sra_acc.split('RR')[1].isnumeric(), "Non-numeric listing"
-            except AssertionError as e:
-                print(sra_acc+' does not appear to be a valid SRA accession: '+str(e))
-            else:
-                accession_list.append(sra_acc)
-
-        run_list_fh.close()
-        if not accession_list:
-            print('No SRA Accessions were found.')
-            return(2)
-        return(accession_list)
 
 def fetching(accession_list):
     '''uses NCBI's SRA toolkit to download SRA sample fastq files for processing'''
@@ -84,18 +56,8 @@ def fetching(accession_list):
 
 if __name__ == "__main__":
     ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and downloads fastqs for those samples'''
-    parser = argparse.ArgumentParser(
-            description='File containing SRA accessions to be fetched.  Accessions to be at the start of a newline and separated from the remaining line with either a comma or tab '
-    )
-    parser.add_argument(
-        '-i', '--file',
-        type=str,
-        dest='file',
-        default='',
-        help='SRA accession list or metadata table'
-    )
-
-    args = parser.parse_args()
+    import sra_file_parse
+    args = sra_file_parse.arg_parse()
 
     # check to see if files with SRA accession or meta data exist before pulling accession list
     filename = ''
@@ -110,7 +72,7 @@ if __name__ == "__main__":
 
     # downloads fastq files
     if filename:
-        accession_list = get_accessions(filename)
+        accession_list = sra_file_parse.get_accessions(args.file)
         if isinstance(accession_list, list):
             fetch_code = fetching(accession_list)
             if fetch_code != 0:
