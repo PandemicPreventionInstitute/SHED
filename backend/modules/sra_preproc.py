@@ -5,13 +5,15 @@ Writen by Devon Gregory
 This script will check paired SRA fastq files for errors, correct them and merge the reads.
 The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
 samples listed in the supplied file.
-Last edited on 4-11-22
+Last edited on 4-12-22
 todo: capture std out from program calls
     add testing for empty files
 '''
 
 import os
 import sys
+
+# def get_fastq_stat(base_path, sra_acc, file_list):
 
 def repair_files(base_path, sra_acc, file_list):
     '''takes a list(pair) of paired end read files, repairs them, and then returns the names of the repaired files'''
@@ -30,7 +32,8 @@ def merge_files(base_path, sra_acc, file_list):
     '''takes a list(pair) of paired end read files, merges them, and then returns the names of the files for the merged and unmerged reads'''
     open(f"{base_path}processing/{sra_acc}.merge.started", 'w').close()
     if file_list:
-        merge_code = os.system(f"bash bbmerge.sh qtrim2=t in1={file_list[0]} in2={file_list[1]}  \
+        # also does some quality trimming
+        merge_code = os.system(f"bash bbmerge.sh qtrim=t in1={file_list[0]} in2={file_list[1]}  \
             out={base_path}processing/{sra_acc}.merged.fq outu1={base_path}processing/{sra_acc}.un1.fq outu2={base_path}processing/{sra_acc}.un2.fq")
         # codes: 0 - success, 256 - error
         if merge_code == 0:
@@ -113,7 +116,7 @@ def preprocess_sra(base_path, sra_acc, current_progress, file_list):
         if isinstance(collapse_code, int):
             print(f"collapsing failed for {sra_acc} ({collapse_code})")
             return(6)
-        return('ok')
+        return(collapse_code)
     else:
         print('Unknown error occured for '+sra_acc )
         return(7)

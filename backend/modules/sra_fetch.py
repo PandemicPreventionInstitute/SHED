@@ -5,7 +5,7 @@ Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-11-22
+Last edited on 4-12-22
 todo: capture std out from fetch
 '''
 import os
@@ -50,14 +50,12 @@ def fetching(base_path, sra_acc):
     else:
         print('unknown errors: '+prefetch_code+' '+fastq_dump_code)
         return(fastq_dump_code)
-
     return(0)
 
 if __name__ == "__main__":
     ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and downloads fastqs for those samples'''
     import sra_file_parse
     args = sra_file_parse.arg_parse()
-
     # check to see if files with SRA accession or meta data exist before pulling accession list
     filename = ''
     if args.file:

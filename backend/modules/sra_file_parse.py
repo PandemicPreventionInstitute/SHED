@@ -3,7 +3,7 @@
 '''
 Writen by Devon Gregory
 This script will read through a file to obtain SRA accessions and pass them to the caller
-Last edited on 4-11-22
+Last edited on 4-12-22
 '''
 
 import os
@@ -22,9 +22,7 @@ def arg_parse():
         default='',
         help='SRA accession list or metadata table'
     )
-
     args = parser.parse_args()
-
     return(args)
 
 def get_accessions(filename):
@@ -41,6 +39,7 @@ def get_accessions(filename):
             # file will have been generated either manually or by the yet to be implimented query module
             sra_acc = line.split(',')[0].split(' ')[0].split('\t')[0].strip('\n\r').upper()
             try:
+                #check if a validish accession was found
                 assert (sra_acc.startswith('SRR') or sra_acc.startswith('ERR')), "Incorrect prefix"
                 assert sra_acc.split('RR')[1].isnumeric(), "Non-numeric listing"
                 assert len(sra_acc.split('RR')) == 2, "Bad format"
@@ -48,7 +47,6 @@ def get_accessions(filename):
                 print(sra_acc+' does not appear to be a valid SRA accession: '+str(e))
             else:
                 accession_list.append(sra_acc)
-
         run_list_fh.close()
         if not accession_list:
             print('No SRA Accessions were found.')
@@ -58,6 +56,7 @@ def get_accessions(filename):
 def find_fastqs(base_path, sra_acc):
     '''takes a sra accession and discovers the fastq files that have been fetched for it'''
     file_list = []
+    # not currently gzipping, but may later
     if os.path.isfile(f'{base_path}fastqs/{sra_acc}.fastq'):
         file_list.append(f'{base_path}fastqs/{sra_acc}.fastq')
     elif os.path.isfile(f'{base_path}fastqs/{sra_acc}.fastq.gz'):
@@ -103,13 +102,10 @@ def find_progess(base_path, sra_acc):
         file_list = find_fastqs(base_path, sra_acc)
         if file_list and not file_list == 1:
             return('preproc' , file_list)
-
     return('fetch', [])
 
 if __name__ == "__main__":
     ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and prints them, discovers raw fastqs and processing progress'''
-
-
     args = arg_parse()
     base_path = os.getcwd().split('SHED')[0]+'SHED/backend/'
     # check to see if files with SRA accession or meta data exist before pulling accession list
@@ -122,7 +118,6 @@ if __name__ == "__main__":
         filename = 'SraRunTable.txt'
     else:
         print('No SRA accession list or metadata files found.')
-
     if filename:
         for sra_acc in get_accessions(filename):
             print(sra_acc)
