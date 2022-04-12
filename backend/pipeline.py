@@ -3,11 +3,13 @@
 '''
 Writen by Devon Gregory
 This is the wrapper script for the pipeline modules.
-Last edited on 4-10-22
+Last edited on 4-11-22
+todo:  add remaining modules
+        add arguments for ignoring progress, passing file for SRA data, setting paths and ...
 '''
 import os
 import sys
-import argparse # may ultimately end up using
+import argparse # will ultimately end up using
 # import modules.sra_query as sra_query# we need to decide on the method for handling queries
 import modules.sra_file_parse as sra_file_parse
 import modules.sra_fetch as sra_fetch

@@ -2,8 +2,10 @@
 
 # written by Devon Gregory
 # test for sra_fetch.py
-# will download small fastq files from 5 SRA samples based on TestSraRunTable.csv
-# last editted on 4-5-22
+# will download small fastq files from 5 SRA samples based on TestSraList.txt
+# NOT CURRENTLY WORKING
+# will be updated to functin when paths are defined by argument
+# last editted on 4-11-22
 
 mkdir fastqs
 echo 'starting sra_fetch.py test'
@@ -69,5 +71,9 @@ if test $test -eq 1
 	echo "test passed, all fastqs downloaded"
 fi
 
-rm ./fastqs/*
-rmdir fastqs
+# clean up
+rm ./fastqs/ERR5019844*.fastq
+rm ./fastqs/SRR15294802*.fastq
+rm ./fastqs/SRR17888010*.fastq
+rm ./fastqs/SRR15240439*.fastq
+rm ./fastqs/SRR17887900*.fastq

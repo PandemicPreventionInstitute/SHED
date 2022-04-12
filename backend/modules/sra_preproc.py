@@ -5,7 +5,9 @@ Writen by Devon Gregory
 This script will check paired SRA fastq files for errors, correct them and merge the reads.
 The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
 samples listed in the supplied file.
-Last edited on 4-10-22
+Last edited on 4-11-22
+todo: capture std out from program calls
+    add testing for empty files
 '''
 
 import os
@@ -14,30 +16,41 @@ import sys
 def repair_files(base_path, sra_acc, file_list):
     '''takes a list(pair) of paired end read files, repairs them, and then returns the names of the repaired files'''
     open(f"{base_path}processing/{sra_acc}.repair.started", 'w').close()
-    repair_code = os.system(f"bash repair.sh in={file_list[0]} in2={file_list[1]} out={base_path}processing/{sra_acc}_1.rep.fq out2={base_path}processing/{sra_acc}_2.rep.fq outs={base_path}processing/{sra_acc}_sing.rep.fq")
-    if repair_code == 0:
-        os.remove(f"{base_path}processing/{sra_acc}.repair.started")
-        return([f"{base_path}processing/{sra_acc}_1.rep.fq", f"{base_path}processing/{sra_acc}_2.rep.fq", f"{base_path}processing/{sra_acc}_sing.rep.fq"])
-    return(repair_code)
+    if file_list:
+        repair_code = os.system(f"bash repair.sh overwrite=true in={file_list[0]} in2={file_list[1]} \
+            out={base_path}processing/{sra_acc}_1.rep.fq out2={base_path}processing/{sra_acc}_2.rep.fq outs={base_path}processing/{sra_acc}_sing.rep.fq")
+        if repair_code == 0:
+            os.remove(f"{base_path}processing/{sra_acc}.repair.started")
+            return([f"{base_path}processing/{sra_acc}_1.rep.fq", f"{base_path}processing/{sra_acc}_2.rep.fq", f"{base_path}processing/{sra_acc}_sing.rep.fq"])
+        return(repair_code)
+    print(f"empty file list for repair of {sra_acc}")
+    return(-1)
 
 def merge_files(base_path, sra_acc, file_list):
     '''takes a list(pair) of paired end read files, merges them, and then returns the names of the files for the merged and unmerged reads'''
     open(f"{base_path}processing/{sra_acc}.merge.started", 'w').close()
-    merge_code = os.system(f"bash bbmerge.sh in1={file_list[0]} in2={file_list[1]}  out={base_path}processing/{sra_acc}.merged.fq outu1={base_path}processing/{sra_acc}.un1.fq outu2={base_path}processing/{sra_acc}.un2.fq")
-    # codes: 0 - success, 256 - error
-    if merge_code == 0:
-        os.remove(f"{base_path}processing/{sra_acc}.merge.started")
-        return([f"{base_path}processing/{sra_acc}.merged.fq", f"{base_path}processing/{sra_acc}.un1.fq", f"{base_path}processing/{sra_acc}.un2.fq"])
-    return(merge_code)
+    if file_list:
+        merge_code = os.system(f"bash bbmerge.sh qtrim2=t in1={file_list[0]} in2={file_list[1]}  \
+            out={base_path}processing/{sra_acc}.merged.fq outu1={base_path}processing/{sra_acc}.un1.fq outu2={base_path}processing/{sra_acc}.un2.fq")
+        # codes: 0 - success, 256 - error
+        if merge_code == 0:
+            os.remove(f"{base_path}processing/{sra_acc}.merge.started")
+            return([f"{base_path}processing/{sra_acc}.merged.fq", f"{base_path}processing/{sra_acc}.un1.fq", f"{base_path}processing/{sra_acc}.un2.fq"])
+        return(merge_code)
+    print(f"empty file list for merging of {sra_acc}")
+    return(-1)
 
 def concat_files(base_path, sra_acc, file_list):
     '''takes a list of fastq files, concatenates them, and then returns the name of the new file'''
     open(f"{base_path}processing/{sra_acc}.cat.started", 'w').close()
-    cat_code = os.system(f"cat {' '.join(file_list)} > {base_path}processing/{sra_acc}.all.fq")
-    if cat_code == 0:
-        os.remove(f"{base_path}processing/{sra_acc}.cat.started")
-        return(f"{base_path}processing/{sra_acc}.all.fq")
-    return(cat_code)
+    if file_list:
+        cat_code = os.system(f"cat {' '.join(file_list)} > {base_path}processing/{sra_acc}.all.fq")
+        if cat_code == 0:
+            os.remove(f"{base_path}processing/{sra_acc}.cat.started")
+            return(f"{base_path}processing/{sra_acc}.all.fq")
+        return(cat_code)
+    print(f"empty file list for concatenating {sra_acc}")
+    return(-1)
 
 def dereplicate_reads(base_path, sra_acc, file_name):
     '''takes the name of a fastq file, collapses the reads in it, and then returns the name of the new file'''
@@ -51,7 +64,7 @@ def dereplicate_reads(base_path, sra_acc, file_name):
 
 def preprocess_sra(base_path, sra_acc, current_progress, file_list):
     '''takes a SRA accession and processes the files from it starting from provided progress point and with provided file'''
-    if not (current_progress or file_list):
+    if not (current_progress or file_list) or not isinstance(file_list, list):
         print(f"Start point or files not provided for preprocessing {sra_acc}")
         return(1)
     if current_progress == 'preproc':
@@ -73,6 +86,8 @@ def preprocess_sra(base_path, sra_acc, current_progress, file_list):
             current_progress = 'repair'
         else:
             file_list = merge_code
+            if os.path.isfile(f"{base_path}processing/{sra_acc}_sing.rep.fq"):
+                file_list.append(f"{base_path}processing/{sra_acc}_sing.rep.fq")
             current_progress = 'cat'
     if current_progress == 'repair':
             repair_code = repair_files(base_path, sra_acc, file_list)
@@ -108,7 +123,7 @@ def preprocess_sra(base_path, sra_acc, current_progress, file_list):
 
 
 if __name__ == "__main__":
-    ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and processes fastq files of those accessions'''
+    ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and pre-processes fastq files of those accessions'''
     import sra_file_parse
 
     args = sra_file_parse.arg_parse()
@@ -121,5 +136,10 @@ if __name__ == "__main__":
             if not os.path.isdir(f"{base_path}processing/"):
                 os.mkdir(f"{base_path}processing/")
             for sra_acc in accession_list:
-                preprocess_sra(sra_acc)
+                print(sra_acc)
+                current_progress, file_list = sra_file_parse.find_progess(base_path, sra_acc)
+                print(current_progress)
+                if current_progress != 'map' and current_progress != 'vc' and current_progress != 'fetch':
+                    preproc_code = preprocess_sra(base_path, sra_acc, current_progress, file_list)
+                    print(preproc_code)
 

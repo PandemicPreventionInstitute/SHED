@@ -3,7 +3,7 @@
 '''
 Writen by Devon Gregory
 This script will read through a file to obtain SRA accessions and pass them to the caller
-Last edited on 4-10-22
+Last edited on 4-11-22
 '''
 
 import os
@@ -13,7 +13,7 @@ import argparse
 def arg_parse():
     ''' parses file argument'''
     parser = argparse.ArgumentParser(
-            description='File containing SRA accessions to be fetched.  Accessions to be at the start of a newline and separated from the remaining line with either a comma or tab '
+            description='File containing SRA accessions to be fetched.  Accessions to be at the start of a newline and separated from the remaining line with either a comma or tab'
     )
     parser.add_argument(
         '-i', '--file',
@@ -43,6 +43,7 @@ def get_accessions(filename):
             try:
                 assert (sra_acc.startswith('SRR') or sra_acc.startswith('ERR')), "Incorrect prefix"
                 assert sra_acc.split('RR')[1].isnumeric(), "Non-numeric listing"
+                assert len(sra_acc.split('RR')) == 2, "Bad format"
             except AssertionError as e:
                 print(sra_acc+' does not appear to be a valid SRA accession: '+str(e))
             else:
@@ -69,6 +70,10 @@ def find_fastqs(base_path, sra_acc):
         file_list.append(f'{base_path}fastqs/{sra_acc}_2.fastq')
     elif os.path.isfile(f'{base_path}fastqs/{sra_acc}_2.fastq.gz'):
         file_list.append(f'{base_path}fastqs/{sra_acc}_2.fastq.gz')
+    if len(file_list) > 1:
+        if not f"{sra_acc}_2.fastq" in file_list[1] or len(file_list) > 2:
+            print(f"Mismatch of single and paired fastq files for {sra_acc}, please remove incorrect files.")
+            return(1)
     return(file_list)
 
 def find_progess(base_path, sra_acc):
@@ -79,29 +84,34 @@ def find_progess(base_path, sra_acc):
         return('derep', [f"{base_path}processing/{sra_acc}.all.fq"])
     elif os.path.isfile(f"{base_path}processing/{sra_acc}.merged.fq") and os.path.isfile(f"{base_path}processing/{sra_acc}.un1.fq") \
         and os.path.isfile(f"{base_path}processing/{sra_acc}.un2.fq") and not os.path.isfile(f"{base_path}processing/{sra_acc}.merge.started"):
+        if os.path.isfile(f"{base_path}processing/{sra_acc}_sing.rep.fq"):
+            return('cat', [f"{base_path}processing/{sra_acc}.merged.fq", f"{base_path}processing/{sra_acc}.un1.fq", \
+                f"{base_path}processing/{sra_acc}.un2.fq", f"{base_path}processing/{sra_acc}_sing.rep.fq"])
         return('cat', [f"{base_path}processing/{sra_acc}.merged.fq", \
             f"{base_path}processing/{sra_acc}.un1.fq", f"{base_path}processing/{sra_acc}.un2.fq"])
+    elif os.path.isfile(f"{base_path}processing/{sra_acc}.merge.started"):
+        return('merge', find_fastqs(base_path, sra_acc))
     elif os.path.isfile(f"{base_path}processing/{sra_acc}_1.rep.fq") and os.path.isfile(f"{base_path}processing/{sra_acc}_2.rep.fq") \
         and os.path.isfile(f"{base_path}processing/{sra_acc}_sing.rep.fq") and not os.path.isfile(f"{base_path}processing/{sra_acc}.repair.started"):
         return('merge', [f"{base_path}processing/{sra_acc}_1.rep.fq", \
             f"{base_path}processing/{sra_acc}_2.rep.fq", f"{base_path}processing/{sra_acc}_sing.rep.fq"])
-    elif os.path.isfile(f"{base_path}fastqs/{sra_acc}.repair.started"):
+    elif os.path.isfile(f"{base_path}processing/{sra_acc}.repair.started"):
         return('repair', find_fastqs(base_path, sra_acc))
     elif os.path.isfile(f"{base_path}fastqs/{sra_acc}.fetch.started"):
         return('fetch', [])
     else:
         file_list = find_fastqs(base_path, sra_acc)
-        if file_list:
+        if file_list and not file_list == 1:
             return('preproc' , file_list)
 
     return('fetch', [])
 
 if __name__ == "__main__":
-    ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and prints them'''
+    ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and prints them, discovers raw fastqs and processing progress'''
 
 
     args = arg_parse()
-
+    base_path = os.getcwd().split('SHED')[0]+'SHED/backend/'
     # check to see if files with SRA accession or meta data exist before pulling accession list
     filename = ''
     if args.file:
@@ -116,3 +126,6 @@ if __name__ == "__main__":
     if filename:
         for sra_acc in get_accessions(filename):
             print(sra_acc)
+            current_progress, file_list = find_progess(base_path, sra_acc)
+            print(current_progress)
+            print(find_fastqs(base_path, sra_acc))
