@@ -35,20 +35,20 @@ if not os.path.isdir(f"{base_path}processing/"):
 #  process each SRA
 for sra_acc in accession_list:
     print(f"starting processing for {sra_acc}")
-    current_progress, file_list = sra_file_parse.find_progess(base_path, sra_acc)
-    if current_progress == 'fetch':
-        # download fastqs
-        sra_fetch_code = sra_fetch.fetching(base_path, sra_acc)
-        if sra_fetch_code != 0:
-            print(f"critical failure at fetch ({sra_fetch_code})")
-            print("discontinuing pipeline execution")
-            exit
-        file_list = sra_file_parse.find_fastqs(base_path, sra_acc)
-        current_progress = 'preproc'
-    if current_progress != 'map' and current_progress != 'vc':
-        # process fastqs reads down to collapsed fasta
-        preproc_code = sra_preproc.preprocess_sra(base_path, sra_acc, current_progress, file_list)
-        print(preproc_code)
+    # download fastqs
+    sra_fetch_code = sra_fetch.get_fastqs(base_path, sra_acc)
+    if not sra_fetch_code in ((0,0), (2, 0), (768, 0), (768, 768)):
+        print(f"critical failure at fetch ({sra_fetch_code})")
+        print("discontinuing pipeline execution")
+        exit(1)
+    file_tuple = sra_file_parse.find_fastqs(base_path, sra_acc)
+    if not isinstance(file_tuple, tuple) or not file_tuple:
+        print(f"fastq mismatch (file_tuple)")
+        print("skipping to next SRA Accession")
+        continue
+    # process fastqs reads down to collapsed fasta
+    preproc_code = sra_preproc.preprocess_sra(base_path, sra_acc, len(file_tuple))
+    print(preproc_code)
     # clean up:  what files are to be kept?  compressed?
     # map
     # variant call
