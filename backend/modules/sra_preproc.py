@@ -7,7 +7,7 @@ The merged reads or singlet reads with then be collapsed.  The SRA fastq files p
 samples listed in the supplied file.
 Last edited on 4-14-22
 todo: capture std out from program calls
-    add testing for empty files
+    add timeouts
 '''
 
 import os
@@ -17,13 +17,13 @@ from sra_file_parse import find_fastqs
 
 # def get_fastq_stat(base_path, sra_acc, file_list):
 
-def bbtools_process(base_path, sra_acc):
+def bbtools_process(base_path: str, sra_acc: str) -> int:
     '''
     Called to merge, and if needed repair the paired end files provicded.
 
     Parameters:
-    base_path - path of directory where repaired files will be written in the ./processing/ subfolder
-    sra_acc - accession for the SRA sample
+    base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    sra_acc - accession for the SRA sample - string
 
     Functionality:
     Uses BBTools bbmerge.sh to merge, and if needed repair.sh to repair, paired end fastqs.
@@ -37,7 +37,7 @@ def bbtools_process(base_path, sra_acc):
     Relies on BBTools to handle its own functionality and erros for the most part.
     0 indicates success, 256 for any errors
 
-    Returns a status code, 0 for success
+    Returns a status code, 0 for success, -1 for unable to find raw fastqs, 256 for bbtools errors
     '''
     if (os.path.isfile(f"{base_path}processing/{sra_acc}.merged.fq") and os.path.isfile(f"{base_path}processing/{sra_acc}.un1.fq") \
         and os.path.isfile(f"{base_path}processing/{sra_acc}.un2.fq")) and not os.path.isfile(f"{base_path}processing/{sra_acc}.merge.started"):
@@ -87,23 +87,26 @@ def bbtools_process(base_path, sra_acc):
             bbtools_return_code = -1
     return(bbtools_return_code)
 
-def concat_files(base_path, sra_acc):
+def concat_files(base_path: str, sra_acc: str) -> int:
     '''
     Called to concatenate merged and unmergable reads
 
     Parameters:
-    base_path - path of directory where repaired files will be written in the ./processing/ subfolder
-    sra_acc - accession for the SRA sample
+    base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    sra_acc - accession for the SRA sample - string
 
     Functionality:
     find read files from previous processing and uses system cat command to concatenate them
 
-    Returns a status code from command call, 0 for success, -1 if files form previous processing can't all be found
+    Returns a status code from command call, 0 for success, -1 if files form previous processing can't all be found, 
+    256 for cat errors (should never be returned)
     '''
+    # check for pre-existing finished cat
     if os.path.isfile(f"{base_path}processing/{sra_acc}.all.fq") and not os.path.isfile(f"{base_path}processing/{sra_acc}.cat.started"):
         cat_code = 0
     else:
         file_list = []
+        # find the files from previous processing
         if os.path.isfile(f"{base_path}processing/{sra_acc}.merged.fq") and os.path.isfile(f"{base_path}processing/{sra_acc}.un1.fq") \
             and os.path.isfile(f"{base_path}processing/{sra_acc}.un2.fq"):
             file_list = [f"{base_path}processing/{sra_acc}.merged.fq", f"{base_path}processing/{sra_acc}.un1.fq", \
@@ -121,17 +124,29 @@ def concat_files(base_path, sra_acc):
             cat_code = -1
     return(cat_code)
 
-def dereplicate_reads(base_path, sra_acc, read_type):
+def dereplicate_reads(base_path: str, sra_acc: str, read_type: int) -> int:
+    '''
+    Called to dereplicate reads
 
-    # codes: None - file not found 0 - success 256 - bad file format, can't create new file
+    Parameters:
+    base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    sra_acc - accession for the SRA sample - string
+    read_type - 1 or 2, for single or paired reads respectively - int
+
+    Functionality:
+    find raw single read fastq or paired read concatenated file and uses fastx toolkit's collapser to dereplicate reads
+
+    Returns a status code from command call, 0 for success, -1 if read_type isn't 1 or 2, -2 if input file can't all be found
+    '''
+    # check for pre-existing finished derep
     if os.path.isfile(f"{base_path}fastas/{sra_acc}.collapsed.fa") and not os.path.isfile(f"{base_path}fastas/{sra_acc}.col.started"):
         collapse_code = 0
     else:
-        open(f"{base_path}fastas/{sra_acc}.col.started", 'w').close()
         if read_type == 1:
             fastq_file = find_fastqs(base_path, sra_acc)
             if isinstance(fastq_file, tuple) and len(fastq_file) == 1:
                 os.system(f"gzip -d -k {fastq_file[0]}")
+                open(f"{base_path}fastas/{sra_acc}.col.started", 'w').close()
                 collapse_code = os.system(f"fastx_collapser -i {fastq_file[0][:-3]} -o {base_path}fastas/{sra_acc}.collapsed.fa")
                 if collapse_code == 0:
                     os.remove(f"{base_path}fastas/{sra_acc}.col.started")
@@ -140,16 +155,36 @@ def dereplicate_reads(base_path, sra_acc, read_type):
                 print(f"Error finding single read fastq to collapse for {sra_acc}")
                 collapse_code = -2
         elif read_type == 2:
-            collapse_code = os.system(f"fastx_collapser -v -i {base_path}processing/{sra_acc}.all.fq -o {base_path}fastas/{sra_acc}.collapsed.fa")
-            if collapse_code == 0:
-                os.remove(f"{base_path}fastas/{sra_acc}.col.started")
+            if os.path.isfile(f"{base_path}processing/{sra_acc}.all.fq"):
+                open(f"{base_path}fastas/{sra_acc}.col.started", 'w').close()
+                collapse_code = os.system(f"fastx_collapser -v -i {base_path}processing/{sra_acc}.all.fq -o {base_path}fastas/{sra_acc}.collapsed.fa")
+                if collapse_code == 0:
+                    os.remove(f"{base_path}fastas/{sra_acc}.col.started")
+            else:
+                print(f"Error finding concatentated paired fastq to collapse for {sra_acc}")
+                collapse_code = -2
         else:
             print(f"invalid read type {read_type}\n Should be either 1 or 2 for single or paired reads respectively")
             collapse_code = -1
     return(collapse_code)
 
-def preprocess_sra(base_path, sra_acc, read_type):
-    '''takes a SRA accession and processes the files from it starting from provided progress point and with provided file'''
+def preprocess_sra(base_path: str, sra_acc: str, read_type: int) -> int:
+    '''
+    Called to process raw read fastqs to be ready for mapping
+
+    Parameters:
+    base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    sra_acc - accession for the SRA sample - string
+    read_type - 1 or 2, for single or paired reads respectively - int
+
+    Functionality:
+    Calls through a series of functions to process reads and checks the success of them before proceeding
+    Single reads go straight to being dereplicated
+    Paired reads are repaired if necessisary, merged, concatenated then dereplicted
+
+    Returns a status code from command call, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
+    2 for concatenation failure, 3 for dereplication failure
+    '''
     if (not isinstance(read_type, int)) or not (read_type == 1 or read_type == 2):
         print(f"Unknown read types found: {read_type}\n Should be either 1 or 2 for single or paired reads respectively")
         preproc_code = -1

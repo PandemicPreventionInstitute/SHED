@@ -15,13 +15,13 @@ import time
 sys.path.insert(0, os.getcwd().split('SHED')[0]+'SHED/backend/modules/' )
 from sra_file_parse import find_fastqs
 
-def get_fastqs(base_path, sra_acc):
+def get_fastqs(base_path: str, sra_acc: str) -> int:
     '''
     Called by main wrapper to get fastq files for an SRA accession
     
     Parameters:
-    base_path - path of directory where fastqs will be written in the ./fastqs/ subfolder
-    sra_acc - accession for the SRA sample
+    base_path - path of directory where fastqs will be written in the ./fastqs/ subfolder - string
+    sra_acc - accession for the SRA sample - string
     
     Functionality:
     Uses NCBI's SRA toolkit to download SRA sample fastq files for processing
@@ -39,36 +39,40 @@ def get_fastqs(base_path, sra_acc):
         
     Returns the two error codes on completion for the caller to decide how to handle after printing a statement regarding success or failure of fetching
     '''
-    fastq_files = find_fastqs(base_path, sra_acc)
-    if os.path.isfile(f"{base_path}fastqs/{sra_acc}.fetch.started") or not (fastq_files or isinstance(fastq_files, tuple)):
-        open(f"{base_path}fastqs/{sra_acc}.fetch.started", 'w').close()
-        prefetch_code = os.system(f"prefetch {sra_acc}")
-        fastq_dump_code = os.system(f"fastq-dump {sra_acc} --gzip --split-files -O {base_path}fastqs/")
-        if prefetch_code+fastq_dump_code == 0:
-        # no errors reported by toolkit
-            os.remove(f"{base_path}fastqs/{sra_acc}.fetch.started")
-            print(f"{sra_acc} fastq files written to {base_path}/fastqs/ ")
-        elif fastq_dump_code == 2:
-        # only if processes are actually killed I think
-            print('get_fastqs interupted.')
-        elif prefetch_code == 2 and fastq_dump_code == 0:
-            print('prefetch interupted, but fastq dump was successful.')
-        elif prefetch_code == 768:
-            if fastq_dump_code == 768:
-                print('SRA accession was not found by SRA Toolkit.  Please verify.')
-            elif fastq_dump_code == 16384:
-                print('Can not connect to NCBI SRA.  Please verify internet connection and restart.  If connection continues to fail, NCBI may be down, try again later.')
-            elif fastq_dump_code == 0:
-                print('prefetch failed, but fastq dump was successful.')
+    if sra_acc and isinstance(sra_acc, str):
+        fastq_files = find_fastqs(base_path, sra_acc)
+        if os.path.isfile(f"{base_path}fastqs/{sra_acc}.fetch.started") or (not fastq_files) or (not isinstance(fastq_files, tuple)):
+            open(f"{base_path}fastqs/{sra_acc}.fetch.started", 'w').close()
+            prefetch_code = os.system(f"prefetch {sra_acc}")
+            fastq_dump_code = os.system(f"fastq-dump {sra_acc} --gzip --split-files -O {base_path}fastqs/")
+            if prefetch_code+fastq_dump_code == 0:
+            # no errors reported by toolkit
+                os.remove(f"{base_path}fastqs/{sra_acc}.fetch.started")
+                print(f"{sra_acc} fastq files written to {base_path}/fastqs/ ")
+            elif fastq_dump_code == 2:
+            # only if processes are actually killed I think
+                print('get_fastqs interupted.')
+            elif prefetch_code == 2 and fastq_dump_code == 0:
+                print('prefetch interupted, but fastq dump was successful.')
+            elif prefetch_code == 768:
+                if fastq_dump_code == 768:
+                    print('SRA accession was not found by SRA Toolkit.  Please verify.')
+                elif fastq_dump_code == 16384:
+                    print('Can not connect to NCBI SRA.  Please verify internet connection and restart.  If connection continues to fail, NCBI may be down, try again later.')
+                elif fastq_dump_code == 0:
+                    print('prefetch failed, but fastq dump was successful.')
+                else:
+                    print('prefetch failed and unknown error for fastq_dump: '+fastq_dump_code)
+            elif prefetch_code == 32512 or fastq_dump_code == 32512:
+                print('NCBI SRA Toolkit not properly installed.  Please run configure.sh')
             else:
-                print('prefetch failed and unknown error for fastq_dump: '+fastq_dump_code)
-        elif prefetch_code == 32512 or fastq_dump_code == 32512:
-            print('NCBI SRA Toolkit not properly installed.  Please run configure.sh')
+                print('unknown errors: '+prefetch_code+' '+fastq_dump_code)
+            return((prefetch_code, fastq_dump_code))
         else:
-            print('unknown errors: '+prefetch_code+' '+fastq_dump_code)
-        return((prefetch_code, fastq_dump_code))
+            return((0, 0))
     else:
-        return((0, 0))
+        print("No SRA Accession provided for fetching")
+        return(-1)
 
 if __name__ == "__main__":
     ''' Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and downloads fastqs for those samples'''

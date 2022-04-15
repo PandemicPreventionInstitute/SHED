@@ -3,7 +3,7 @@
 '''
 Writen by Devon Gregory
 This script tests the workings of the sra_fetch module using pytest
-Last edited on 4-11-22
+Last edited on 4-14-22
 '''
 
 import os
@@ -44,80 +44,18 @@ class TestFindFastqs:
 
     def test_no_fastqs(self):
     # no fastqs
-        assert file_parse.find_fastqs(base_path, 'not.an.sra') == []
+        assert file_parse.find_fastqs(base_path, 'not.an.sra') == ()
 
     def test_single_fastqs(self):
     # single fastqs
-        assert file_parse.find_fastqs(base_path, 'single.test') == ['/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/single.test_1.fastq']
+        single_tuple = tuple(['/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/single.test_1.fastq.gz'])
+        assert file_parse.find_fastqs(base_path, 'single.test') == single_tuple
 
     def test_paired_fastqs(self):
     # paired fastqs
         assert file_parse.find_fastqs(base_path, 'paired.test') \
-            == ['/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/paired.test_1.fastq', '/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/paired.test_2.fastq']
+            == (('/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/paired.test_1.fastq.gz', '/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/paired.test_2.fastq.gz'))
 
     def test_mismatched_fastqs(self):
     # single and paired
         assert file_parse.find_fastqs(base_path, '3fastqtest') == 1
-
-# deprecated
-# class TestFindProgress:
-    # ''' testing find_progress function in sra_file_parse'''
-
-    # def test_no_prog(self):
-        # # no progress
-        # assert file_parse.find_progess(base_path, 'not.an.sra') == ('fetch', [])
-
-    # def test_fetch_started(self):
-        # # fetch started, not finished
-        # assert file_parse.find_progess(base_path, 'SRR00000001') == ('fetch', [])
-
-    # def test_fetch_finished(self):
-        # # fetch finished, no further progress
-        # assert file_parse.find_progess(base_path, 'fetch.finished') == ('preproc', ['/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/fetch.finished_1.fastq', \
-        # '/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/fetch.finished_2.fastq'])
-
-    # def test_rep_started(self):
-        # # repair started, not finished
-        # assert file_parse.find_progess(base_path, 'rep.not.finished') == ('repair', [])
-
-    # def test_ref_finished(self):
-        # # repair finished, no further progress
-        # assert file_parse.find_progess(base_path, 'rep.finished') == ('merge', ['/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/rep.finished_1.rep.fq', \
-            # '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/rep.finished_2.rep.fq', '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/rep.finished_sing.rep.fq'])
-
-    # def test_merge_started(self):
-        # # merge started, not finished
-        # assert file_parse.find_progess(base_path, 'merge.not.finished') == ('merge', [])
-
-    # def test_merge_finished(self):
-        # # merge finished, no further progress
-        # assert file_parse.find_progess(base_path, 'merge.finished') == ('cat', ['/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/merge.finished.merged.fq', \
-            # '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/merge.finished.un1.fq', '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/merge.finished.un2.fq'])
-
-    # def test_merge_rep_finished(self):
-        # # merge finished from repaired, no further progress
-        # assert file_parse.find_progess(base_path, 'mergerep.finished') == ('cat', ['/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/mergerep.finished.merged.fq', \
-            # '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/mergerep.finished.un1.fq', '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/mergerep.finished.un2.fq', \
-                # '/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/mergerep.finished_sing.rep.fq'])
-
-    # def test_cat_finsihed(self):
-        # # cat finished, no further progress
-        # assert file_parse.find_progess(base_path, 'cat.finished') == ('derep', ['/mnt/e/Rockefeller/Git/SHED/backend/tests/processing/cat.finished.all.fq'])
-
-    # def test_derep_finished(self):
-        # # derep finished, no further progress
-        # assert file_parse.find_progess(base_path, 'derep.finished') == ('map', ['/mnt/e/Rockefeller/Git/SHED/backend/tests/fastas/derep.finished.collapsed.fa'])
-
-
-# # map finished, no further progress
-# print(file_parse.find_progess(base_path, 'map.finished'))
-
-
-# # vc started, not finished
-# print(file_parse.find_progess(base_path, 'vc.not.finished'))
-
-
-# # vc finished, no further progress
-# print(file_parse.find_progess(base_path, 'vc.finished'))
-
-
