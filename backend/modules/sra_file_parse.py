@@ -77,14 +77,14 @@ def find_fastqs(base_path: str, sra_acc: str) -> tuple:
     Returns a tuple of the found fastqs if the aren't a mismatch of single and paired reads, otherwise returns error code (1)
     '''
     file_list = []
-    if os.path.isfile(f'{base_path}fastqs/{sra_acc}.fastq.gz'):
-        file_list.append(f'{base_path}fastqs/{sra_acc}.fastq.gz')
     if os.path.isfile(f'{base_path}fastqs/{sra_acc}_1.fastq.gz'):
         file_list.append(f'{base_path}fastqs/{sra_acc}_1.fastq.gz')
     if os.path.isfile(f'{base_path}fastqs/{sra_acc}_2.fastq.gz'):
         file_list.append(f'{base_path}fastqs/{sra_acc}_2.fastq.gz')
+    if os.path.isfile(f'{base_path}fastqs/{sra_acc}.fastq.gz'):
+        file_list.append(f'{base_path}fastqs/{sra_acc}.fastq.gz')
     if len(file_list) > 1:
-        if not f"{sra_acc}_2.fastq" in file_list[1] or len(file_list) > 2:
+        if not f"{sra_acc}_2.fastq" in file_list[1] or len(file_list) > 3:
             print(f"Mismatch of single and paired fastq files for {sra_acc}, please remove incorrect files.")
             return(1)
     return(tuple(file_list))

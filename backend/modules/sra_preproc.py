@@ -12,6 +12,7 @@ todo: capture std out from program calls
 
 import os
 import sys
+import time
 sys.path.insert(0, os.getcwd().split('SHED')[0]+'SHED/backend/modlules/' )
 from sra_file_parse import find_fastqs
 
@@ -46,7 +47,7 @@ def bbtools_process(base_path: str, sra_acc: str) -> int:
         # try repair, merge if successful
         # check for raw fastqs
         file_pair = find_fastqs(base_path, sra_acc)
-        if isinstance(file_pair, tuple) and len(file_pair) == 2:
+        if isinstance(file_pair, tuple) and (len(file_pair) == 2 or len(file_pair) == 3):
             repair_code = os.system(f"bash repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
                 out={base_path}processing/{sra_acc}_1.rep.fq out2={base_path}processing/{sra_acc}_2.rep.fq outs={base_path}processing/{sra_acc}_sing.rep.fq")
             if repair_code == 0:
@@ -72,7 +73,7 @@ def bbtools_process(base_path: str, sra_acc: str) -> int:
         # initial merge attempt
         # check for raw fastqs
         file_pair = find_fastqs(base_path, sra_acc)
-        if isinstance(file_pair, tuple) and len(file_pair) == 2:
+        if isinstance(file_pair, tuple) and (len(file_pair) == 2 or len(file_pair) == 3):
             open(f"{base_path}processing/{sra_acc}.merge.started", 'w').close()
             merge_code = os.system(f"bash bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
                 out={base_path}processing/{sra_acc}.merged.fq outu1={base_path}processing/{sra_acc}.un1.fq outu2={base_path}processing/{sra_acc}.un2.fq")
@@ -113,12 +114,17 @@ def concat_files(base_path: str, sra_acc: str) -> int:
                 f"{base_path}processing/{sra_acc}.un2.fq"]
             if os.path.isfile(f"{base_path}processing/{sra_acc}_sing.rep.fq"):
                 file_list.append(f"{base_path}processing/{sra_acc}_sing.rep.fq")
+            if os.path.isfile(f"{base_path}fastqs/{sra_acc}.fastq.gz"):
+                os.system(f"gzip -d -k {base_path}fastqs/{sra_acc}.fastq.gz")
+                file_list.append(f"{base_path}fastqs/{sra_acc}.fastq")
 
         if file_list:
             open(f"{base_path}processing/{sra_acc}.cat.started", 'w').close()
             cat_code = os.system(f"cat {' '.join(file_list)} > {base_path}processing/{sra_acc}.all.fq")
             if cat_code == 0:
                 os.remove(f"{base_path}processing/{sra_acc}.cat.started")
+            if os.path.isfile(f"{base_path}fastqs/{sra_acc}.fastq"):
+                os.remove(f"{base_path}fastqs/{sra_acc}.fastq")
         else:
             print(f"can't file all files to concatenate for {sra_acc}")
             cat_code = -1
@@ -154,7 +160,7 @@ def dereplicate_reads(base_path: str, sra_acc: str, read_type: int) -> int:
             else:
                 print(f"Error finding single read fastq to collapse for {sra_acc}")
                 collapse_code = -2
-        elif read_type == 2:
+        elif read_type == 2 or read_type == 3:
             if os.path.isfile(f"{base_path}processing/{sra_acc}.all.fq"):
                 open(f"{base_path}fastas/{sra_acc}.col.started", 'w').close()
                 collapse_code = os.system(f"fastx_collapser -v -i {base_path}processing/{sra_acc}.all.fq -o {base_path}fastas/{sra_acc}.collapsed.fa")

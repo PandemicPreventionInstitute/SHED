@@ -43,12 +43,12 @@ for sra_acc in accession_list:
         exit(1)
     file_tuple = sra_file_parse.find_fastqs(base_path, sra_acc)
     read_type = len(file_tuple)
-    if (not isinstance(file_tuple, tuple)) or (not file_tuple) or (not (read_type == 1 or read_type == 2)):
+    if (not isinstance(file_tuple, tuple)) or (not file_tuple) or (not (read_type == 1 or read_type == 2 or read_type == 3)):
         print(f"fastq mismatch (file_tuple)")
         print("skipping to next SRA Accession")
         continue
     # process fastqs reads down to collapsed fasta
-    elif read_type == 2:
+    elif read_type == 2 or read_type == 3:
         preproc_error_code = sra_preproc.bbtools_process(base_path, sra_acc)
         if preproc_error_code == 0:
             preproc_error_code = sra_preproc.concat_files(base_path, sra_acc)

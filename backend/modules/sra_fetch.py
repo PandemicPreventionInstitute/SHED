@@ -43,8 +43,9 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
         fastq_files = find_fastqs(base_path, sra_acc)
         if os.path.isfile(f"{base_path}fastqs/{sra_acc}.fetch.started") or (not fastq_files) or (not isinstance(fastq_files, tuple)):
             open(f"{base_path}fastqs/{sra_acc}.fetch.started", 'w').close()
-            prefetch_code = os.system(f"prefetch {sra_acc}")
-            fastq_dump_code = os.system(f"fastq-dump {sra_acc} --gzip --split-files -O {base_path}fastqs/")
+            prefetch_code = os.system(f"prefetch {sra_acc} -O {base_path}SRAs/")
+            time.sleep(.5)
+            fastq_dump_code = os.system(f"fastq-dump {sra_acc} --gzip --split-3 -O {base_path}fastqs/")
             if prefetch_code+fastq_dump_code == 0:
             # no errors reported by toolkit
                 os.remove(f"{base_path}fastqs/{sra_acc}.fetch.started")
