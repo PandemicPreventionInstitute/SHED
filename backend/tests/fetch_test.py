@@ -34,6 +34,7 @@ class TestFetching:
         assert fetch.get_fastqs(base_path, 'SRR17887900') == (0, 0)
         os.remove(f"{base_path}fastqs/SRR17887900_1.fastq.gz")
         os.remove(f"{base_path}fastqs/SRR17887900_2.fastq.gz")
+        os.system(f"rm -rf {base_path}SRAs/")
 
     def test_already_fetched_sra_acc_fetch(self):
     # good SRA accession

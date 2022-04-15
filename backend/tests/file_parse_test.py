@@ -58,4 +58,4 @@ class TestFindFastqs:
 
     def test_mismatched_fastqs(self):
     # single and paired
-        assert file_parse.find_fastqs(base_path, '3fastqtest') == 1
+        assert file_parse.find_fastqs(base_path, '3fastqtest') == (('/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/3fastqtest_1.fastq.gz', '/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/3fastqtest_2.fastq.gz', '/mnt/e/Rockefeller/Git/SHED/backend/tests/fastqs/3fastqtest.fastq.gz'))
