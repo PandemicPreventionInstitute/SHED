@@ -53,7 +53,7 @@ for sra_acc in accession_list:
         if preproc_error_code == 0:
             preproc_error_code = sra_preproc.concat_files(base_path, sra_acc)
             if preproc_error_code == 0:
-                preproc_error_code = sra_preproc.dereplicate_reads(base_path, sra_acc, read_type)
+                preproc_error_code = sra_preproc.dereplicate_reads(base_path, sra_acc)
                 if preproc_error_code == 0:
                     preproc_code = 0
                 else:
@@ -63,7 +63,7 @@ for sra_acc in accession_list:
         else:
             preproc_code = 1
     elif read_type == 1:
-        preproc_error_code = sra_preproc.dereplicate_reads(base_path, sra_acc, read_type)
+        preproc_error_code = sra_preproc.dereplicate_reads(base_path, sra_acc)
         if preproc_error_code == 0:
             preproc_code = 0
         else:

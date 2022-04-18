@@ -203,7 +203,7 @@ def dereplicate_reads(base_path: str, sra_acc: str) -> int:
     '''
     # check for pre-existing finished derep
     if os.path.isfile(f"{base_path}fastas/{sra_acc}.collapsed.fa") and not os.path.isfile(f"{base_path}fastas/{sra_acc}.col.started"):
-        collapse_code = 0
+        derep_code = 0
     else:
         if os.path.isfile(f"{base_path}processing/{sra_acc}.all.fq"):
             derep_code = collapse_file(base_path, sra_acc, f"{base_path}processing/{sra_acc}.all.fq")
@@ -235,7 +235,7 @@ def preprocess_sra(base_path: str, sra_acc: str, read_type: int) -> int:
     Returns a status code from command call, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
     2 for concatenation failure, 3 for dereplication failure
     '''
-    if (not isinstance(read_type, int)) or not (read_type == 1 or read_type == 2 read_type == 3):
+    if (not isinstance(read_type, int)) or not (read_type == 1 or read_type == 2 or read_type == 3):
         print(f"Unknown read types found: {read_type}\n Should be either 1, 2 or 3 for single, paired or mixed reads respectively")
         preproc_code = -1
         print(type(read_type))
