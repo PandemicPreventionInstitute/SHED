@@ -69,25 +69,25 @@ class TestDereplicateReads:
 
     def test_non_existing_file_derep(self):
     # bad filename
-        assert preproc.dereplicate_reads(base_path, 'not.an.sra.acc', 2) == -2
+        assert preproc.dereplicate_reads(base_path, 'not.an.sra.acc') == -2
 
     def test_empty_file_derep(self):
     # empty file
-        assert preproc.dereplicate_reads(base_path, 'cat.already.finished', 1) == 0
+        assert preproc.dereplicate_reads(base_path, 'cat.already.finished') == 0
 
     def test_bad_reads_derep(self):
     # bad reads
-        assert preproc.dereplicate_reads(base_path, 'bad_reads_derep', 2) == 256
+        assert preproc.dereplicate_reads(base_path, 'bad_reads_derep') == 256
         os.remove(f"{base_path}fastas/bad_reads_derep.col.started")
         os.remove(f"{base_path}fastas/bad_reads_derep.collapsed.fa")
 
     def test_qual_mismatch_derep(self):
     # qual. score lenght mismatch
-        assert preproc.dereplicate_reads(base_path, 'qual_mismatch_derep', 2) == 256
+        assert preproc.dereplicate_reads(base_path, 'qual_mismatch_derep') == 256
         os.remove(f"{base_path}fastas/qual_mismatch_derep.col.started")
         os.remove(f"{base_path}fastas/qual_mismatch_derep.collapsed.fa")
 
     def test_good_reads_derep(self):
     # good file
-        assert preproc.dereplicate_reads(base_path, 'good_reads_derep', 2) == 0
+        assert preproc.dereplicate_reads(base_path, 'good_reads_derep') == 0
         os.remove(f"{base_path}fastas/good_reads_derep.collapsed.fa")
