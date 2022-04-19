@@ -9,8 +9,8 @@
 
 # check to see if conda is installed, install if not
 conda_installed=$(command -v conda)
-echo $conda_installed
-if [ $conda_installed ]
+echo "$conda_installed"
+if [ "$conda_installed" ]
 	then
 	echo miniconda installed
 	else
@@ -18,8 +18,8 @@ if [ $conda_installed ]
 	python_version=$(python3 -V)
 	if [[ $python_version == Python*3.7.* || $python_version == Python*3.8.* || $python_version == Python*3.9.* || $python_version == Python*3.10.* ]]
 		then
-		version=$(echo $python_version | cut -d " " -f 2 | cut -d "." -f -2 )
-		versionnodot=$(echo $version | cut -d "." -f 1)$(echo $version | cut -d "." -f 2)
+		version=$(echo "$python_version" | cut -d " " -f 2 | cut -d "." -f -2 )
+		versionnodot=$(echo "$version" | cut -d "." -f 1)$(echo "$version" | cut -d "." -f 2)
 		if [[ $versionnodot == 310 ]]
 			then
 			versionnodot=39
