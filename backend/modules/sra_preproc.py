@@ -5,7 +5,7 @@ Writen by Devon Gregory
 This script will check paired SRA fastq files for errors, correct them and merge the reads.
 The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
 samples listed in the supplied file.
-Last edited on 4-19 -22
+Last edited on 4-20-22
 todo: capture std out from program calls
     add timeouts
 """
@@ -36,7 +36,7 @@ def bbmerge_files(base_path: str, sra_acc: str, file_pair: tuple) -> int:
     """
     open(f"{base_path}processing/{sra_acc}.merge.started", "w").close()
     merge_code = os.system(
-        f"bash bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
+        f"conda run -n shed-back-pipe  bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
         out={base_path}processing/{sra_acc}.merged.fq outu1={base_path}processing/{sra_acc}.un1.fq outu2={base_path}processing/{sra_acc}.un2.fq"
     )
     if merge_code == 0:
@@ -62,7 +62,7 @@ def repair_files(base_path: str, sra_acc: str, file_pair: tuple) -> int:
     """
     open(f"{base_path}processing/{sra_acc}.repair.started", "w").close()
     repair_code = os.system(
-        f"bash repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
+        f"conda run -n shed-back-pipe  repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
         out={base_path}processing/{sra_acc}_1.rep.fq out2={base_path}processing/{sra_acc}_2.rep.fq outs={base_path}processing/{sra_acc}_sing.rep.fq"
     )
     if repair_code == 0:
@@ -217,7 +217,7 @@ def collapse_file(base_path: str, sra_acc: str, file: str) -> int:
     """
     open(f"{base_path}fastas/{sra_acc}.col.started", "w").close()
     collapse_code = os.system(
-        f"fastx_collapser -v -i {file} -o {base_path}fastas/{sra_acc}.collapsed.fa"
+        f"conda run -n shed-back-pipe fastx_collapser -v -i {file} -o {base_path}fastas/{sra_acc}.collapsed.fa"
     )
     if collapse_code == 0:
         os.remove(f"{base_path}fastas/{sra_acc}.col.started")
@@ -332,8 +332,6 @@ if __name__ == "__main__":
                 print(sra_acc)
 
                 preproc_code = preprocess_sra(
-                    base_path,
-                    sra_acc,
-                    len(find_fastqs(base_path, sra_acc))
+                    base_path, sra_acc, len(find_fastqs(base_path, sra_acc))
                 )
                 print(preproc_code)
