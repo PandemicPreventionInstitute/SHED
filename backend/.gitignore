@@ -1,5 +1,9 @@
-backend/fastqs/
 __pycache__
+backend/env/
 backend/fastas/
+backend/fastqs/
 backend/processing/
+backend/sams/
+backend/SRAs/
+backend/tsvs/
 .pytest_cache
