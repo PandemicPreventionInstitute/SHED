@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This is the wrapper script for the pipeline modules.
-Last edited on 4-14-22
+Last edited on 4-19-22
 todo:  add remaining modules
         add arguments for ignoring progress, passing file for SRA data, setting paths and ...
 """
@@ -12,9 +12,9 @@ import sys
 import argparse  # will use
 
 # import modules.sra_query as sra_query# we need to decide on the method for handling queries
-import modules.sra_file_parse as sra_file_parse
-import modules.sra_fetch as sra_fetch
-import modules.sra_preproc as sra_preproc
+from modules import sra_file_parse
+from modules import sra_fetch
+from modules import sra_preproc
 
 # import modules.sra_map as sra_map
 # import modules.sra_vc as sra_vc
@@ -56,7 +56,7 @@ for sra_acc in accession_list:
         print("skipping to next SRA Accession")
         continue
     # process fastqs reads down to collapsed fasta
-    elif read_type in (2, 3):
+    if read_type in (2, 3):
         preproc_error_code = sra_preproc.bbtools_process(base_path, sra_acc)
         if preproc_error_code == 0:
             preproc_error_code = sra_preproc.concat_files(base_path, sra_acc)
@@ -90,7 +90,7 @@ for sra_acc in accession_list:
             sys.exit(1)
         else:
             print("Error is not fatal, proceeding with next accession")
-            continue
+            continue # for when the next modules are implimented
     # map
     # variant call
     # post-processing
