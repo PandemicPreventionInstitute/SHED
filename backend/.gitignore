@@ -1,2 +1,5 @@
-fastqs/
+backend/fastqs/
 __pycache__
+backend/fastas/
+backend/processing/
+.pytest_cache

@@ -1,6 +1,6 @@
-pre-proc module
 minimap2 module
 sam refiner module
 post-proc module
 
 documentation
+add time outs
