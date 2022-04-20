@@ -5,17 +5,15 @@ Writen by Devon Gregory
 This script will check paired SRA fastq files for errors, correct them and merge the reads.
 The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
 samples listed in the supplied file.
-Last edited on 4-18-22
+Last edited on 4-19 -22
 todo: capture std out from program calls
     add timeouts
 """
 
 import os
 import sys
-import time
-
 sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modlules/")
-from sra_file_parse import find_fastqs
+from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 # def get_fastq_stat(base_path, sra_acc, file_list):
 
@@ -135,9 +133,7 @@ def bbtools_process(base_path: str, sra_acc: str) -> int:
         # initial merge attempt
         # check for raw fastqs
         file_pair = find_fastqs(base_path, sra_acc)
-        if isinstance(file_pair, tuple) and (
-            len(file_pair) == 2 or len(file_pair) == 3
-        ):
+        if isinstance(file_pair, tuple) and (len(file_pair) in (2, 3)):
             open(f"{base_path}processing/{sra_acc}.merge.started", "w").close()
             merge_code = bbmerge_files(base_path, sra_acc, file_pair)
             if merge_code == 0:
@@ -266,6 +262,7 @@ def dereplicate_reads(base_path: str, sra_acc: str) -> int:
 def preprocess_sra(base_path: str, sra_acc: str, read_type: int) -> int:
     """
     Called to process raw read fastqs to be ready for mapping
+    Only currently used for the stand alone script
 
     Parameters:
     base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
@@ -280,20 +277,18 @@ def preprocess_sra(base_path: str, sra_acc: str, read_type: int) -> int:
     Returns a status code from command call, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
     2 for concatenation failure, 3 for dereplication failure
     """
-    if (not isinstance(read_type, int)) or not (
-        read_type == 1 or read_type == 2 or read_type == 3
-    ):
+    if (not isinstance(read_type, int)) or (not read_type in (1, 2, 3)):
         print(
             f"Unknown read types found: {read_type}\n Should be either 1, 2 or 3 for single, paired or mixed reads respectively"
         )
         preproc_code = -1
         print(type(read_type))
-    elif read_type == 2 or read_type == 3:
+    elif read_type in (2, 3):
         merge_code = bbtools_process(base_path, sra_acc)
         if merge_code == 0:
             concat_code = concat_files(base_path, sra_acc)
             if concat_code == 0:
-                collapse_code = dereplicate_reads(base_path, sra_acc, read_type)
+                collapse_code = dereplicate_reads(base_path, sra_acc)
                 if collapse_code == 0:
                     preproc_code = 0
                 else:
@@ -303,7 +298,7 @@ def preprocess_sra(base_path: str, sra_acc: str, read_type: int) -> int:
         else:
             preproc_code = 1
     elif read_type == 1:
-        collapse_code = dereplicate_reads(base_path, sra_acc, read_type)
+        collapse_code = dereplicate_reads(base_path, sra_acc)
         if collapse_code == 0:
             preproc_code = 0
         else:
@@ -314,10 +309,20 @@ def preprocess_sra(base_path: str, sra_acc: str, read_type: int) -> int:
 if __name__ == "__main__":
     """Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and pre-processes fastq files of those accessions"""
 
-    args = sra_file_parse.arg_parse()
+    args = arg_parse()
     base_path = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    # check to see if files with SRA accession or meta data exist before pulling accession list
+    filename = ""
     if args.file:
-        accession_list = sra_file_parse.get_accessions(args.file)
+        filename = args.file
+    elif os.path.isfile("SraRunTable.csv"):
+        filename = "SraRunTable.csv"
+    elif os.path.isfile("SraRunTable.txt"):
+        filename = "SraRunTable.txt"
+    else:
+        print("No SRA accession list or metadata files found.")
+    if filename:
+        accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
             if not os.path.isdir(f"{base_path}fastas/"):
                 os.mkdir(f"{base_path}fastas/")
@@ -325,8 +330,10 @@ if __name__ == "__main__":
                 os.mkdir(f"{base_path}processing/")
             for sra_acc in accession_list:
                 print(sra_acc)
+
                 preproc_code = preprocess_sra(
                     base_path,
                     sra_acc,
+                    len(find_fastqs(base_path, sra_acc))
                 )
                 print(preproc_code)
