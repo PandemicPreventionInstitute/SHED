@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This is the wrapper script for the pipeline modules.
-Last edited on 4-19-22
+Last edited on 4-20-22
 todo:  add remaining modules
         add arguments for ignoring progress, passing file for SRA data, setting paths and ...
 """
@@ -15,9 +15,8 @@ import argparse  # will use
 from modules import sra_file_parse
 from modules import sra_fetch
 from modules import sra_preproc
-
-# import modules.sra_map as sra_map
-# import modules.sra_vc as sra_vc
+from modules import sra_map
+from modules import sra_vc
 # import modules.sra_postproc as sra_postproc
 
 # sra_query.querying()
@@ -36,6 +35,10 @@ if not os.path.isdir(f"{base_path}fastas/"):
     os.mkdir(f"{base_path}fastas/")
 if not os.path.isdir(f"{base_path}processing/"):
     os.mkdir(f"{base_path}processing/")
+if not os.path.isdir(f"{base_path}sams/"):
+    os.mkdir(f"{base_path}sams/")
+if not os.path.isdir(f"{base_path}tsvs/"):
+    os.mkdir(f"{base_path}tsvs/")
 #  process each SRA
 for sra_acc in accession_list:
     print(f"starting processing for {sra_acc}")
@@ -61,9 +64,7 @@ for sra_acc in accession_list:
         if preproc_error_code == 0:
             preproc_error_code = sra_preproc.concat_files(base_path, sra_acc)
             if preproc_error_code == 0:
-                preproc_error_code = sra_preproc.dereplicate_reads(
-                    base_path, sra_acc
-                )
+                preproc_error_code = sra_preproc.dereplicate_reads(base_path, sra_acc)
                 if preproc_error_code == 0:
                     preproc_code = 0
                 else:
@@ -90,9 +91,16 @@ for sra_acc in accession_list:
             sys.exit(1)
         else:
             print("Error is not fatal, proceeding with next accession")
-            continue # for when the next modules are implimented
-    # map
-    # variant call
+            continue
+    mapping_code = sra_map.map_reads(base_path, sra_acc)
+    if mapping_code != 0:
+        print(f"Mapping failed for {sra_acc} ({mapping_code}).  ")
+        continue
+    vc_code = sra_vc.vc_sams(base_path, sra_acc)
+    if vc_code != 0:
+        print(f"Variant calling failed for {sra_acc} ({mapping_code}).  ")
+        continue
+
     # post-processing
     # clean up
 
