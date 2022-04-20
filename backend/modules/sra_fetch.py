@@ -5,17 +5,15 @@ Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-14-22
+Last edited on 4-19-22
 todo: capture std out from fetch
     add time out
 """
 import os
 import sys
 import time
-
 sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
-from sra_file_parse import find_fastqs
-
+from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 def get_fastqs(base_path: str, sra_acc: str) -> int:
     """
@@ -37,9 +35,11 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
         768 - prefetch can't connect or accession not found,
         16384 dump can't connect,
         32512 - program not found,
-        If connection is initially present but lost, there does not seem to be a timely timeout built into either prefetch or dump.
+        If connection is initially present but lost, there does not seem
+        to be a timely timeout built into either prefetch or dump.
 
-    Returns the two error codes on completion for the caller to decide how to handle after printing a statement regarding success or failure of fetching
+    Returns the two error codes on completion for the caller to decide how to handle
+    after printing a statement regarding success or failure of fetching
     """
     if sra_acc and isinstance(sra_acc, str):
         fastq_files = find_fastqs(base_path, sra_acc)
@@ -68,7 +68,9 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
                     print("SRA accession was not found by SRA Toolkit.  Please verify.")
                 elif fastq_dump_code == 16384:
                     print(
-                        "Can not connect to NCBI SRA.  Please verify internet connection and restart.  If connection continues to fail, NCBI may be down, try again later."
+                        "Can not connect to NCBI SRA.  Please verify internet connection and \
+                            restart.  If connection continues to fail,\
+                            NCBI may be down, try again later."
                     )
                 elif fastq_dump_code == 0:
                     print("prefetch failed, but fastq dump was successful.")
@@ -84,18 +86,16 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
             else:
                 print("unknown errors: " + prefetch_code + " " + fastq_dump_code)
             return (prefetch_code, fastq_dump_code)
-        else:
-            return (0, 0)
-    else:
-        print("No SRA Accession provided for fetching")
-        return -1
+        return (0, 0)
+    print("No SRA Accession provided for fetching")
+    return -1
 
 
 if __name__ == "__main__":
-    """Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and downloads fastqs for those samples"""
-    import sra_file_parse
+    """Stand alone script.  Takes a filename with arguement '-i' that holds
+        SRA accessions and downloads fastqs for those samples"""
 
-    args = sra_file_parse.arg_parse()
+    args = arg_parse()
     # check to see if files with SRA accession or meta data exist before pulling accession list
     filename = ""
     if args.file:
@@ -109,11 +109,15 @@ if __name__ == "__main__":
     base_path = os.getcwd().split("SHED")[0] + "SHED/backend/"
     # downloads fastq files
     if filename:
-        accession_list = sra_file_parse.get_accessions(args.file)
+        accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
+            if not os.path.isdir(f"{base_path}fastqs/"):
+                os.mkdir(f"{base_path}fastqs/")
             for sra_acc in accession_list:
                 fetch_code = get_fastqs(base_path, sra_acc)
-                if fetch_code != [0, 0]:
-                    print("get_fastqs failed.")
+                if fetch_code != (0, 0):
+                    print(f"get_fastqs failed for {sra_acc}. {fetch_code}")
+                else:
+                    print(f"Fastqs retrieved for {sra_acc}.")
         else:
             print("Retrieval of SRA accessions from file failed")
