@@ -3,11 +3,10 @@
 """
 Writen by Devon Gregory
 This script will read through a file to obtain SRA accessions and pass them to the caller
-Last edited on 4-14-22
+Last edited on 4-19-22
 """
 
 import os
-import sys
 import argparse
 
 
@@ -117,6 +116,4 @@ if __name__ == "__main__":
     if filename:
         for sra_acc in get_accessions(filename):
             print(sra_acc)
-            current_progress, file_list = find_progess(base_path, sra_acc)
-            print(current_progress)
             print(find_fastqs(base_path, sra_acc))
