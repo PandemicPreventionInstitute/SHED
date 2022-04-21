@@ -7,3 +7,4 @@ backend/sams/
 backend/SRAs/
 backend/tsvs/
 .pytest_cache
+SAM_refiner.py
