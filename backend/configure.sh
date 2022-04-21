@@ -53,6 +53,6 @@ conda env create --file environment.yml
 
 if ! test -f ./SAM_Refiner.py;	
 then
-	wget https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py
+	curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o ./SAM_refiner.py
 fi
 
