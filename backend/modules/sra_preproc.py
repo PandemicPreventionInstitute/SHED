@@ -36,7 +36,7 @@ def bbmerge_files(base_path: str, sra_acc: str, file_pair: tuple) -> int:
     """
     open(f"{base_path}processing/{sra_acc}.merge.started", "w").close()
     merge_code = os.system(
-        f"conda run -n shed-back-pipe  bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
+        f"bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
         out={base_path}processing/{sra_acc}.merged.fq outu1={base_path}processing/{sra_acc}.un1.fq outu2={base_path}processing/{sra_acc}.un2.fq"
     )
     if merge_code == 0:
@@ -62,7 +62,7 @@ def repair_files(base_path: str, sra_acc: str, file_pair: tuple) -> int:
     """
     open(f"{base_path}processing/{sra_acc}.repair.started", "w").close()
     repair_code = os.system(
-        f"conda run -n shed-back-pipe  repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
+        f"repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
         out={base_path}processing/{sra_acc}_1.rep.fq out2={base_path}processing/{sra_acc}_2.rep.fq outs={base_path}processing/{sra_acc}_sing.rep.fq"
     )
     if repair_code == 0:
