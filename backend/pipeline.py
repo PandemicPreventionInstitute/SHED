@@ -44,7 +44,7 @@ for sra_acc in accession_list:
     print(f"starting processing for {sra_acc}")
     # download fastqs
     sra_fetch_code = sra_fetch.get_fastqs(base_path, sra_acc)
-    if not sra_fetch_code in ((0, 0), (2, 0), (768, 0), (768, 768)):
+    if sra_fetch_code not in ((0, 0), (2, 0), (768, 0), (768, 768)):
         print(f"critical failure at fetch ({sra_fetch_code})")
         print("discontinuing pipeline execution")
         sys.exit(1)

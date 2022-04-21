@@ -11,8 +11,10 @@ todo: capture std out from mapping
 import os
 import sys
 import time
+
 sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
 from sra_file_parse import get_accessions, arg_parse
+
 
 def map_reads(base_path: str, sra_acc: str) -> int:
     """
@@ -29,9 +31,9 @@ def map_reads(base_path: str, sra_acc: str) -> int:
     """
     if sra_acc and isinstance(sra_acc, str):
         # check for pre-existing finished derep
-        if os.path.isfile(f"{base_path}sams/{sra_acc}.sam") and not os.path.isfile(
-            f"{base_path}sams/{sra_acc}.mapping.started"
-        ):
+        if os.path.isfile(
+            f"{base_path}sams/{sra_acc}.sam"
+        ) and not os.path.isfile(f"{base_path}sams/{sra_acc}.mapping.started"):
             mapped_code = 0
             print(f"Mapping for {sra_acc} already completed")
         elif os.path.isfile(f"{base_path}fastas/{sra_acc}.collapsed.fa"):

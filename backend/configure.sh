@@ -51,8 +51,8 @@ echo "This may take a long time. (1h+ ) and may require at least 1.7 Gb of free 
 conda config --set channel_priority strict
 conda env create --file environment.yml
 
-if [ ! -f ./SAM_Refiner.py]
-	then
+if ! test -f ./SAM_Refiner.py;	
+then
 	wget https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py
 fi
 

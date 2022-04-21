@@ -12,8 +12,10 @@ todo: capture std out from fetch
 import os
 import sys
 import time
+
 sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
+
 
 def get_fastqs(base_path: str, sra_acc: str) -> int:
     """
@@ -67,7 +69,9 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
                 print("prefetch interupted, but fastq dump was successful.")
             elif prefetch_code == 768:
                 if fastq_dump_code == 768:
-                    print("SRA accession was not found by SRA Toolkit.  Please verify.")
+                    print(
+                        "SRA accession was not found by SRA Toolkit.  Please verify."
+                    )
                 elif fastq_dump_code == 16384:
                     print(
                         "Can not connect to NCBI SRA.  Please verify internet connection and \
@@ -86,7 +90,12 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
                     "NCBI SRA Toolkit not properly installed.  Please run configure.sh"
                 )
             else:
-                print("unknown errors: " + prefetch_code + " " + fastq_dump_code)
+                print(
+                    "unknown errors: "
+                    + str(prefetch_code)
+                    + " "
+                    + str(fastq_dump_code)
+                )
             return (prefetch_code, fastq_dump_code)
         return (0, 0)
     print("No SRA Accession provided for fetching")
