@@ -39,6 +39,7 @@ def vc_sams(base_path: str, sra_acc: str) -> int:
         elif os.path.isfile(f"{base_path}sams/{sra_acc}.sam"):
             open(f"{base_path}tsvs/{sra_acc}.vcalling.started", "w").close()
             # currently uses threshholds of a min count of 5 and min abundance of .03 for variant reports
+            # --max_covar can be increased to report cosegregating variations, at the cost of processing and storage
             vc_code = os.system(
                 f"python3 {base_path}SAM_Refiner.py -r {base_path}data/SARS2.gb -S {base_path}sams/{sra_acc}.sam \
                     --wgs 1 --collect 0 --seq 0 --indel 0 --max_covar 1 --min_count 5 --min_samp_abund 0.03 \
