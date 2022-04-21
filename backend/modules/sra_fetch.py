@@ -5,15 +5,17 @@ Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-19-22
+Last edited on 4-20-22
 todo: capture std out from fetch
     add time out
 """
 import os
 import sys
 import time
+
 sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
+
 
 def get_fastqs(base_path: str, sra_acc: str) -> int:
     """
@@ -49,10 +51,12 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
             or (not isinstance(fastq_files, tuple))
         ):
             open(f"{base_path}fastqs/{sra_acc}.fetch.started", "w").close()
-            prefetch_code = os.system(f"prefetch {sra_acc} -O {base_path}SRAs/")
+            prefetch_code = os.system(
+                f"conda run -n shed-back-pipe prefetch {sra_acc} -O {base_path}SRAs/"
+            )
             time.sleep(0.5)
             fastq_dump_code = os.system(
-                f"fastq-dump {sra_acc} --gzip --split-3 -O {base_path}fastqs/"
+                f"conda run -n shed-back-pipe fastq-dump {sra_acc} --gzip --split-3 -O {base_path}fastqs/"
             )
             if prefetch_code + fastq_dump_code == 0:
                 # no errors reported by toolkit
@@ -65,7 +69,9 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
                 print("prefetch interupted, but fastq dump was successful.")
             elif prefetch_code == 768:
                 if fastq_dump_code == 768:
-                    print("SRA accession was not found by SRA Toolkit.  Please verify.")
+                    print(
+                        "SRA accession was not found by SRA Toolkit.  Please verify."
+                    )
                 elif fastq_dump_code == 16384:
                     print(
                         "Can not connect to NCBI SRA.  Please verify internet connection and \
@@ -84,7 +90,12 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
                     "NCBI SRA Toolkit not properly installed.  Please run configure.sh"
                 )
             else:
-                print("unknown errors: " + prefetch_code + " " + fastq_dump_code)
+                print(
+                    "unknown errors: "
+                    + str(prefetch_code)
+                    + " "
+                    + str(fastq_dump_code)
+                )
             return (prefetch_code, fastq_dump_code)
         return (0, 0)
     print("No SRA Accession provided for fetching")
@@ -92,8 +103,10 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
 
 
 if __name__ == "__main__":
-    """Stand alone script.  Takes a filename with arguement '-i' that holds
-        SRA accessions and downloads fastqs for those samples"""
+    """
+    Stand alone script.  Takes a filename with arguement '-i' that holds
+    SRA accessions and downloads fastqs for those samples
+    """
 
     args = arg_parse()
     # check to see if files with SRA accession or meta data exist before pulling accession list

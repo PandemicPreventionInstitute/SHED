@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This script will read through a file to obtain SRA accessions and pass them to the caller
-Last edited on 4-19-22
+Last edited on 4-20-22
 """
 
 import os
