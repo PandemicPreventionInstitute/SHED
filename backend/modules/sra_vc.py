@@ -11,8 +11,10 @@ Last edited on 4-20-22
 import os
 import sys
 import time
+
 sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
 from sra_file_parse import get_accessions, arg_parse
+
 
 def vc_sams(base_path: str, sra_acc: str) -> int:
     """
@@ -32,7 +34,9 @@ def vc_sams(base_path: str, sra_acc: str) -> int:
         if (
             os.path.isfile(f"{base_path}tsvs/{sra_acc}_nt_calls.tsv")
             and os.path.isfile(f"{base_path}tsvs/{sra_acc}_covars.tsv")
-            and not os.path.isfile(f"{base_path}tsvs/{sra_acc}.vcalling.started")
+            and not os.path.isfile(
+                f"{base_path}tsvs/{sra_acc}.vcalling.started"
+            )
         ):
             vc_code = 0
             print(f"Variant calling for {sra_acc} already completed")
