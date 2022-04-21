@@ -91,7 +91,10 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
                 )
             else:
                 print(
-                    "unknown errors: " + prefetch_code + " " + fastq_dump_code
+                    "unknown errors: "
+                    + str(prefetch_code)
+                    + " "
+                    + str(fastq_dump_code)
                 )
             return (prefetch_code, fastq_dump_code)
         return (0, 0)
