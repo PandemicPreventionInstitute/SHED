@@ -5,7 +5,7 @@ Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-20-22
+Last edited on 4-22-22
 todo: capture std out from fetch
     add time out
 """
@@ -13,17 +13,17 @@ import os
 import sys
 import time
 
-sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 
-def get_fastqs(base_path: str, sra_acc: str) -> int:
+def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
     """
     Called by main wrapper to get fastq files for an SRA accession
 
     Parameters:
-    base_path - path of directory where fastqs will be written in the ./fastqs/subfolder - string
-    sra_acc - accession for the SRA sample - string
+    f_base_path - path of directory where fastqs will be written in the ./fastqs/subfolder - string
+    f_sra_acc - accession for the SRA sample - string
 
     Functionality:
     Uses NCBI's SRA toolkit to download SRA sample fastq files for processing
@@ -43,25 +43,25 @@ def get_fastqs(base_path: str, sra_acc: str) -> int:
     Returns the two error codes on completion for the caller to decide how to handle
     after printing a statement regarding success or failure of fetching
     """
-    if sra_acc and isinstance(sra_acc, str):
-        fastq_files = find_fastqs(base_path, sra_acc)
+    if f_sra_acc and isinstance(f_sra_acc, str):
+        fastq_files = find_fastqs(f_base_path, f_sra_acc)
         if (
-            os.path.isfile(f"{base_path}fastqs/{sra_acc}.fetch.started")
+            os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started")
             or (not fastq_files)
             or (not isinstance(fastq_files, tuple))
         ):
-            open(f"{base_path}fastqs/{sra_acc}.fetch.started", "w").close()
+            open(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started", "w").close()
             prefetch_code = os.system(
-                f"conda run -n shed-back-pipe prefetch {sra_acc} -O {base_path}SRAs/"
+                f"conda run -n shed-back-pipe prefetch {f_sra_acc} -O {f_base_path}SRAs/"
             )
             time.sleep(0.5)
             fastq_dump_code = os.system(
-                f"conda run -n shed-back-pipe fastq-dump {sra_acc} --gzip --split-3 -O {base_path}fastqs/"
+                f"conda run -n shed-back-pipe fastq-dump {f_sra_acc} --gzip --split-3 -O {f_base_path}fastqs/"
             )
             if prefetch_code + fastq_dump_code == 0:
                 # no errors reported by toolkit
-                os.remove(f"{base_path}fastqs/{sra_acc}.fetch.started")
-                print(f"{sra_acc} fastq files written to {base_path}/fastqs/ ")
+                os.remove(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started")
+                print(f"{f_sra_acc} fastq files written to {f_base_path}/fastqs/ ")
             elif fastq_dump_code == 2:
                 # only if processes are actually killed I think
                 print("get_fastqs interupted.")
@@ -110,24 +110,24 @@ if __name__ == "__main__":
 
     args = arg_parse()
     # check to see if files with SRA accession or meta data exist before pulling accession list
-    filename = ""
+    file_name = ""
     if args.file:
-        filename = args.file
+        file_name = args.file
     elif os.path.isfile("SraRunTable.csv"):
-        filename = "SraRunTable.csv"
+        file_name = "SraRunTable.csv"
     elif os.path.isfile("SraRunTable.txt"):
-        filename = "SraRunTable.txt"
+        file_name = "SraRunTable.txt"
     else:
         print("No SRA accession list or metadata files found.")
-    base_path = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    BASE_PATH = os.getcwd().split("SHED")[0] + "SHED/backend/"
     # downloads fastq files
-    if filename:
+    if file_name:
         accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
-            if not os.path.isdir(f"{base_path}fastqs/"):
-                os.mkdir(f"{base_path}fastqs/")
+            if not os.path.isdir(f"{BASE_PATH}fastqs/"):
+                os.mkdir(f"{BASE_PATH}fastqs/")
             for sra_acc in accession_list:
-                fetch_code = get_fastqs(base_path, sra_acc)
+                fetch_code = get_fastqs(BASE_PATH, sra_acc)
                 if fetch_code != (0, 0):
                     print(f"get_fastqs failed for {sra_acc}. {fetch_code}")
                 else:

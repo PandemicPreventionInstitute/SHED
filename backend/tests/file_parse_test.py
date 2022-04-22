@@ -3,17 +3,17 @@
 """
 Writen by Devon Gregory
 This script tests the workings of the sra_fetch module using pytest
-Last edited on 4-21-22
+Last edited on 4-22-22
 """
 
 import os
 import sys
 import pytest
 
-sys.path.insert(0, os.getcwd().split("SHED")[0] + "SHED/backend")
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend")
 import modules.sra_file_parse as file_parse
 
-base_path = os.getcwd().split("SHED")[0] + "SHED/backend/tests/"
+TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests/"
 
 
 class TestGetAccessions:
@@ -25,21 +25,21 @@ class TestGetAccessions:
 
     def test_empty_file_get(self):
         # empty file
-        assert file_parse.get_accessions(f"{base_path}TestEmptySraList.txt") == 2
+        assert file_parse.get_accessions(f"{TestPath}lists/TestEmptySraList.txt") == 2
 
     def test_bad_sra_acc_get(self):
         # no valid accessions
-        assert file_parse.get_accessions(f"{base_path}TestBadSraList.txt") == 2
+        assert file_parse.get_accessions(f"{TestPath}lists/TestBadSraList.txt") == 2
 
     def test_fake_sra_acc_get(self):
         # no real accessions
-        assert file_parse.get_accessions(f"{base_path}TestBadSraList2.txt") == [
+        assert file_parse.get_accessions(f"{TestPath}lists/TestBadSraList2.txt") == [
             "SRR00000001"
         ]
 
     def test_good_sra_acc_get(self):
         # good file, mix of good and bad SRAs
-        assert file_parse.get_accessions(f"{base_path}TestMixedSraList.txt") == [
+        assert file_parse.get_accessions(f"{TestPath}lists/TestMixedSraList.txt") == [
             "ERR5019844",
             "SRR15294802",
             "SRR17888010",
@@ -53,28 +53,28 @@ class TestFindFastqs:
 
     def test_no_fastqs(self):
         # no fastqs
-        assert file_parse.find_fastqs(base_path, "not.an.sra") == ()
+        assert file_parse.find_fastqs(TestPath, "not.an.sra") == ()
 
     def test_single_fastqs(self):
         # single fastqs
-        single_tuple = tuple([f"{base_path}fastqs/single.test_1.fastq.gz"])
-        assert file_parse.find_fastqs(base_path, "single.test") == single_tuple
+        single_tuple = tuple([f"{TestPath}fastqs/single.test_1.fastq.gz"])
+        assert file_parse.find_fastqs(TestPath, "single.test") == single_tuple
 
     def test_paired_fastqs(self):
         # paired fastqs
-        assert file_parse.find_fastqs(base_path, "paired.test") == (
+        assert file_parse.find_fastqs(TestPath, "paired.test") == (
             (
-                f"{base_path}fastqs/paired.test_1.fastq.gz",
-                f"{base_path}fastqs/paired.test_2.fastq.gz",
+                f"{TestPath}fastqs/paired.test_1.fastq.gz",
+                f"{TestPath}fastqs/paired.test_2.fastq.gz",
             )
         )
 
     def test_mismatched_fastqs(self):
         # single and paired
-        assert file_parse.find_fastqs(base_path, "3fastqtest") == (
+        assert file_parse.find_fastqs(TestPath, "3fastqtest") == (
             (
-                f"{base_path}fastqs/3fastqtest_1.fastq.gz",
-                f"{base_path}fastqs/3fastqtest_2.fastq.gz",
-                f"{base_path}fastqs/3fastqtest.fastq.gz",
+                f"{TestPath}fastqs/3fastqtest_1.fastq.gz",
+                f"{TestPath}fastqs/3fastqtest_2.fastq.gz",
+                f"{TestPath}fastqs/3fastqtest.fastq.gz",
             )
         )
