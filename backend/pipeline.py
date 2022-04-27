@@ -86,7 +86,7 @@ for sra_acc in accession_list:
         )
         if preproc_error_code == 32512:
             print(
-                f"{preproc_code_dict[preproc_code]} does not appear to be installed.  Please run configure.sh"
+                f"{preproc_code_dict[preproc_code]} does not appear to be installed.  Please make sure it is installed and executable directly from the command line"
             )
             sys.exit(1)
         else:

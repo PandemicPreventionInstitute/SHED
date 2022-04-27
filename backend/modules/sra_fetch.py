@@ -87,7 +87,7 @@ def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
                     )
             elif prefetch_code == 32512 or fastq_dump_code == 32512:
                 print(
-                    "NCBI SRA Toolkit not properly installed.  Please run configure.sh"
+                    "NCBI SRA Toolkit not properly installed.  Please make sure it is installed and executable from the command line"
                 )
             else:
                 print(
