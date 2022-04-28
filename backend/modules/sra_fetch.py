@@ -5,7 +5,7 @@ Writen by Devon Gregory
 This script will download fastq files from NCBI SRA for the samples listed a argument
 provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-22-22
+Last edited on 4-27-22
 todo: capture std out from fetch
     add time out
 """
@@ -52,11 +52,11 @@ def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
         ):
             open(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started", "w").close()
             prefetch_code = os.system(
-                f"conda run -n shed-back-pipe prefetch {f_sra_acc} -O {f_base_path}SRAs/"
+                f"prefetch {f_sra_acc} -O {f_base_path}SRAs/"
             )
             time.sleep(0.5)
             fastq_dump_code = os.system(
-                f"conda run -n shed-back-pipe fastq-dump {f_sra_acc} --gzip --split-3 -O {f_base_path}fastqs/"
+                f"fastq-dump {f_sra_acc} --gzip --split-3 -O {f_base_path}fastqs/"
             )
             if prefetch_code + fastq_dump_code == 0:
                 # no errors reported by toolkit
@@ -87,7 +87,7 @@ def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
                     )
             elif prefetch_code == 32512 or fastq_dump_code == 32512:
                 print(
-                    "NCBI SRA Toolkit not properly installed.  Please run configure.sh"
+                    "NCBI SRA Toolkit not properly installed.  Please make sure it is installed and executable from the command line"
                 )
             else:
                 print(

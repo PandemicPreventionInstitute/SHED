@@ -1,10 +1,13 @@
-to install run 'bash configure.sh'
-# python 
-# miniconda 
-# SRA Toolkit https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software
-# cut_adapt https://github.com/marcelm/cutadapt
-# fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html
-# minimap2 https://github.com/lh3/minimap2
-# bbtools https://github.com/kbaseapps/BBTools
-# sam refiner https://github.com/degregory/SAM_Refiner
-# pytest https://docs.pytest.org/en/7.1.x/
+please make sure the following are installed and can be run with direct calls from the command line
+python 3.7+
+SRA Toolkit https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software
+cut_adapt https://github.com/marcelm/cutadapt
+fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html
+minimap2 https://github.com/lh3/minimap2
+bbtools https://github.com/kbaseapps/BBTools
+pytest https://docs.pytest.org/en/7.1.x/
+
+please download the SAM Refiner script to the backend pipeline directory
+sam refiner https://github.com/degregory/SAM_Refiner
+curl can be used:
+curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o ./SAM_refiner.py

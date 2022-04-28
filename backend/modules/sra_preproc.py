@@ -5,7 +5,7 @@ Writen by Devon Gregory
 This script will check paired SRA fastq files for errors, correct them and merge the reads.
 The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
 samples listed in the supplied file.
-Last edited on 4-20-22
+Last edited on 4-27-22
 todo: capture std out from program calls
     add timeouts
 """
@@ -36,7 +36,7 @@ def bbmerge_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
     """
     open(f"{f_base_path}processing/{f_sra_acc}.merge.started", "w").close()
     merge_code = os.system(
-        f"conda run -n shed-back-pipe bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
+        f"bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
         out={f_base_path}processing/{f_sra_acc}.merged.fq outu1={f_base_path}processing/{f_sra_acc}.un1.fq outu2={f_base_path}processing/{f_sra_acc}.un2.fq"
     )
     if merge_code == 0:
@@ -62,7 +62,7 @@ def repair_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
     """
     open(f"{f_base_path}processing/{f_sra_acc}.repair.started", "w").close()
     repair_code = os.system(
-        f"conda run -n shed-back-pipe repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
+        f"repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
         out={f_base_path}processing/{f_sra_acc}_1.rep.fq out2={f_base_path}processing/{f_sra_acc}_2.rep.fq outs={f_base_path}processing/{f_sra_acc}_sing.rep.fq"
     )
     if repair_code == 0:
@@ -217,7 +217,7 @@ def collapse_file(f_base_path: str, f_sra_acc: str, file: str) -> int:
     """
     open(f"{f_base_path}fastas/{f_sra_acc}.col.started", "w").close()
     collapse_code = os.system(
-        f"conda run -n shed-back-pipe fastx_collapser -v -i {file} -o {f_base_path}fastas/{f_sra_acc}.collapsed.fa"
+        f"fastx_collapser -v -i {file} -o {f_base_path}fastas/{f_sra_acc}.collapsed.fa"
     )
     if collapse_code == 0:
         os.remove(f"{f_base_path}fastas/{f_sra_acc}.col.started")

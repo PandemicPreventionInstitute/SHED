@@ -4,7 +4,7 @@
 Writen by Devon Gregory
 This script will use minimap2 to map pre-existing collapsed reads of the SRA accession provided in
 the file argument, 'SraRunTable.csv' or 'SraRunTable.txt' against the full genome of SARS-CoV-2.
-Last edited on 4-20-22
+Last edited on 4-27-22
 todo: capture std out from mapping
     add time out
 """
@@ -39,7 +39,7 @@ def map_reads(f_base_path: str, f_sra_acc: str) -> int:
         elif os.path.isfile(f"{f_base_path}fastas/{f_sra_acc}.collapsed.fa"):
             open(f"{f_base_path}sams/{f_sra_acc}.mapping.started", "w").close()
             mapped_code = os.system(
-                f"conda run -n shed-back-pipe minimap2 -a {f_base_path}data/SARS2.fasta {f_base_path}fastas/{f_sra_acc}.collapsed.fa \
+                f"minimap2 -a {f_base_path}data/SARS2.fasta {f_base_path}fastas/{f_sra_acc}.collapsed.fa \
                 -o {f_base_path}sams/{f_sra_acc}.sam --sam-hit-only --secondary=no"
             )
             if mapped_code == 0:
