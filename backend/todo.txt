@@ -1,6 +1,4 @@
-minimap2 module
-sam refiner module
-post-proc module
+post-proc module(s)
 
 documentation
 add time outs

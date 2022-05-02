@@ -6,7 +6,7 @@ This script has a function to use minimap2 to map pre-existing processed SRA rea
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-1-22
+Last edited on 5-2-22
 todo: capture std out from mapping
     add time out
 """
@@ -14,7 +14,7 @@ import os
 import sys
 import time
 
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import get_accessions, arg_parse
 
 def map_reads(f_base_path: str, f_sra_acc: str) -> int:
@@ -34,18 +34,18 @@ def map_reads(f_base_path: str, f_sra_acc: str) -> int:
     if f_sra_acc and isinstance(f_sra_acc, str):
         # check for pre-existing finished mapping
         if os.path.isfile(
-            f"{f_base_path}sams/{f_sra_acc}.sam"
-        ) and not os.path.isfile(f"{f_base_path}sams/{f_sra_acc}.mapping.started"):
+            f"{f_base_path}/sams/{f_sra_acc}.sam"
+        ) and not os.path.isfile(f"{f_base_path}/sams/{f_sra_acc}.mapping.started"):
             mapped_code = 0
             print(f"Mapping for {f_sra_acc} already completed")
-        elif os.path.isfile(f"{f_base_path}fastas/{f_sra_acc}.collapsed.fa"):
-            open(f"{f_base_path}sams/{f_sra_acc}.mapping.started", "w").close()
+        elif os.path.isfile(f"{f_base_path}/fastas/{f_sra_acc}.collapsed.fa"):
+            open(f"{f_base_path}/sams/{f_sra_acc}.mapping.started", "w").close()
             mapped_code = os.system(
-                f"minimap2 -a {f_base_path}data/SARS2.fasta {f_base_path}fastas/{f_sra_acc}.collapsed.fa \
-                -o {f_base_path}sams/{f_sra_acc}.sam --sam-hit-only --secondary=no"
+                f"minimap2 -a {f_base_path}/data/SARS2.fasta {f_base_path}/fastas/{f_sra_acc}.collapsed.fa \
+                -o {f_base_path}/sams/{f_sra_acc}.sam --sam-hit-only --secondary=no"
             )
             if mapped_code == 0:
-                os.remove(f"{f_base_path}sams/{f_sra_acc}.mapping.started")
+                os.remove(f"{f_base_path}/sams/{f_sra_acc}.mapping.started")
         else:
             print(f"Can't find collapsed fasta for {f_sra_acc}")
             mapped_code = 1
@@ -72,12 +72,12 @@ if __name__ == "__main__":
         file_name = "SraRunTable.txt"
     else:
         print("No SRA accession list or metadata files found.")
-    BASE_PATH = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    BASE_PATH = os.getcwd()
     # downloads fastq files
     if file_name:
         accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
-            if not os.path.isdir(f"{BASE_PATH}sams/"):
-                os.mkdir(f"{BASE_PATH}sams/")
+            if not os.path.isdir(f"{BASE_PATH}/sams"):
+                os.mkdir(f"{BASE_PATH}/sams")
             for sra_acc in accession_list:
                 print(map_reads(BASE_PATH, sra_acc))

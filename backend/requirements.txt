@@ -10,4 +10,4 @@ pytest https://docs.pytest.org/en/7.1.x/ (for running tests only)
 please download the SAM Refiner script to the backend pipeline directory
 sam refiner https://github.com/degregory/SAM_Refiner
 curl can be used:
-curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o ./SAM_refiner.py
+curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_refiner.py

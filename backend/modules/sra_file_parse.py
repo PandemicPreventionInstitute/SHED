@@ -8,7 +8,7 @@ and find pre-existing fastq for an SRA accession, returning them as a tuple.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own functions.
-Last edited on 5-1-22
+Last edited on 5-2-22
 """
 
 import os
@@ -28,8 +28,8 @@ def arg_parse():
         default="",
         help="SRA accession list or metadata table.  Accessions to be at the start of a newline and separated from the remaining line with a comma",
     )
-    args = parser.parse_args()
-    return args
+    
+    return parser.parse_args()
 
 
 def get_accessions(f_file_name: str) -> list:
@@ -91,12 +91,12 @@ def find_fastqs(f_base_path: str, f_sra_acc: str) -> tuple:
     Returns a tuple of the found fastqs if the aren't a mismatch of single and paired reads, otherwise returns error code (1)
     """
     file_list = []
-    if os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}_1.fastq.gz"):
-        file_list.append(f"{f_base_path}fastqs/{f_sra_acc}_1.fastq.gz")
-    if os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}_2.fastq.gz"):
-        file_list.append(f"{f_base_path}fastqs/{f_sra_acc}_2.fastq.gz")
+    if os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}_1.fastq.gz"):
+        file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}_1.fastq.gz")
+    if os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}_2.fastq.gz"):
+        file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}_2.fastq.gz")
     if os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}.fastq.gz"):
-        file_list.append(f"{f_base_path}fastqs/{f_sra_acc}.fastq.gz")
+        file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}.fastq.gz")
     if len(file_list) > 1:
         if not f"{f_sra_acc}_2.fastq" in file_list[1] or len(file_list) > 3:
             print(
@@ -109,7 +109,7 @@ def find_fastqs(f_base_path: str, f_sra_acc: str) -> tuple:
 if __name__ == "__main__":
     """Stand alone script.  Takes a file name with arguement '-i' that holds SRA accessions and prints them, discovers raw fastqs"""
     args = arg_parse()
-    BASE_PATH = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    BASE_PATH = os.getcwd()
     # check to see if files with SRA accession or meta data exist before pulling accession list
     file_name = ""
     if args.file:

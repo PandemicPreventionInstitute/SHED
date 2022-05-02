@@ -7,14 +7,14 @@ This script has a function to generate a consensus sequence in a fasta file base
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-1-22
+Last edited on 5-2-22
     add time out
 """
 
 import os
 import sys
 
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import get_accessions, arg_parse
 
 def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
@@ -33,12 +33,12 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
     """
     if f_sra_acc and isinstance(f_sra_acc, str):
         # check for pre-existing finished consensus
-        if os.path.isfile(f"{f_base_path}fastas/{f_sra_acc}.consensus.fasta"):
+        if os.path.isfile(f"{f_base_path}/fastas/{f_sra_acc}.consensus.fasta"):
             consensus_code = 0
             print(f"Consensus generation for {f_sra_acc} already completed")
-        elif os.path.isfile(f"{f_base_path}tsvs/{f_sra_acc}_nt_calls.tsv"):
+        elif os.path.isfile(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv"):
             consensus = {}
-            with open(f"{f_base_path}tsvs/{f_sra_acc}_nt_calls.tsv", "r") as in_file:
+            with open(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r") as in_file:
                 for line in in_file:
                     splitline = line.strip("\n\r").split("\t")
                     if splitline[0].isnumeric():
@@ -49,7 +49,7 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                             else:
                                 consensus[position] = splitline[10]
             if consensus:
-                with open(f"{f_base_path}fastas/{f_sra_acc}.consensus.fasta", "w") as out_file:
+                with open(f"{f_base_path}/fastas/{f_sra_acc}.consensus.fasta", "w") as out_file:
                     out_file.write(f">{f_sra_acc}_consensus\n")
                     last_position = 0
                     # sorted_positions = sort(consensus.keys())
@@ -94,12 +94,12 @@ if __name__ == "__main__":
         file_name = "SraRunTable.txt"
     else:
         print("No SRA accession list or metadata files found.")
-    BASE_PATH = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    BASE_PATH = os.getcwd()
     # downloads fastq files
     if file_name:
         accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
-            if not os.path.isdir(f"{BASE_PATH}fastas/"):
-                os.mkdir(f"{BASE_PATH}fastas/")
+            if not os.path.isdir(f"{BASE_PATH}/fastas"):
+                os.mkdir(f"{BASE_PATH}/fastas")
             for sra_acc in accession_list:
                 print(gen_consensus(BASE_PATH, sra_acc))

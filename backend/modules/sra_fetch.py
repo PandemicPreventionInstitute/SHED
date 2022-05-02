@@ -7,7 +7,7 @@ The fastq files will allow further analysis by bioinformatics pipelines.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-1-22
+Last edited on 5-2-22
 todo: capture std out from fetch
     add time out
 """
@@ -15,7 +15,7 @@ import os
 import sys
 import time
 
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 
@@ -48,22 +48,22 @@ def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
     if f_sra_acc and isinstance(f_sra_acc, str):
         fastq_files = find_fastqs(f_base_path, f_sra_acc)
         if (
-            os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started")
+            os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}.fetch.started")
             or (not fastq_files)
             or (not isinstance(fastq_files, tuple))
         ):
-            open(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started", "w").close()
+            open(f"{f_base_path}/fastqs/{f_sra_acc}.fetch.started", "w").close()
             prefetch_code = os.system(
-                f"prefetch {f_sra_acc} -O {f_base_path}SRAs/"
+                f"prefetch {f_sra_acc} -O {f_base_path}/SRAs"
             )
             time.sleep(0.5)
             fastq_dump_code = os.system(
-                f"fastq-dump {f_sra_acc} --gzip --split-3 -O {f_base_path}fastqs/"
+                f"fastq-dump {f_sra_acc} --gzip --split-3 -O {f_base_path}/fastqs"
             )
             if prefetch_code + fastq_dump_code == 0:
                 # no errors reported by toolkit
-                os.remove(f"{f_base_path}fastqs/{f_sra_acc}.fetch.started")
-                print(f"{f_sra_acc} fastq files written to {f_base_path}/fastqs/ ")
+                os.remove(f"{f_base_path}/fastqs/{f_sra_acc}.fetch.started")
+                print(f"{f_sra_acc} fastq files written to {f_base_path}/fastqs")
             elif fastq_dump_code == 2:
                 # only if processes are actually killed I think
                 print("get_fastqs interupted.")
@@ -121,13 +121,13 @@ if __name__ == "__main__":
         file_name = "SraRunTable.txt"
     else:
         print("No SRA accession list or metadata files found.")
-    BASE_PATH = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    BASE_PATH = os.getcwd()
     # downloads fastq files
     if file_name:
         accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
-            if not os.path.isdir(f"{BASE_PATH}fastqs/"):
-                os.mkdir(f"{BASE_PATH}fastqs/")
+            if not os.path.isdir(f"{BASE_PATH}/fastqs/"):
+                os.mkdir(f"{BASE_PATH}/fastqs/")
             for sra_acc in accession_list:
                 fetch_code = get_fastqs(BASE_PATH, sra_acc)
                 if fetch_code != (0, 0):
