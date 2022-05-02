@@ -35,7 +35,9 @@ def write_consensus(consensus: str, f_base_path: str, f_sra_acc: str) -> int:
     """
     con_write_code = 0
     try:
-        with open(f"{f_base_path}/fastas/{f_sra_acc}.consensus.fasta", "w") as out_file:
+        with open(
+            f"{f_base_path}/fastas/{f_sra_acc}.consensus.fasta", "w"
+        ) as out_file:
             out_file.write(f">{f_sra_acc}_consensus\n")
             out_file.write(consensus)
             out_file.write("\n")
@@ -52,7 +54,9 @@ def write_consensus(consensus: str, f_base_path: str, f_sra_acc: str) -> int:
             else:
                 ag_file.write(f"{f_sra_acc}\t{consensus}\n")
     except Exception as e:
-        print(f"Failed to write consensus to aggregate file for {f_sra_acc}: {e}")
+        print(
+            f"Failed to write consensus to aggregate file for {f_sra_acc}: {e}"
+        )
         con_write_code += 4
     return con_write_code
 
@@ -90,7 +94,9 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                             and splitline[9].isnumeric()
                         ):
                             position = int(splitline[0])
-                            if last_position != 0 and (position - last_position > 1):
+                            if last_position != 0 and (
+                                position - last_position > 1
+                            ):
                                 # filling gaps with Ns
                                 while position - last_position > 1:
                                     consensus += "N"
@@ -112,7 +118,9 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                 consensus_code = 1
             else:
                 if consensus:
-                    consensus_code = write_consensus(consensus, f_base_path, f_sra_acc)
+                    consensus_code = write_consensus(
+                        consensus, f_base_path, f_sra_acc
+                    )
                 else:
                     print(
                         f"Consensus could not be generated for {f_sra_acc}. No positions with >= 10 coverage and a nt at >= 60% of calls"
