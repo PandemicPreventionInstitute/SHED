@@ -2,10 +2,12 @@
 
 """
 Writen by Devon Gregory
-This script will check paired SRA fastq files for errors, correct them and merge the reads.
-The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
-samples listed in the supplied file.
-Last edited on 4-27-22
+This script has functions to merge paired SRA fastq files, repair the files if needed,
+concatonate merged and unmergable reads, and dereplicate the concatenated or single read file.
+It can be loaded as a module or run as a stand alone script. As the latter,
+it parses the file provided in the command argument,
+or a metadata table in the cwd, for accessions and then calls its own functions.
+Last edited on 5-1-22
 todo: capture std out from program calls
     add timeouts
 """
@@ -29,7 +31,7 @@ def bbmerge_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
 
     Uses BBTools bbmerge.sh to merge files
 
-    Relies on BBTools to handle its own functionality and erros for the most part.
+    Relies on BBTools to handle its own functionality and errors.
     0 indicates success, 256 for any errors
 
     Returns a status code
@@ -55,7 +57,7 @@ def repair_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
 
     Uses BBTools repair.sh to merge files
 
-    Relies on BBTools to handle its own functionality and erros for the most part.
+    Relies on BBTools to handle its own functionality and errors.
     0 indicates success, 256 for any errors
 
     Returns a status code
@@ -75,11 +77,11 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
     Called to do the logic for merging, and if needed repairing the raw paired fastq files.
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where files are / will be written in fastq or processing subfolders - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
-    Calls functions to merge, and if needed, repair paired end fastqs.
+    Calls functions to merge, and if needed, repair paired fastqs.
 
     Logic path -  If merging has already been succesfully completed -> return success
                   elif repairs were previously attempted but not completed -> retry repair and merge, return success state
@@ -99,7 +101,7 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
     ) and not os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.merge.started"):
         bbtools_return_code = 0
     elif os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.repair.started"):
-        # try repair, merge if successful
+        # retry repair, merge if successful
         # check for raw fastqs
         file_pair = find_fastqs(f_base_path, f_sra_acc)
         if isinstance(file_pair, tuple) and (
@@ -118,8 +120,7 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
         and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}_2.rep.fq")
         and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}_sing.rep.fq")
     ):
-        # repiar already done, merge
-        # re-attempting merge
+        # repiar already done, retry merge
         merge_code = bbmerge_files(
             f_base_path,
             f_sra_acc,
@@ -152,7 +153,7 @@ def concat_files(f_base_path: str, f_sra_acc: str) -> int:
     Called to concatenate merged and unmergable reads
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory files will be read/written in the ./processing/ subfolder - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
@@ -205,12 +206,13 @@ def collapse_file(f_base_path: str, f_sra_acc: str, file: str) -> int:
     Called to dereplicate reads
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where files will be read/written in subfolders - string
     f_sra_acc - accession for the SRA sample - string
     file - full path for file to be collapsed
 
     Functionality:
-    find raw single read fastq or paired read concatenated file and uses fastx toolkit's collapser to dereplicate reads
+    uses fastx toolkit's collapser to dereplicate reads
+    writes output to fastas folder
 
     Returns a status code from command call, 0 for success
 
@@ -229,7 +231,7 @@ def dereplicate_reads(f_base_path: str, f_sra_acc: str) -> int:
     Called to perform logic for dereplicating reads
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where files will be read/written in the subfolders - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
@@ -262,10 +264,10 @@ def dereplicate_reads(f_base_path: str, f_sra_acc: str) -> int:
 def preprocess_sra(f_base_path: str, f_sra_acc: str, read_type: int) -> int:
     """
     Called to process raw read fastqs to be ready for mapping
-    Only currently used for the stand alone script
+    for the stand alone script
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where repaired files will be read/ written in the subfolders - string
     f_sra_acc - accession for the SRA sample - string
     read_type - 1 or 2, for single or paired reads respectively - int
 
@@ -274,7 +276,7 @@ def preprocess_sra(f_base_path: str, f_sra_acc: str, read_type: int) -> int:
     Single reads go straight to being dereplicated
     Paired reads are repaired if necessisary, merged, concatenated then dereplicted
 
-    Returns a status code from command call, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
+    Returns a status code, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
     2 for concatenation failure, 3 for dereplication failure
     """
     if (not isinstance(read_type, int)) or (not read_type in (1, 2, 3)):

@@ -2,10 +2,12 @@
 
 """
 Writen by Devon Gregory
-This script will download fastq files from NCBI SRA for the samples listed a argument
-provided file or in 'SraRunTable.csv' or 'SraRunTable.txt'.
+This script has a function to download fastq files from NCBI SRA for provided accessions.
 The fastq files will allow further analysis by bioinformatics pipelines.
-Last edited on 4-27-22
+It can be loaded as a module or run as a stand alone script. As the latter,
+it parses the file provided in the command argument,
+or a metadata table in the cwd, for accessions and then calls its own function.
+Last edited on 5-1-22
 todo: capture std out from fetch
     add time out
 """
@@ -19,16 +21,16 @@ from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
     """
-    Called by main wrapper to get fastq files for an SRA accession
+    Called to download fastq files for a SRA accession
 
     Parameters:
-    f_base_path - path of directory where fastqs will be written in the ./fastqs/subfolder - string
+    f_base_path - path of directory where fastqs will be written in the ./fastqs/ subfolder - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
     Uses NCBI's SRA toolkit to download SRA sample fastq files for processing
     prefetch downloads a compressed SRA format
-    fastq-dump writes fastqs files
+    fasterq-dump writes fastqs files
 
     Relies on SRA toolkit to handle their own functionality and erros for the most part.
     Toolkit error codes:

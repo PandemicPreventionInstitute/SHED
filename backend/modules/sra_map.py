@@ -2,9 +2,11 @@
 
 """
 Writen by Devon Gregory
-This script will use minimap2 to map pre-existing collapsed reads of the SRA accession provided in
-the file argument, 'SraRunTable.csv' or 'SraRunTable.txt' against the full genome of SARS-CoV-2.
-Last edited on 4-27-22
+This script has a function to use minimap2 to map pre-existing processed SRA reads.
+It can be loaded as a module or run as a stand alone script. As the latter,
+it parses the file provided in the command argument,
+or a metadata table in the cwd, for accessions and then calls its own function.
+Last edited on 5-1-22
 todo: capture std out from mapping
     add time out
 """
@@ -15,22 +17,22 @@ import time
 sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules/")
 from sra_file_parse import get_accessions, arg_parse
 
-
 def map_reads(f_base_path: str, f_sra_acc: str) -> int:
     """
     Called to map collapsed fasta files for an SRA accession
 
     Parameters:
-    f_base_path - path of directory where fastqs will be written in the ./fastqs/subfolder - string
+    f_base_path - path of directory where files will be read/written in subfolders - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
     Uses minimap2 to perform the mapping and provide most errors
+    sam files written to the sams subfolder
 
     Returns a status code. 0 for  success or pre-existing finished mapped sam
     """
     if f_sra_acc and isinstance(f_sra_acc, str):
-        # check for pre-existing finished derep
+        # check for pre-existing finished mapping
         if os.path.isfile(
             f"{f_base_path}sams/{f_sra_acc}.sam"
         ) and not os.path.isfile(f"{f_base_path}sams/{f_sra_acc}.mapping.started"):
@@ -52,7 +54,6 @@ def map_reads(f_base_path: str, f_sra_acc: str) -> int:
         print("No SRA Accession provided for mapping")
         mapped_code = -1
     return mapped_code
-
 
 if __name__ == "__main__":
     """

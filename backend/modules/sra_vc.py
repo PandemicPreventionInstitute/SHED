@@ -2,9 +2,12 @@
 
 """
 Writen by Devon Gregory
-This script will use SAM Refiner to call SARS-CoV-2 variants using the pre-existing
-sams of the SRA accession provided in the file argument, 'SraRunTable.csv' or 'SraRunTable.txt'.
-Last edited on 4-22-22
+This scripthas a fucntion to use SAM Refiner to call SARS-CoV-2 variants from
+the pre-existing mapped reads.
+It can be loaded as a module or run as a stand alone script. As the latter,
+it parses the file provided in the command argument,
+or a metadata table in the cwd, for accessions and then calls its own function.
+Last edited on 5-1-22
     add time out
     add no sam result check
 """
@@ -21,16 +24,17 @@ def vc_sams(f_base_path: str, f_sra_acc: str) -> int:
     Called to call variants using sam files for an SRA accession
 
     Parameters:
-    f_base_path - path of directory where fastqs will be written in the ./fastqs/subfolder - string
+    f_base_path - path of directory where files will be read/written in subfolders - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
-    Uses SAM Refiner to perform the mapping and provide most errors
+    Uses python and SAM Refiner to perform it own functions and provide most errors
+    tsv outputs moved to the tsvs subfolder
 
-    Returns a status code. 0 for  success or pre-existing finished mapped sam
+    Returns a status code. 0 for  success or pre-existing finished vc outputs
     """
     if f_sra_acc and isinstance(f_sra_acc, str):
-        # check for pre-existing finished derep
+        # check for pre-existing finished tsvs
         if (
             os.path.isfile(f"{f_base_path}tsvs/{f_sra_acc}_nt_calls.tsv")
             and os.path.isfile(f"{f_base_path}tsvs/{f_sra_acc}_covars.tsv")
@@ -60,11 +64,10 @@ def vc_sams(f_base_path: str, f_sra_acc: str) -> int:
         vc_code = -1
     return vc_code
 
-
 if __name__ == "__main__":
     """
     Stand alone script.  Takes a file name with arguement '-i' that holds
-    SRA accessions and maps pre-existing collapsed fastas for those samples
+    SRA accessions and runs sam refiner on the sams for those samples
     """
 
     args = arg_parse()
