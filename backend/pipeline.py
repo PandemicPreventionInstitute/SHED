@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This is the wrapper script for the pipeline modules.
-Last edited on 4-22-22
+Last edited on 5-1-22
 todo:  add remaining modules
         add arguments for ignoring progress, passing file for SRA data, setting paths and ...
 """
@@ -11,23 +11,24 @@ import os
 import sys
 # import argparse  # will use
 
-# import modules.sra_query as sra_query# we need to decide on the method for handling queries
+# import sra_query
 from modules import sra_file_parse
 from modules import sra_fetch
 from modules import sra_preproc
 from modules import sra_map
 from modules import sra_vc
-# import modules.sra_postproc as sra_postproc
+from modules import sra_consensus
+# import sra_postproc
 
-# sra_query.querying()
+# sra_query.querying() # will be using aws athena
 # get accession based on file from eventual query function
 accession_list = sra_file_parse.get_accessions("TestSraList.txt")
 if not (isinstance(accession_list, list) and accession_list):
-    print(f"failure at accession list aquisition ({accession_list})")
+    print("Failure at accession list aquisition")
     sys.exit()
 BASE_PATH = (
     os.getcwd().split("SHED")[0] + "SHED/backend/"
-)  # eventually set by argument or default to cwd
+)  # eventually set by argument or defaults to cwd
 # make some necessary directories if they don't already exist
 if not os.path.isdir(f"{BASE_PATH}fastqs/"):
     os.mkdir(f"{BASE_PATH}fastqs/")
@@ -86,19 +87,29 @@ for sra_acc in accession_list:
         )
         if preproc_error_code == 32512:
             print(
-                f"{preproc_code_dict[preproc_code]} does not appear to be installed.  Please make sure it is installed and executable directly from the command line"
+                f"{preproc_code_dict[preproc_code]} does not appear to be installed.  \
+                    Please make sure it is installed and executable directly from the command line"
             )
             sys.exit(1)
         else:
             print("Error is not fatal, proceeding with next accession")
             continue
+    # map reads to SARS2 with minimap2
     mapping_code = sra_map.map_reads(BASE_PATH, sra_acc)
     if mapping_code != 0:
         print(f"Mapping failed for {sra_acc} ({mapping_code}).  ")
+        if mapping_code == 32512:
+            print("Minimap not found.  Please make sure it is installed an executable from the command line '$ minimap2 -h'")
+            sys.exit(1)
         continue
+    # get variants and nt calls from sam with SAM Refiner
     vc_code = sra_vc.vc_sams(BASE_PATH, sra_acc)
     if vc_code != 0:
         print(f"Variant calling failed for {sra_acc} ({mapping_code}).  ")
+        continue
+    consensus_code = sra_consensus.gen_consensus(BASE_PATH, sra_acc)
+    if consensus_code != 0:
+        print(f"Consensus generation failed for {sra_acc} ({consensus_code}).  ")
         continue
 
     # post-processing
