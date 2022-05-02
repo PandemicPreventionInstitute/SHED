@@ -17,6 +17,7 @@ import sys
 sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import get_accessions, arg_parse
 
+
 def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
     """
     Called to generate a consensus for an SRA accession based on the nt call output of sam refiner
@@ -38,33 +39,43 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
             print(f"Consensus generation for {f_sra_acc} already completed")
         elif os.path.isfile(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv"):
             consensus = {}
-            with open(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r") as in_file:
+            with open(
+                f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r"
+            ) as in_file:
                 for line in in_file:
                     splitline = line.strip("\n\r").split("\t")
                     if splitline[0].isnumeric():
-                        if (int(splitline[9]) >= 10) and ( float(splitline[12]) >= .6):
+                        if (int(splitline[9]) >= 10) and (
+                            float(splitline[12]) >= 0.6
+                        ):
                             position = int(splitline[0])
                             if splitline[1] == "-":
-                                consensus[position - .5] = splitline[10]
+                                consensus[position - 0.5] = splitline[10]
                             else:
                                 consensus[position] = splitline[10]
             if consensus:
-                with open(f"{f_base_path}/fastas/{f_sra_acc}.consensus.fasta", "w") as out_file:
+                with open(
+                    f"{f_base_path}/fastas/{f_sra_acc}.consensus.fasta", "w"
+                ) as out_file:
                     out_file.write(f">{f_sra_acc}_consensus\n")
                     last_position = 0
                     # sorted_positions = sort(consensus.keys())
                     for position in consensus:
-                        if last_position != 0 and (position-last_position > 1):
-                            while position-last_position > 1:
+                        if last_position != 0 and (
+                            position - last_position > 1
+                        ):
+                            while position - last_position > 1:
                                 out_file.write("N")
                                 last_position += 1
-                        if consensus[position] != '-':
+                        if consensus[position] != "-":
                             out_file.write(f"{consensus[position]}")
                         last_position = position
                     out_file.write("\n")
                 consensus_code = 0
             else:
-                print(f"Consensus could not be generated for {f_sra_acc}. No positions with >= 10 coverage and a nt at >= 60% of calls")
+                print(
+                    f"Consensus could not be generated for {f_sra_acc}. No positions with >= 10 coverage and a nt at >= 60% of calls"
+                )
                 consensus_code = 2
         else:
             print(f"Can't find nt call file for {f_sra_acc}")
@@ -74,8 +85,8 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
         print("No SRA Accession provided for consensus generation")
         consensus_code = -1
 
-
     return consensus_code
+
 
 if __name__ == "__main__":
     """
