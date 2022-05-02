@@ -34,8 +34,28 @@ And append it to your path:
 toolkit.
 
 Running this `export` command will work until the shell is closed, but to allow
-it to be accessible in the future, it should be added to the `.zshrc` or
-`.bashrc`.
+it to be accessible in the future, it should be added to the Anaconda
+environment startup files to be accessible when the environment is activated.
+This can be accomplished by doing the following:
+
+- Locate the directory for the conda environment by (in the activated
+  environment) running `echo $CONDA_PREFIX`.
+- Move to the directory by the same name as the conda directory (`cd
+  $CONDA_PREFIX) and create the following folders and files:
+```
+mkdir -p ./etc/conda/activate.d
+mkdir -p ./etc/conda/deactivate.d
+touch ./etc/conda/activate.d/env_vars.sh
+touch ./etc/conda/deactivate.d/env_vars.sh
+```  
+- Edit the ` ./etc/conda/activate.d/env_vars.sh` so that it looks like the
+  following:
+```
+#!/bin/sh
+
+export PATH="$PATH:/Users/zsusswein/sratoolkit.2.11.2-mac64/bin"
+```
+But replace `zsusswein` in the path with your own username.
 
 Then, install `pytest` with `conda install pytest`.
 
