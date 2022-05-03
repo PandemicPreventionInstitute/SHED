@@ -7,7 +7,7 @@ This script has a function to generate a consensus sequence in a fasta file base
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-2-22
+Last edited on 5-3-22
     add time out
 """
 
@@ -89,6 +89,12 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                     for line in in_file:
                         splitline = line.strip("\n\r").split("\t")
                         last_position = 0
+                        if splitline[0] == "Position":
+                            try:
+                                assert splitline[9] == "Total", "NT call tsv does not appear to have been generated with correct version of SAM refiner"
+                            except AssertionError as e:
+                                print(e)
+                                return 5
                         if (
                             splitline[0].isnumeric()
                             and splitline[9].isnumeric()
