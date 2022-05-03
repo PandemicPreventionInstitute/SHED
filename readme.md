@@ -69,7 +69,7 @@ installation of fastx toolkit.
 
 Finally, `cd` to the folder in which the `pipeline.py` script is running and 
 install `SAM refiner` 
-with `curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_Refiner.py`.
+with `curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_Refiner.py`. Do not use conda/bioconda because the version it installs is not the latest and will not have all of the required features.
  
 
  
