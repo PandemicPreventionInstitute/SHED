@@ -65,7 +65,7 @@ def repair_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
     open(f"{f_base_path}/processing/{f_sra_acc}.repair.started", "w").close()
     repair_code = os.system(
         f"repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
-        out={f_base_path}/processing/{f_sra_acc}_1.rep.fq out2={f_base_path}/processing/{f_sra_acc}_2.rep.fq outs={f_base_path}processing/{f_sra_acc}_sing.rep.fq"
+        out={f_base_path}/processing/{f_sra_acc}_1.rep.fq out2={f_base_path}/processing/{f_sra_acc}_2.rep.fq outs={f_base_path}/processing/{f_sra_acc}_sing.rep.fq"
     )
     if repair_code == 0:
         os.remove(f"{f_base_path}/processing/{f_sra_acc}.repair.started")

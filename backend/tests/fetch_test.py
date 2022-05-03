@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This script tests the workings of the sra_fetch module using pytest
-Last edited on 4-22-22
+Last edited on 5-3-22
 """
 
 import os
@@ -13,7 +13,7 @@ import pytest
 sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend")
 import modules.sra_fetch as fetch
 
-TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests/"
+TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
 
 
 class TestFetching:
