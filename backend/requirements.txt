@@ -1,13 +1,13 @@
-please make sure the following are installed and can be run with direct calls from the command line
+please make sure the following are installed and can be run with direct calls from the command line (ie. '$ prefetch -h' will print the help screen for SRA Toolkits prefetch program)
 python 3.7+
 SRA Toolkit https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?view=software
 cut_adapt https://github.com/marcelm/cutadapt
 fastx tools http://hannonlab.cshl.edu/fastx_toolkit/license.html
 minimap2 https://github.com/lh3/minimap2
-bbtools https://github.com/kbaseapps/BBTools
-pytest https://docs.pytest.org/en/7.1.x/
+bbtools https://jgi.doe.gov/data-and-tools/software-tools/bbtools/
+pytest https://docs.pytest.org/en/7.1.x/ (for running tests only)
 
 please download the SAM Refiner script to the backend pipeline directory
 sam refiner https://github.com/degregory/SAM_Refiner
 curl can be used:
-curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o ./SAM_refiner.py
+curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_refiner.py

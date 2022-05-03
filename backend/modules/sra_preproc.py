@@ -2,17 +2,19 @@
 
 """
 Writen by Devon Gregory
-This script will check paired SRA fastq files for errors, correct them and merge the reads.
-The merged reads or singlet reads with then be collapsed.  The SRA fastq files processed will be
-samples listed in the supplied file.
-Last edited on 4-27-22
+This script has functions to merge paired SRA fastq files, repair the files if needed,
+concatonate merged and unmergable reads, and dereplicate the concatenated or single read file.
+It can be loaded as a module or run as a stand alone script. As the latter,
+it parses the file provided in the command argument,
+or a metadata table in the cwd, for accessions and then calls its own functions.
+Last edited on 5-2-22
 todo: capture std out from program calls
     add timeouts
 """
 
 import os
 import sys
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modlules/")
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modlules")
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 # def get_fastq_stat(f_base_path, f_sra_acc):
@@ -29,18 +31,18 @@ def bbmerge_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
 
     Uses BBTools bbmerge.sh to merge files
 
-    Relies on BBTools to handle its own functionality and erros for the most part.
+    Relies on BBTools to handle its own functionality and errors.
     0 indicates success, 256 for any errors
 
     Returns a status code
     """
-    open(f"{f_base_path}processing/{f_sra_acc}.merge.started", "w").close()
+    open(f"{f_base_path}/processing/{f_sra_acc}.merge.started", "w").close()
     merge_code = os.system(
         f"bbmerge.sh qtrim=t in1={file_pair[0]} in2={file_pair[1]}  \
-        out={f_base_path}processing/{f_sra_acc}.merged.fq outu1={f_base_path}processing/{f_sra_acc}.un1.fq outu2={f_base_path}processing/{f_sra_acc}.un2.fq"
+        out={f_base_path}/processing/{f_sra_acc}.merged.fq outu1={f_base_path}/processing/{f_sra_acc}.un1.fq outu2={f_base_path}/processing/{f_sra_acc}.un2.fq"
     )
     if merge_code == 0:
-        os.remove(f"{f_base_path}processing/{f_sra_acc}.merge.started")
+        os.remove(f"{f_base_path}/processing/{f_sra_acc}.merge.started")
     return merge_code
 
 
@@ -55,18 +57,18 @@ def repair_files(f_base_path: str, f_sra_acc: str, file_pair: tuple) -> int:
 
     Uses BBTools repair.sh to merge files
 
-    Relies on BBTools to handle its own functionality and erros for the most part.
+    Relies on BBTools to handle its own functionality and errors.
     0 indicates success, 256 for any errors
 
     Returns a status code
     """
-    open(f"{f_base_path}processing/{f_sra_acc}.repair.started", "w").close()
+    open(f"{f_base_path}/processing/{f_sra_acc}.repair.started", "w").close()
     repair_code = os.system(
         f"repair.sh overwrite=true in={file_pair[0]} in2={file_pair[1]} \
-        out={f_base_path}processing/{f_sra_acc}_1.rep.fq out2={f_base_path}processing/{f_sra_acc}_2.rep.fq outs={f_base_path}processing/{f_sra_acc}_sing.rep.fq"
+        out={f_base_path}/processing/{f_sra_acc}_1.rep.fq out2={f_base_path}/processing/{f_sra_acc}_2.rep.fq outs={f_base_path}/processing/{f_sra_acc}_sing.rep.fq"
     )
     if repair_code == 0:
-        os.remove(f"{f_base_path}processing/{f_sra_acc}.repair.started")
+        os.remove(f"{f_base_path}/processing/{f_sra_acc}.repair.started")
     return repair_code
 
 
@@ -75,11 +77,11 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
     Called to do the logic for merging, and if needed repairing the raw paired fastq files.
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where files are / will be written in fastq or processing subfolders - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
-    Calls functions to merge, and if needed, repair paired end fastqs.
+    Calls functions to merge, and if needed, repair paired fastqs.
 
     Logic path -  If merging has already been succesfully completed -> return success
                   elif repairs were previously attempted but not completed -> retry repair and merge, return success state
@@ -93,13 +95,13 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
     Returns a status code, 0 for success or pre-existing finished merge, -1 for unable to find raw fastqs, 256 for bbtools errors
     """
     if (
-        os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.merged.fq")
-        and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.un1.fq")
-        and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.un2.fq")
-    ) and not os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.merge.started"):
+        os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.merged.fq")
+        and os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.un1.fq")
+        and os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.un2.fq")
+    ) and not os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.merge.started"):
         bbtools_return_code = 0
-    elif os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.repair.started"):
-        # try repair, merge if successful
+    elif os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.repair.started"):
+        # retry repair, merge if successful
         # check for raw fastqs
         file_pair = find_fastqs(f_base_path, f_sra_acc)
         if isinstance(file_pair, tuple) and (
@@ -114,18 +116,17 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
         else:
             bbtools_return_code = -1
     elif (
-        os.path.isfile(f"{f_base_path}processing/{f_sra_acc}_1.rep.fq")
-        and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}_2.rep.fq")
-        and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}_sing.rep.fq")
+        os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}_1.rep.fq")
+        and os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}_2.rep.fq")
+        and os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}_sing.rep.fq")
     ):
-        # repiar already done, merge
-        # re-attempting merge
+        # repiar already done, retry merge
         merge_code = bbmerge_files(
             f_base_path,
             f_sra_acc,
             (
-                f"{f_base_path}processing/{f_sra_acc}_1.rep.fq",
-                f"{f_base_path}processing/{f_sra_acc}_2.rep.fq",
+                f"{f_base_path}/processing/{f_sra_acc}_1.rep.fq",
+                f"{f_base_path}/processing/{f_sra_acc}_2.rep.fq",
             ),
         )
         bbtools_return_code = merge_code
@@ -134,12 +135,12 @@ def bbtools_process(f_base_path: str, f_sra_acc: str) -> int:
         # check for raw fastqs
         file_pair = find_fastqs(f_base_path, f_sra_acc)
         if isinstance(file_pair, tuple) and (len(file_pair) in (2, 3)):
-            open(f"{f_base_path}processing/{f_sra_acc}.merge.started", "w").close()
+            open(f"{f_base_path}/processing/{f_sra_acc}.merge.started", "w").close()
             merge_code = bbmerge_files(f_base_path, f_sra_acc, file_pair)
             if merge_code == 0:
                 bbtools_return_code = merge_code
             else:
-                open(f"{f_base_path}processing/{f_sra_acc}.repair.started", "w").close()
+                open(f"{f_base_path}/processing/{f_sra_acc}.repair.started", "w").close()
                 repair_remerge_code = bbtools_process(f_base_path, f_sra_acc)
                 bbtools_return_code = repair_remerge_code
         else:
@@ -152,7 +153,7 @@ def concat_files(f_base_path: str, f_sra_acc: str) -> int:
     Called to concatenate merged and unmergable reads
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory files will be read/written in the ./processing/ subfolder - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
@@ -162,38 +163,38 @@ def concat_files(f_base_path: str, f_sra_acc: str) -> int:
     256 for cat errors (should never be returned)
     """
     # check for pre-existing finished cat
-    if os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.all.fq") and not os.path.isfile(
-        f"{f_base_path}processing/{f_sra_acc}.cat.started"
+    if os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.all.fq") and not os.path.isfile(
+        f"{f_base_path}/processing/{f_sra_acc}.cat.started"
     ):
         cat_code = 0
     else:
         file_list = []
         # find the files from previous processing
         if (
-            os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.merged.fq")
-            and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.un1.fq")
-            and os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.un2.fq")
+            os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.merged.fq")
+            and os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.un1.fq")
+            and os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.un2.fq")
         ):
             file_list = [
-                f"{f_base_path}processing/{f_sra_acc}.merged.fq",
-                f"{f_base_path}processing/{f_sra_acc}.un1.fq",
-                f"{f_base_path}processing/{f_sra_acc}.un2.fq",
+                f"{f_base_path}/processing/{f_sra_acc}.merged.fq",
+                f"{f_base_path}/processing/{f_sra_acc}.un1.fq",
+                f"{f_base_path}/processing/{f_sra_acc}.un2.fq",
             ]
-            if os.path.isfile(f"{f_base_path}processing/{f_sra_acc}_sing.rep.fq"):
-                file_list.append(f"{f_base_path}processing/{f_sra_acc}_sing.rep.fq")
-            if os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}.fastq.gz"):
-                os.system(f"gzip -d -k {f_base_path}fastqs/{f_sra_acc}.fastq.gz")
-                file_list.append(f"{f_base_path}fastqs/{f_sra_acc}.fastq")
+            if os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}_sing.rep.fq"):
+                file_list.append(f"{f_base_path}/processing/{f_sra_acc}_sing.rep.fq")
+            if os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}.fastq.gz"):
+                os.system(f"gzip -d -k {f_base_path}/fastqs/{f_sra_acc}.fastq.gz")
+                file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}.fastq")
 
         if file_list:
-            open(f"{f_base_path}processing/{f_sra_acc}.cat.started", "w").close()
+            open(f"{f_base_path}/processing/{f_sra_acc}.cat.started", "w").close()
             cat_code = os.system(
-                f"cat {' '.join(file_list)} > {f_base_path}processing/{f_sra_acc}.all.fq"
+                f"cat {' '.join(file_list)} > {f_base_path}/processing/{f_sra_acc}.all.fq"
             )
             if cat_code == 0:
-                os.remove(f"{f_base_path}processing/{f_sra_acc}.cat.started")
-            if os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}.fastq"):
-                os.remove(f"{f_base_path}fastqs/{f_sra_acc}.fastq")
+                os.remove(f"{f_base_path}/processing/{f_sra_acc}.cat.started")
+            if os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}.fastq"):
+                os.remove(f"{f_base_path}/fastqs/{f_sra_acc}.fastq")
         else:
             print(f"can't file all files to concatenate for {f_sra_acc}")
             cat_code = -1
@@ -205,22 +206,23 @@ def collapse_file(f_base_path: str, f_sra_acc: str, file: str) -> int:
     Called to dereplicate reads
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where files will be read/written in subfolders - string
     f_sra_acc - accession for the SRA sample - string
     file - full path for file to be collapsed
 
     Functionality:
-    find raw single read fastq or paired read concatenated file and uses fastx toolkit's collapser to dereplicate reads
+    uses fastx toolkit's collapser to dereplicate reads
+    writes output to fastas folder
 
     Returns a status code from command call, 0 for success
 
     """
-    open(f"{f_base_path}fastas/{f_sra_acc}.col.started", "w").close()
+    open(f"{f_base_path}/fastas/{f_sra_acc}.col.started", "w").close()
     collapse_code = os.system(
-        f"fastx_collapser -v -i {file} -o {f_base_path}fastas/{f_sra_acc}.collapsed.fa"
+        f"fastx_collapser -v -i {file} -o {f_base_path}/fastas/{f_sra_acc}.collapsed.fa"
     )
     if collapse_code == 0:
-        os.remove(f"{f_base_path}fastas/{f_sra_acc}.col.started")
+        os.remove(f"{f_base_path}/fastas/{f_sra_acc}.col.started")
     return collapse_code
 
 
@@ -229,7 +231,7 @@ def dereplicate_reads(f_base_path: str, f_sra_acc: str) -> int:
     Called to perform logic for dereplicating reads
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where files will be read/written in the subfolders - string
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
@@ -239,13 +241,13 @@ def dereplicate_reads(f_base_path: str, f_sra_acc: str) -> int:
     """
     # check for pre-existing finished derep
     if os.path.isfile(
-        f"{f_base_path}fastas/{f_sra_acc}.collapsed.fa"
-    ) and not os.path.isfile(f"{f_base_path}fastas/{f_sra_acc}.col.started"):
+        f"{f_base_path}/fastas/{f_sra_acc}.collapsed.fa"
+    ) and not os.path.isfile(f"{f_base_path}/fastas/{f_sra_acc}.col.started"):
         derep_code = 0
     else:
-        if os.path.isfile(f"{f_base_path}processing/{f_sra_acc}.all.fq"):
+        if os.path.isfile(f"{f_base_path}/processing/{f_sra_acc}.all.fq"):
             derep_code = collapse_file(
-                f_base_path, f_sra_acc, f"{f_base_path}processing/{f_sra_acc}.all.fq"
+                f_base_path, f_sra_acc, f"{f_base_path}/processing/{f_sra_acc}.all.fq"
             )
         else:
             fastq_file = find_fastqs(f_base_path, f_sra_acc)
@@ -262,10 +264,10 @@ def dereplicate_reads(f_base_path: str, f_sra_acc: str) -> int:
 def preprocess_sra(f_base_path: str, f_sra_acc: str, read_type: int) -> int:
     """
     Called to process raw read fastqs to be ready for mapping
-    Only currently used for the stand alone script
+    for the stand alone script
 
     Parameters:
-    f_base_path - path of directory where repaired files will be written in the ./processing/ subfolder - string
+    f_base_path - path of directory where repaired files will be read/ written in the subfolders - string
     f_sra_acc - accession for the SRA sample - string
     read_type - 1 or 2, for single or paired reads respectively - int
 
@@ -274,7 +276,7 @@ def preprocess_sra(f_base_path: str, f_sra_acc: str, read_type: int) -> int:
     Single reads go straight to being dereplicated
     Paired reads are repaired if necessisary, merged, concatenated then dereplicted
 
-    Returns a status code from command call, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
+    Returns a status code, 0 for success, -1 if the read type is bad, 1 for merging/repair failure,
     2 for concatenation failure, 3 for dereplication failure
     """
     if (not isinstance(read_type, int)) or (not read_type in (1, 2, 3)):
@@ -310,7 +312,7 @@ if __name__ == "__main__":
     """Stand alone script.  Takes a filename with arguement '-i' that holds SRA accessions and pre-processes fastq files of those accessions"""
 
     args = arg_parse()
-    BASE_PATH = os.getcwd().split("SHED")[0] + "SHED/backend/"
+    BASE_PATH = os.getcwd()
     # check to see if files with SRA accession or meta data exist before pulling accession list
     file_name = ""
     if args.file:
@@ -324,10 +326,10 @@ if __name__ == "__main__":
     if file_name:
         accession_list = get_accessions(args.file)
         if isinstance(accession_list, list):
-            if not os.path.isdir(f"{BASE_PATH}fastas/"):
-                os.mkdir(f"{BASE_PATH}fastas/")
-            if not os.path.isdir(f"{BASE_PATH}processing/"):
-                os.mkdir(f"{BASE_PATH}processing/")
+            if not os.path.isdir(f"{BASE_PATH}/fastas"):
+                os.mkdir(f"{BASE_PATH}/fastas")
+            if not os.path.isdir(f"{BASE_PATH}/processing"):
+                os.mkdir(f"{BASE_PATH}/processing")
             for sra_acc in accession_list:
                 print(sra_acc)
 
