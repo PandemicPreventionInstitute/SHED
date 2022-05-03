@@ -19,10 +19,10 @@ Then, activate this environment and, in your home directory, run the following
 command to download a compressed version of the SRA toolkit:
 `curl -R --output sratoolkit.tar.gz
 http://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/current/sratoolkit.current-mac64.tar.gz`
-Note, that this command is similar to the suggested tar fetch from the install
-instructions on the website but the `-R` flag is added to allow for redirects.
+Note, this command is similar to the suggested tar fetch from the install
+instructions on the SRA install instructions website but the `-R` flag is added to allow for redirects.
 Otherwise the generated file is not actually a zipped version of the required
-files, rather it is a an empty file that will cause subsequent steps to fail.
+files, rather it is an empty file that will cause subsequent steps to fail.
 
 Next, as the SRA install instructions suggest, unzip the file:
 `tar -vxzf sratoolkit.tar.gz`
@@ -31,17 +31,19 @@ And append it to your path:
 `export PATH=$PATH:$PWD/sratoolkit.2.11.2-mac64/bin`
 
 *BE SURE* that this path points correctly to the unpacked version of the SRA
-toolkit.
+toolkit. The version of the SRA toolkit should be at least 2.11.2 to ensure
+that the required functionality is available. Packages managers like homebrew
+are currently installing versions below 2.11, necessitating manual install.
 
-Running this `export` command will work until the shell is closed, but to allow
-it to be accessible in the future, it should be added to the Anaconda
-environment startup files to be accessible when the environment is activated.
+Running this `export` command will work until the shell is closed, but to cause
+the export to automatically occur when activating the environment in the future, it should be added to the Anaconda
+environment startup files.
 This can be accomplished by doing the following:
 
 - Locate the directory for the conda environment by (in the activated
   environment) running `echo $CONDA_PREFIX`.
 - Move to the directory by the same name as the conda directory (`cd
-  $CONDA_PREFIX) and create the following folders and files:
+  $CONDA_PREFIX`) and create the following folders and files:
 ```
 mkdir -p ./etc/conda/activate.d
 mkdir -p ./etc/conda/deactivate.d
