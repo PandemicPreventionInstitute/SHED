@@ -17,7 +17,7 @@ from modules import sra_preproc
 from modules import sra_map
 from modules import sra_vc
 from modules import sra_consensus
-# import sra_postproc
+from modules import sra_output_aggregate
 
 def arg_parse():
     """parses command arguments"""
@@ -142,6 +142,16 @@ def main():
         consensus_code = sra_consensus.gen_consensus(BASE_PATH, sra_acc)
         if consensus_code != 0:
             print(f"Consensus generation failed for {sra_acc} ({consensus_code}).  ")
+            continue
+
+
+        nt_agg_code = sra_output_aggregate.agg_nt_calls(BASE_PATH, sra_acc)
+        if nt_agg_code != 0:
+            print(f"NT aggregation failed for {sra_acc} ({nt_agg_code}).  ")
+            continue
+        covar_agg_code = sra_output_aggregate.agg_vars(BASE_PATH, sra_acc)
+        if nt_agg_code != 0:
+            print(f"Polymorphism aggregation failed for {sra_acc} ({covar_agg_code}).  ")
             continue
 
         # post-processing
