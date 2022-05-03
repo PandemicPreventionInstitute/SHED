@@ -95,7 +95,7 @@ def find_fastqs(f_base_path: str, f_sra_acc: str) -> tuple:
         file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}_1.fastq.gz")
     if os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}_2.fastq.gz"):
         file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}_2.fastq.gz")
-    if os.path.isfile(f"{f_base_path}fastqs/{f_sra_acc}.fastq.gz"):
+    if os.path.isfile(f"{f_base_path}/fastqs/{f_sra_acc}.fastq.gz"):
         file_list.append(f"{f_base_path}/fastqs/{f_sra_acc}.fastq.gz")
     if len(file_list) > 1:
         if not f"{f_sra_acc}_2.fastq" in file_list[1] or len(file_list) > 3:
