@@ -67,7 +67,9 @@ packages needed than were installed with `pytest`. If this occurs, it can be
 solved with `conda config --set channel_priority false` and then rerunning the
 installation of fastx toolkit.
 
-Finally, install `SAM refiner` with `conda install -c bioconda samrefiner`.
+Finally, `cd` to the folder in which the `pipeline.py` script is running and 
+install `SAM refiner` 
+with `curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_Refiner.py`.
  
 
  
