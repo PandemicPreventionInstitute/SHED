@@ -21,7 +21,7 @@ from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
     """
-    Called to download fastq files for a SRA accession
+    Called to download sra and fastq files for a SRA accession
 
     Parameters:
     f_base_path - path of directory where fastqs will be written in the ./fastqs/ subfolder - string
@@ -30,7 +30,7 @@ def get_fastqs(f_base_path: str, f_sra_acc: str) -> int:
     Functionality:
     Uses NCBI's SRA toolkit to download SRA sample fastq files for processing
     prefetch downloads a compressed SRA format
-    fasterq-dump writes fastqs files
+    fastq-dump writes fastqs files
 
     Relies on SRA toolkit to handle their own functionality and erros for the most part.
     Toolkit error codes:

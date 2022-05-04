@@ -2,8 +2,8 @@
 
 """
 Writen by Devon Gregory
-This script has a function to generate a consensus sequence in a fasta file based
- on the nt call output from sam refiner for a SRA accession
+This script has a functions to generate a consensus sequence based on a sample's
+nt call output and write it to a fasta file and a collection tsv.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
