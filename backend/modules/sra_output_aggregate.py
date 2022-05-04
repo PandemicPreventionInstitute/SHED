@@ -18,6 +18,18 @@ sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import get_accessions, arg_parse
 
 def agg_nt_calls(f_base_path: str, f_sra_acc: str) -> int:
+    """
+    Called to add nt call info for an SRA accession to the collection tsv
+
+    Parameters:
+    f_base_path - path of directory where files will be read/written in subfolders - string
+    f_sra_acc - accession for the SRA sample - string
+
+    Functionality:
+    Writes nt call info to the NT_Calls.tsv if it doesn't already hold that accession's info
+
+    Returns a status code. 0 for success
+    """
     nt_calls = []
     nt_agg_code = 0
     try:
@@ -48,6 +60,18 @@ def agg_nt_calls(f_base_path: str, f_sra_acc: str) -> int:
     return nt_agg_code
 
 def agg_vars(f_base_path: str, f_sra_acc: str) -> int:
+    """
+    Called to add covariant info for an SRA accession to the collection tsv
+
+    Parameters:
+    f_base_path - path of directory where files will be read/written in subfolders - string
+    f_sra_acc - accession for the SRA sample - string
+
+    Functionality:
+    Writes covariant info to the Polymorphs.tsv if it doesn't already hold that accession's info
+
+    Returns a status code. 0 for success
+    """
     variations = []
     var_agg_code = 0
     try:
@@ -66,7 +90,6 @@ def agg_vars(f_base_path: str, f_sra_acc: str) -> int:
                 split_line = line.split("\t")
                 if split_line[1].isnumeric():
                     variations.append(line)
-
     except Exception as e:
         print(f"Error reading {f_sra_acc} covars file for aggregationg: {e}")
         var_agg_code = 1
@@ -88,7 +111,7 @@ if __name__ == "__main__":
 
     args = arg_parse()
     # check to see if files with SRA accession or meta data exist before pulling accession list
-    # file_name = ""
+    file_name = ""
     if args.file:
         file_name = args.file
     elif os.path.isfile("SraRunTable.csv"):

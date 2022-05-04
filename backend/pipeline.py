@@ -139,18 +139,18 @@ def main():
         if vc_code != 0:
             print(f"Variant calling failed for {sra_acc} ({mapping_code}).  ")
             continue
+        # get the consensus sequence from the nt calls and add to fasta and collection
         consensus_code = sra_consensus.gen_consensus(BASE_PATH, sra_acc)
         if consensus_code != 0:
             print(f"Consensus generation failed for {sra_acc} ({consensus_code}).  ")
             continue
-
-
+        # collect sample info and aggregate into collections
         nt_agg_code = sra_output_aggregate.agg_nt_calls(BASE_PATH, sra_acc)
         if nt_agg_code != 0:
             print(f"NT aggregation failed for {sra_acc} ({nt_agg_code}).  ")
             continue
         covar_agg_code = sra_output_aggregate.agg_vars(BASE_PATH, sra_acc)
-        if nt_agg_code != 0:
+        if covar_agg_code != 0:
             print(f"Polymorphism aggregation failed for {sra_acc} ({covar_agg_code}).  ")
             continue
 
