@@ -9,3 +9,4 @@ backend/tsvs/
 .pytest_cache
 SAM_refiner.py
 .pylintrc
+.tsv
