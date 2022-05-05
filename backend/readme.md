@@ -40,6 +40,10 @@ The module sra_vc.py is a wrapper for SAM Refiner and will collect variant infor
 
 The module sra_consensus.py will generate a consensus sequence for an SRA sample based on the NT calls output and write the consensus to a sample's consensus fasta (fasta subdirectory) and a collection of consensus sequences, Consensus.tsv (working directory).
 
+## sra_lineage.py
+
+The module sra_lineage.py will assign lineages to a SRA samples based on the NT calls and a refererence lineage dictionary in the data subfolder.  Results are written to sample lineage tsv and to a collection tsv.
+
 ## sra_output_aggregate.py
 
 The module sra_output_aggregate.py will collect sample information for polymorphisms and NT calls and add them to the tsv collection Polymorphisms.tsv and NT_Calls.tsv.
