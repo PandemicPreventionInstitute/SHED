@@ -42,7 +42,7 @@ The module sra_consensus.py will generate a consensus sequence for an SRA sample
 
 ## sra_lineage.py
 
-The module sra_lineage.py will assign lineages to a SRA samples based on the NT calls and a refererence lineage dictionary in the data subfolder.  Results are written to sample lineage tsv and to a collection tsv.
+The module sra_lineage.py will assign lineages to a SRA samples based on the NT calls and a refererence lineage dictionary in the data subfolder.  Results are written to sample lineage tsvs and to a collection tsv.  The lineage dictionary is a plain text file.  Each line holds the informatin for a variant lineage in a tab deliminated format.  The line must start with the __unique__ name of the lineage, with the following line entries representing a positional mutation that defines the lineage.  Examples of defining mutations: SNPs - C10029T, dels - 22194-22196del, insertions 22205-insertGAGCCAGAA.  These definitions should conform to the mapping and variant calling performed by minimap2 and SAM Refiner to properly match.   Definitions based on other mapping/vc methods may not match.
 
 ## sra_output_aggregate.py
 

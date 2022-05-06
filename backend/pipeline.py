@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This is the wrapper script for the pipeline modules.
-Last edited on 5-2-22
+Last edited on 5-6-22
 todo:  add remaining modules
         add arguments for ignoring progress, passing file for SRA data, setting paths and ...
 """
@@ -75,6 +75,8 @@ def main():
         os.mkdir(f"{BASE_PATH}/tsvs")
     # get program copy of lineage dictionary
     lineage_definitions = sra_lineage.get_lineage_dict(BASE_PATH)
+    if (not lineage_definitions) or (not isinstance(lineage_definitions, dict)):
+        print(f"Lineage definitions were not successfully read.  Lineage assignments will be skipped.")
     #  process each SRA
     for sra_acc in accession_list:
         print(f"starting processing for {sra_acc}")
@@ -147,7 +149,7 @@ def main():
         if consensus_code != 0:
             print(f"Consensus generation failed for {sra_acc} ({consensus_code}).  ")
         # assign lineages to the sample
-        if isinstance(lineage_definitions, dict):
+        if lineage_definitions and isinstance(lineage_definitions, dict):
             lin_code = sra_lineage.find_lineages(lineage_definitions, BASE_PATH, sra_acc)
             if lin_code != 0:
                 print(f"Lineage assignment failed for {sra_acc} ({lin_code}).  ")

@@ -18,7 +18,7 @@ sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import get_accessions, arg_parse
 
 
-def get_lineage_dict(f_base_path: str) -> int:
+def get_lineage_dict(f_base_path: str):
     """
     Called to assemble a local dictionary for SARS-CoV-2 lineages.
 
@@ -31,12 +31,16 @@ def get_lineage_dict(f_base_path: str) -> int:
 
     Returns the dict or a failure code.
     """
-    lin_dict = {}
+    lin_dict = {"lineages" : []}
     try:
         with open(f"{f_base_path}/data/Lineage_dict.txt") as dict_file:
             for line in dict_file:
                 split_line = line.strip("\n\r").split("\t")
                 lineage = split_line[0]
+                if lineage in lin_dict["lineages"]:
+                    print(f"Repeat lineage name {lineage}.  Skipping definition gathering for the repeat    .  Please ensure all defined lineages have unique names.")
+                    continue
+                lin_dict["lineages"].append(lineage)
                 for polymorphism in split_line[1:]:
                     if polymorphism.endswith("del"):
                         position = polymorphism.strip("del").split("-")
@@ -63,12 +67,15 @@ def get_lineage_dict(f_base_path: str) -> int:
     except Exception as e:
         print(f"Reading of lineage dict failed: {e}")
         return 1
+    if len(lin_dict["lineages"]) == 0:
+        print("No lineage definitions in definition file")
+        return 2
     return lin_dict
 
 
 def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int:
     """
-    Called to write lineage assignments of an SRA sample based
+    Called to write lineage assignments of an SRA sample
 
     Parameters:
     matches_dict - dict of lineage's polymorphism matches - dict
@@ -76,7 +83,7 @@ def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
-    Determines if lineages is present in sample based on the matches_dict and prints positive
+    Determines if lineages is present in sample based checks on the matches_dict and prints positive
     match information to sample and collection tsvs.
 
     Returns a status code. 0 for success
@@ -87,17 +94,23 @@ def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int
         try:
             for lineage in matches_dict:
                 if isinstance(lineage, str):
+                    # determine how many defined mutations were at covered positions
                     covered_positions = len(matches_dict[lineage]["values"])
+                    # determine average positive hit abundance of the covered positions
                     mean = sum(matches_dict[lineage]["values"]) / covered_positions
-                    if covered_positions > 5 and mean > 0.05:
+                    if covered_positions > 5 and mean >= 0.05:
+                        # requires at least 6 positions covered and a mean abundance of defining mutations to be at least .05
                         abund_fail = 0
                         for posit_val in matches_dict[lineage]["values"]:
+                            # determine how many defining mutatins have an abudance < .05
                             if posit_val < 0.05:
                                 abund_fail += 1
                         if abund_fail < (0.2 * covered_positions):
+                            # match check fails if 1 in 5 or more are at less than .05 abundance
                             matches.append(f"{lineage} ({mean:.2f})")
                             for position in matches_dict[lineage]:
                                 if not position == "values":
+                                    # collect positional mutation information for writing to output files
                                     matches.append(
                                         f"{position}{matches_dict[lineage][position][0]}\t{matches_dict[lineage][position][1]}\t{matches_dict[lineage][position][2]:.2f}"
                                     )
@@ -141,7 +154,6 @@ def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int
                 write_code += 7
     return write_code
 
-
 def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
     """
     Called to assign lineages to an SRA sample based on the nt calls and the lineage dict passed
@@ -163,26 +175,26 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
         if os.path.isfile(f"{f_base_path}/tsvs/{f_sra_acc}.lineages.tsv"):
             print(f"Lineage assignments for {f_sra_acc} already completed")
         else:
-            lin_match_dict = {}
             try:
-                with open(
-                    f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r"
-                ) as in_file:
+                with open(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r") as in_file:
+                    in_file.readline()
+                    second_line = in_file.readline().split("\t")
+                    try:
+                        assert (
+                            second_line[0] == "Position" and second_line[9] == "Total" and second_line[3] == "A"
+                        ), "NT call tsv does not appear to have been generated with correct version of SAM refiner"
+                    except AssertionError as e:
+                        print(e)
+                        return 2
+                    lin_match_dict = {}
+                    for lineage in lineage_defs["lineages"]:
+                        lin_match_dict[lineage] = {"values" : []}
                     nt_line_pos_dict = {"A": 3, "T": 4, "C": 5, "G": 6, "-": 7}
                     for line in in_file:
                         splitline = line.strip("\n\r").split("\t")
-                        if splitline[0] == "Position":
-                            try:
-                                assert (
-                                    splitline[9] == "Total" and splitline[3] == "A"
-                                ), "NT call tsv does not appear to have been generated with correct version of SAM refiner"
-                            except AssertionError as e:
-                                print(e)
-                                return 5
                         if splitline[0].isnumeric() and splitline[9].isnumeric():
                             position = int(splitline[0])
                             if position in lineage_defs:
-                                lin_match_dict[position] = splitline[9]
                                 for lineage in lineage_defs[position]:
                                     if (
                                         "insert" in lineage_defs[position][lineage]
@@ -193,57 +205,27 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                                         == splitline[10]
                                     ):
                                         abund = float(splitline[12])
-                                        try:
-                                            lin_match_dict[lineage][position] = (
-                                                lineage_defs[position][lineage],
-                                                splitline[11],
-                                                abund,
-                                            )
-                                        except KeyError:
-                                            lin_match_dict[lineage] = {
-                                                position: (
-                                                    lineage_defs[position][lineage],
-                                                    splitline[11],
-                                                    abund,
-                                                )
-                                            }
-                                        try:
-                                            lin_match_dict[lineage]["values"].append(
-                                                abund
-                                            )
-                                        except KeyError:
-                                            lin_match_dict[lineage]["values"] = [abund]
+                                        lin_match_dict[lineage][position] = (
+                                            lineage_defs[position][lineage],
+                                            splitline[11],
+                                            abund,
+                                        )
+                                        lin_match_dict[lineage]["values"].append(
+                                            abund
+                                        )
                                     elif not splitline[1] == "-":
                                         if "insert" in lineage_defs[position][lineage]:
-                                            try:
-                                                lin_match_dict[lineage][position]
-                                            except KeyError:
-                                                try:
-                                                    lin_match_dict[lineage][
-                                                        position
-                                                    ] = (
-                                                        lineage_defs[position][lineage],
-                                                        "0",
-                                                        0,
-                                                    )
-                                                except KeyError:
-                                                    lin_match_dict[lineage] = {
-                                                        position: (
-                                                            lineage_defs[position][
-                                                                lineage
-                                                            ],
-                                                            "0",
-                                                            0,
-                                                        )
-                                                    }
-                                                try:
-                                                    lin_match_dict[lineage][
-                                                        "values"
-                                                    ].append(0)
-                                                except KeyError:
-                                                    lin_match_dict[lineage][
-                                                        "values"
-                                                    ] = [0]
+                                            if not position in lin_match_dict[lineage]:
+                                                lin_match_dict[lineage][
+                                                    position
+                                                ] = (
+                                                    lineage_defs[position][lineage],
+                                                    "0",
+                                                    0,
+                                                )
+                                                lin_match_dict[lineage][
+                                                    "values"
+                                                ].append(0)
                                             continue
                                         count = splitline[
                                             nt_line_pos_dict[
@@ -251,26 +233,14 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                                             ]
                                         ]
                                         abund = float(count) / int(splitline[9])
-                                        try:
-                                            lin_match_dict[lineage][position] = (
-                                                lineage_defs[position][lineage],
-                                                count,
-                                                abund,
-                                            )
-                                        except KeyError:
-                                            lin_match_dict[lineage] = {
-                                                position: (
-                                                    lineage_defs[position][lineage],
-                                                    count,
-                                                    abund,
-                                                )
-                                            }
-                                        try:
-                                            lin_match_dict[lineage]["values"].append(
-                                                abund
-                                            )
-                                        except KeyError:
-                                            lin_match_dict[lineage]["values"] = [abund]
+                                        lin_match_dict[lineage][position] = (
+                                            lineage_defs[position][lineage],
+                                            count,
+                                            abund
+                                        )
+                                        lin_match_dict[lineage]["values"].append(
+                                            abund
+                                        )
             except Exception as e:
                 print(f"Unable to get lineage information for {f_sra_acc}: ({e})")
                 lin_code = 1
