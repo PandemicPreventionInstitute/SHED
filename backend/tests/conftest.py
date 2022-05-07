@@ -24,3 +24,8 @@ def necessary_files():
     os.system(f"rm -rf {TestPath}/fastqs")
     os.system(f"rm -rf {TestPath}/SRAs")
     os.system(f"rm -rf {TestPath}/processing")
+    os.system(f"rm -rf {TestPath}/data")
+    os.system(f"rm -rf {TestPath}/sams")
+    os.system(f"rm -rf {TestPath}/tsvs")
+    os.system(f"rm -rf {TestPath}/Sam_refiner.py")
+    os.system(f"rm -rf {TestPath}/*.tsv")

@@ -7,7 +7,7 @@ on the nt calls.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-5-22
+Last edited on 5-7-22
     add time out
 """
 
@@ -72,7 +72,6 @@ def get_lineage_dict(f_base_path: str):
         return 2
     return lin_dict
 
-
 def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int:
     """
     Called to write lineage assignments of an SRA sample
@@ -134,7 +133,7 @@ def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int
             try:
                 with open(f"{f_base_path}/Lineages.tsv", "a+") as agg_out:
                     agg_out.seek(0)
-                    if f"{f_sra_acc}\t" in agg_out.read():
+                    if f"{f_sra_acc}\n" in agg_out.read():
                         print(
                             f"Lineage assignment for {f_sra_acc} already in aggregate file. Not duplicating."
                         )
@@ -253,7 +252,6 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
         lin_code = -1
 
     return lin_code
-
 
 if __name__ == "__main__":
     """
