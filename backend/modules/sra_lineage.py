@@ -118,6 +118,7 @@ def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int
             write_code = 3
         else:
             try:
+                # attempts to print the sample output
                 with open(
                     f"{f_base_path}/tsvs/{f_sra_acc}.lineages.tsv", "w"
                 ) as samp_out:
@@ -131,6 +132,8 @@ def print_lin_finds(matches_dict: dict, f_base_path: str, f_sra_acc: str) -> int
                 print(f"Lineage match sample writing for {f_sra_acc} failed: {e}")
                 write_code = 5
             try:
+                # attempts to check the aggregate output for pre-existing aggregation
+                # writes to aggregate if not already present
                 with open(f"{f_base_path}/Lineages.tsv", "a+") as agg_out:
                     agg_out.seek(0)
                     if f"{f_sra_acc}\n" in agg_out.read():
@@ -177,6 +180,7 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
             try:
                 with open(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r") as in_file:
                     in_file.readline()
+                    # check for correct sam refiner output format
                     second_line = in_file.readline().split("\t")
                     try:
                         assert (
@@ -192,8 +196,10 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                     for line in in_file:
                         splitline = line.strip("\n\r").split("\t")
                         if splitline[0].isnumeric() and splitline[9].isnumeric():
+                            # makes sure line is a position line
                             position = int(splitline[0])
                             if position in lineage_defs:
+                                # if position is lineage defining get info on that defining polymorphism
                                 for lineage in lineage_defs[position]:
                                     if (
                                         "insert" in lineage_defs[position][lineage]
@@ -203,6 +209,7 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                                         )
                                         == splitline[10]
                                     ):
+                                        # handles insertion line reports
                                         abund = float(splitline[12])
                                         lin_match_dict[lineage][position] = (
                                             lineage_defs[position][lineage],
@@ -213,8 +220,10 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                                             abund
                                         )
                                     elif not splitline[1] == "-":
+                                        # handles regular poistional line reports
                                         if "insert" in lineage_defs[position][lineage]:
                                             if not position in lin_match_dict[lineage]:
+                                                # gets insertion defining info if it wasn't present
                                                 lin_match_dict[lineage][
                                                     position
                                                 ] = (
@@ -226,6 +235,7 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                                                     "values"
                                                 ].append(0)
                                             continue
+                                        # get non-insertion defining info
                                         count = splitline[
                                             nt_line_pos_dict[
                                                 lineage_defs[position][lineage]
@@ -244,6 +254,7 @@ def find_lineages(lineage_defs: dict, f_base_path: str, f_sra_acc: str) -> int:
                 print(f"Unable to get lineage information for {f_sra_acc}: ({e})")
                 lin_code = 1
             else:
+                # print if lineage defining info parsing didn't fail
                 print_code = print_lin_finds(lin_match_dict, f_base_path, f_sra_acc)
                 if not print_code == 0:
                     lin_code = print_code
