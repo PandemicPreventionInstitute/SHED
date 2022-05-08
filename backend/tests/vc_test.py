@@ -45,6 +45,6 @@ class TestVC:
 
     def  test_vc_output(self):
         # output check
-        with open(f"{TestPath}/tsvs/TestCheck_AA_covars.tsv", "r") as check:
+        with open(f"{TestPath}/tsvs/CheckVC_AA_covars.tsv", "r") as check:
             with open(f"{TestPath}/tsvs/FreshVC_AA_covars.tsv", "r") as fresh:
                 assert check.read() == fresh.read()
