@@ -7,7 +7,7 @@ the pre-existing mapped reads.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-2-22
+Last edited on 5-7-22
     add time out
     add no sam result check
 """
@@ -28,8 +28,8 @@ def vc_sams(f_base_path: str, f_sra_acc: str) -> int:
     f_sra_acc - accession for the SRA sample - string
 
     Functionality:
-    Uses python and SAM Refiner to perform it own functions and provide most errors
-    tsv outputs moved to the tsvs subfolder
+    Uses python and SAM Refiner to perform it own functions and provide most errors.
+    Moves tsv outputs to the tsvs subfolder.
 
     Returns a status code. 0 for  success or pre-existing finished vc outputs
     """
@@ -37,7 +37,7 @@ def vc_sams(f_base_path: str, f_sra_acc: str) -> int:
         # check for pre-existing finished tsvs
         if (
             os.path.isfile(f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv")
-            and os.path.isfile(f"{f_base_path}/tsvs/{f_sra_acc}_covars.tsv")
+            and os.path.isfile(f"{f_base_path}/tsvs/{f_sra_acc}_AA_covars.tsv")
             and not os.path.isfile(
                 f"{f_base_path}/tsvs/{f_sra_acc}.vcalling.started"
             )
@@ -55,7 +55,9 @@ def vc_sams(f_base_path: str, f_sra_acc: str) -> int:
             )
             if vc_code == 0:
                 os.remove(f"{f_base_path}/tsvs/{f_sra_acc}.vcalling.started")
-            os.system(f"mv {f_base_path}/sams/{f_sra_acc}*.tsv {f_base_path}/tsvs")
+                move_code = os.system(f"mv {f_base_path}/sams/{f_sra_acc}*.tsv {f_base_path}/tsvs")
+                if move_code != 0:
+                    vc_code = -2
         else:
             print(f"Can't find sam for {f_sra_acc}")
             vc_code = 1

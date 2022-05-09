@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This is the wrapper script for the pipeline modules.
-Last edited on 5-2-22
+Last edited on 5-6-22
 todo:  add remaining modules
         add arguments for ignoring progress, passing file for SRA data, setting paths and ...
 """
@@ -17,6 +17,7 @@ from modules import sra_preproc
 from modules import sra_map
 from modules import sra_vc
 from modules import sra_consensus
+from modules import sra_lineage
 from modules import sra_output_aggregate
 
 def arg_parse():
@@ -72,6 +73,10 @@ def main():
         os.mkdir(f"{BASE_PATH}/sams")
     if not os.path.isdir(f"{BASE_PATH}/tsvs"):
         os.mkdir(f"{BASE_PATH}/tsvs")
+    # get program copy of lineage dictionary
+    lineage_definitions = sra_lineage.get_lineage_dict(BASE_PATH)
+    if (not lineage_definitions) or (not isinstance(lineage_definitions, dict)):
+        print("Lineage definitions were not successfully read.  Lineage assignments will be skipped.")
     #  process each SRA
     for sra_acc in accession_list:
         print(f"starting processing for {sra_acc}")
@@ -137,22 +142,24 @@ def main():
         # get variants and nt calls from sam with SAM Refiner
         vc_code = sra_vc.vc_sams(BASE_PATH, sra_acc)
         if vc_code != 0:
-            print(f"Variant calling failed for {sra_acc} ({mapping_code}).  ")
+            print(f"Variant calling failed for {sra_acc} ({vc_code}).  ")
             continue
         # get the consensus sequence from the nt calls and add to fasta and collection
         consensus_code = sra_consensus.gen_consensus(BASE_PATH, sra_acc)
         if consensus_code != 0:
             print(f"Consensus generation failed for {sra_acc} ({consensus_code}).  ")
-            continue
+        # assign lineages to the sample
+        if lineage_definitions and isinstance(lineage_definitions, dict):
+            lin_code = sra_lineage.find_lineages(lineage_definitions, BASE_PATH, sra_acc)
+            if lin_code != 0:
+                print(f"Lineage assignment failed for {sra_acc} ({lin_code}).  ")
         # collect sample info and aggregate into collections
         nt_agg_code = sra_output_aggregate.agg_nt_calls(BASE_PATH, sra_acc)
         if nt_agg_code != 0:
             print(f"NT aggregation failed for {sra_acc} ({nt_agg_code}).  ")
-            continue
         covar_agg_code = sra_output_aggregate.agg_vars(BASE_PATH, sra_acc)
         if covar_agg_code != 0:
             print(f"Polymorphism aggregation failed for {sra_acc} ({covar_agg_code}).  ")
-            continue
 
         # post-processing
         # clean up

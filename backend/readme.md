@@ -40,6 +40,10 @@ The module sra_vc.py is a wrapper for SAM Refiner and will collect variant infor
 
 The module sra_consensus.py will generate a consensus sequence for an SRA sample based on the NT calls output and write the consensus to a sample's consensus fasta (fasta subdirectory) and a collection of consensus sequences, Consensus.tsv (working directory).
 
+## sra_lineage.py
+
+The module sra_lineage.py will assign lineages to a SRA samples based on the NT calls and a refererence lineage dictionary in the data subfolder.  Results are written to sample lineage tsvs and to a collection tsv.  The lineage dictionary is a plain text file.  Each line holds the informatin for a variant lineage in a tab deliminated format.  The line must start with the __unique__ name of the lineage, with the following line entries representing at least six positional mutation that defines the lineage.  Examples of defining mutations: SNPs - C10029T, dels - 22194-22196del, insertions 22205-insertGAGCCAGAA.  These definitions should conform to the mapping and variant calling performed by minimap2 and SAM Refiner to properly match.   Definitions based on other mapping/vc methods may not match.  The assignment algorithm used is customized for the SAM Refiner output.  Other methods will likely require at least reformating of vc outputs.  The current definitions are based on Pango, NextStrain and GISAID assignments.
+
 ## sra_output_aggregate.py
 
 The module sra_output_aggregate.py will collect sample information for polymorphisms and NT calls and add them to the tsv collection Polymorphisms.tsv and NT_Calls.tsv.

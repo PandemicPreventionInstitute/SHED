@@ -7,7 +7,7 @@ nt call output and write it to a fasta file and a collection tsv.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-3-22
+Last edited on 5-7-22
     add time out
 """
 
@@ -86,15 +86,22 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                 with open(
                     f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r"
                 ) as in_file:
+                    in_file.readline()
+                    second_line = in_file.readline().split("\t")
+                    try:
+                        assert (
+                            second_line[0] == "Position"
+                            and second_line[9] == "Total"
+                            and second_line[3] == "A"
+                        ), "NT calls tsv has incorrect headers. Likely in incorrect format."
+
+                    except AssertionError as e:
+                        print(e)
+                        return 5
+
                     for line in in_file:
                         splitline = line.strip("\n\r").split("\t")
                         last_position = 0
-                        if splitline[0] == "Position":
-                            try:
-                                assert splitline[9] == "Total", "NT call tsv does not appear to have been generated with correct version of SAM refiner"
-                            except AssertionError as e:
-                                print(e)
-                                return 5
                         if (
                             splitline[0].isnumeric()
                             and splitline[9].isnumeric()
@@ -123,7 +130,8 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                 print(f"Error reading nt calls file for {f_sra_acc}: {e}")
                 consensus_code = 1
             else:
-                if consensus:
+                if consensus and consensus.strip("N"):
+                    # ensure there is a consensus sequence with ATCG
                     consensus_code = write_consensus(
                         consensus, f_base_path, f_sra_acc
                     )
