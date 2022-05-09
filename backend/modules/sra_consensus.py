@@ -90,11 +90,15 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                     second_line = in_file.readline().split("\t")
                     try:
                         assert (
-                            second_line[0] == "Position" and second_line[9] == "Total" and second_line[3] == "A"
-                        ), "NT call tsv does not appear to have been generated with correct version of SAM refiner"
+                            second_line[0] == "Position"
+                            and second_line[9] == "Total"
+                            and second_line[3] == "A"
+                        ), "NT calls tsv has incorrect headers. Likely in incorrect format."
+
                     except AssertionError as e:
                         print(e)
                         return 5
+
                     for line in in_file:
                         splitline = line.strip("\n\r").split("\t")
                         last_position = 0
