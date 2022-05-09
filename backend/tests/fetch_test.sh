@@ -3,7 +3,7 @@
 # written by Devon Gregory
 # test for sra_fetch.py
 # will download small fastq files from 5 SRA samples based on TestSraList.txt
-# last editted on 5-6-22
+# last editted on 5-9-22
 
 mkdir fastqs
 echo 'starting sra_fetch.py test'

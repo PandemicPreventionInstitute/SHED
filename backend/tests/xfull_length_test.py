@@ -23,24 +23,18 @@ class TestFullPipeline:
             with open(f"{TestPath}/Lineages.tsv", "r") as good:
                 with open(f"{TestPath}/SoloFullLins.tsv", "r") as solocheck:
                     good_read = good.read()
-                    file_check1 = checked.read() ==  good_read
-                    file_check2 = solocheck.read() == good_read
-                    assert file_check1 or file_check2
+                    assert (solocheck.read() == good_read or checked.read() ==  good_read)
 
-    def test_covar_agg(self):
+    def test_NT_agg(self):
         with open(f"{TestPath}/FullNTs.tsv", "r") as checked:
             with open(f"{TestPath}/NT_Calls.tsv", "r") as good:
                 with open(f"{TestPath}/SoloFullNTs.tsv", "r") as solocheck:
                     good_read = good.read()
-                    file_check1 = checked.read() ==  good_read
-                    file_check2 = solocheck.read() == good_read
-                    assert file_check1 or file_check2
+                    assert (solocheck.read() == good_read or checked.read() ==  good_read)
 
     def test_consensus_agg(self):
         with open(f"{TestPath}/FullCons.tsv", "r") as checked:
             with open(f"{TestPath}/Consensus.tsv", "r") as good:
                 with open(f"{TestPath}/SoloFullCons.tsv", "r") as solocheck:
                     good_read = good.read()
-                    file_check1 = checked.read() ==  good_read
-                    file_check2 = solocheck.read() == good_read
-                    assert file_check1 or file_check2
+                    assert (solocheck.read() == good_read or checked.read() ==  good_read)

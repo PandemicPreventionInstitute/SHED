@@ -18,6 +18,10 @@ TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
 class TestMaping:
     """Tests for mapping module"""
 
+    def  test_no_acc(self):
+        # no accession passed
+        assert sra_map.map_reads("", None) == -1
+        
     def  test_bad_acc(self):
         # no str accession passed
         assert sra_map.map_reads("", 2) == -1
@@ -42,4 +46,4 @@ class TestMaping:
         # output check
         with open(f"{TestPath}/sams/TestCheck.sam", "r") as check:
             with open(f"{TestPath}/sams/FreshMapping.sam", "r") as fresh:
-                assert check.read() == fresh.read()
+                assert check.readlines()[2:] == fresh.readlines()[2:]
