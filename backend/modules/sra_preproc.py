@@ -14,7 +14,9 @@ todo: capture std out from program calls
 
 import os
 import sys
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modlules")
+import time
+
+sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 # def get_fastq_stat(f_base_path, f_sra_acc):

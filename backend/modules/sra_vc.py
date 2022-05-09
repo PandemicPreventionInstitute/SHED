@@ -7,7 +7,7 @@ the pre-existing mapped reads.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-2-22
+Last edited on 5-7-22
     add time out
     add no sam result check
 """
@@ -55,9 +55,9 @@ def vc_sams(f_base_path: str, f_sra_acc: str) -> int:
             )
             if vc_code == 0:
                 os.remove(f"{f_base_path}/tsvs/{f_sra_acc}.vcalling.started")
-            move_code = os.system(f"mv {f_base_path}/sams/{f_sra_acc}*.tsv {f_base_path}/tsvs")
-            if move_code != 0:
-                vc_code = -2
+                move_code = os.system(f"mv {f_base_path}/sams/{f_sra_acc}*.tsv {f_base_path}/tsvs")
+                if move_code != 0:
+                    vc_code = -2
         else:
             print(f"Can't find sam for {f_sra_acc}")
             vc_code = 1

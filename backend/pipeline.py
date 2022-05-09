@@ -76,7 +76,7 @@ def main():
     # get program copy of lineage dictionary
     lineage_definitions = sra_lineage.get_lineage_dict(BASE_PATH)
     if (not lineage_definitions) or (not isinstance(lineage_definitions, dict)):
-        print(f"Lineage definitions were not successfully read.  Lineage assignments will be skipped.")
+        print("Lineage definitions were not successfully read.  Lineage assignments will be skipped.")
     #  process each SRA
     for sra_acc in accession_list:
         print(f"starting processing for {sra_acc}")

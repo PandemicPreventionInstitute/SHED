@@ -28,7 +28,7 @@ def arg_parse():
         default="",
         help="SRA accession list or metadata table.  Accessions to be at the start of a newline and separated from the remaining line with a comma",
     )
-    
+
     return parser.parse_args()
 
 

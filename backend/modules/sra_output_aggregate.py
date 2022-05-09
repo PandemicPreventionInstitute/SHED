@@ -7,7 +7,7 @@ tsvs into a single tsv in the base path directory.
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own function.
-Last edited on 5-3-22
+Last edited on 5-8-22
     add time out
 """
 
@@ -36,14 +36,16 @@ def agg_nt_calls(f_base_path: str, f_sra_acc: str) -> int:
         with open(f"{f_base_path}/NT_Calls.tsv", "r") as sra_check:
             if f"{f_sra_acc}(" in sra_check.read():
                 print(f"{f_sra_acc} already in NT_Calls.tsv.  Not overwriting")
-                return(0)
+                return 0
     except FileNotFoundError:
         pass
     try:
         with open(
             f"{f_base_path}/tsvs/{f_sra_acc}_nt_calls.tsv", "r"
         ) as in_file:
-            nt_calls.append(in_file.readline().split("/")[-1])
+            samp_info = in_file.readline().split("/")[-1]
+            if samp_info:
+                nt_calls.append(samp_info)
             for line in in_file:
                 split_line = line.split("\t")
                 nt_calls.append(split_line[0]+"\t"+"\t".join(split_line[3:11])+"\n")
@@ -51,11 +53,16 @@ def agg_nt_calls(f_base_path: str, f_sra_acc: str) -> int:
         print(f"Error reading {f_sra_acc} nt call file for aggregationg: {e}")
         nt_agg_code = 1
     else:
-        try:
-            with open(f"{f_base_path}/NT_Calls.tsv", "a") as out_file:
-                out_file.writelines(nt_calls)
-        except Exception as e:
-            print(f"Error writing {f_sra_acc} nt calls to aggregate: {e}")
+        if nt_calls:
+            try:
+                with open(f"{f_base_path}/NT_Calls.tsv", "a") as out_file:
+                    out_file.writelines(nt_calls)
+                    out_file.writelines("\n")
+            except Exception as e:
+                print(f"Error writing {f_sra_acc} nt calls to aggregate: {e}")
+                nt_agg_code = 3
+        else:
+            print(f"No NT Call data in nt call file for {f_sra_acc}")
             nt_agg_code = 2
     return nt_agg_code
 
@@ -78,14 +85,16 @@ def agg_vars(f_base_path: str, f_sra_acc: str) -> int:
         with open(f"{f_base_path}/Polymorphs.tsv", "r") as sra_check:
             if f"{f_sra_acc}(" in sra_check.read():
                 print(f"{f_sra_acc} already in Polymorphs tsv.  Not overwriting")
-                return(0)
+                return 0
     except FileNotFoundError:
         pass
     try:
         with open(
             f"{f_base_path}/tsvs/{f_sra_acc}_AA_covars.tsv", "r"
         ) as in_file:
-            variations.append(in_file.readline().split("/")[-1])
+            samp_info = in_file.readline().split("/")[-1]
+            if samp_info:
+                variations.append(samp_info)
             for line in in_file:
                 split_line = line.split("\t")
                 if split_line[1].isnumeric():
@@ -97,6 +106,7 @@ def agg_vars(f_base_path: str, f_sra_acc: str) -> int:
         try:
             with open(f"{f_base_path}/Polymorphs.tsv", "a") as out_file:
                 out_file.writelines(variations)
+                out_file.writelines("\n")
         except Exception as e:
             print(f"Error writing {f_sra_acc} polymorphisms to aggregate: {e}")
             var_agg_code = 2
