@@ -127,6 +127,7 @@ def gen_consensus(f_base_path: str, f_sra_acc: str) -> int:
                 consensus_code = 1
             else:
                 if consensus and consensus.strip("N"):
+                    # ensure there is a consensus sequence with ATCG
                     consensus_code = write_consensus(
                         consensus, f_base_path, f_sra_acc
                     )
