@@ -10,3 +10,4 @@ backend/tsvs/
 SAM_refiner.py
 .pylintrc
 *.tsv
+*.txt
