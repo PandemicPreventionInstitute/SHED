@@ -278,7 +278,7 @@ test_lin_dict = {
     27384: {'OmicronBA.2': 'C'},
     29510: {'OmicronBA.2': 'C'}
     }
-    
+
 class TestLineageDictGet:
 
     def test_no_file(self):

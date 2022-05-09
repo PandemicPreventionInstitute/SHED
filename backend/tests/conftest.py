@@ -16,7 +16,7 @@ def necessary_files():
     # setup
     TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
     os.system(f"tar -xzf {TestPath}/testfiles.tar.gz -C {TestPath}")
-    
+
     yield
     # tear down
     os.system(f"rm -rf {TestPath}/lists")

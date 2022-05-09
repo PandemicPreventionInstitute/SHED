@@ -18,7 +18,7 @@ TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
 
 class TestVC:
     """Tests for mapping module"""
-    
+
     def  test_bad_acc(self):
         # bad sra
         assert sra_vc.vc_sams("", 2) == -1

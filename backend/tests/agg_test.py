@@ -70,4 +70,3 @@ class TestAggCovars:
         with open(f"{TestPath}/CheckCovars.tsv", "r") as checked:
             with open(f"{TestPath}/Polymorphs.tsv", "r") as good:
                 assert checked.read() ==  good.read()
-

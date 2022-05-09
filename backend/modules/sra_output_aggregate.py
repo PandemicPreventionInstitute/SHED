@@ -36,7 +36,7 @@ def agg_nt_calls(f_base_path: str, f_sra_acc: str) -> int:
         with open(f"{f_base_path}/NT_Calls.tsv", "r") as sra_check:
             if f"{f_sra_acc}(" in sra_check.read():
                 print(f"{f_sra_acc} already in NT_Calls.tsv.  Not overwriting")
-                return(0)
+                return 0
     except FileNotFoundError:
         pass
     try:
@@ -85,7 +85,7 @@ def agg_vars(f_base_path: str, f_sra_acc: str) -> int:
         with open(f"{f_base_path}/Polymorphs.tsv", "r") as sra_check:
             if f"{f_sra_acc}(" in sra_check.read():
                 print(f"{f_sra_acc} already in Polymorphs tsv.  Not overwriting")
-                return(0)
+                return 0
     except FileNotFoundError:
         pass
     try:
