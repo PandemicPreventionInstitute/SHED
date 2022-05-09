@@ -3,7 +3,7 @@
 """
 Writen by Devon Gregory
 This script tests the workings of the sra_output_aggregate module using pytest
-Last edited on 5-8-22
+Last edited on 5-9-22
 """
 
 import os
@@ -14,30 +14,27 @@ TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
 class TestFullPipeline:
 
     def test_full_run(self):
-        if os.path.isfile(f"{TestPath}/Lineages.tsv"):
-            os.remove(f"{TestPath}/Lineages.tsv")
-        if os.path.isfile(f"{TestPath}/Consensus.tsv"):
-            os.remove(f"{TestPath}/Consensus.tsv")
-        if os.path.isfile(f"{TestPath}/NT_Calls.tsv"):
-            os.remove(f"{TestPath}/NT_Calls.tsv")
         assert os.system(f"python3 {TestPath[:-5]}pipeline.py -d {TestPath} -i {TestPath}/lists/FullTestList.txt") == 0
 
-    # test aggregate outputs
+    def check_output_finishes(self):
+        assert (
+            os.path.isfile(f"{TestPath}/fastas/SRR18539183.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18543413.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR15240636.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18543439.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18539299.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18541018.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18543570.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18115715.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/fastas/SRR18543378.consensus.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18539183.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18543413.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR15240636.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18543439.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18539299.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18541018.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18543570.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18115715.lineages.fasta") and
+            os.path.isfile(f"{TestPath}/tsvs/SRR18543378.lineages.fasta")
+        )
 
-    def test_lineage_agg(self):
-        # with open(f"{TestPath}/FullLins.tsv", "r") as checked:
-        with open(f"{TestPath}/Lineages.tsv", "r") as good:
-            with open(f"{TestPath}/SoloFullLins.tsv", "r") as solocheck:
-                assert (solocheck.read() == good.read())
-
-    def test_NT_agg(self):
-        # with open(f"{TestPath}/FullNTs.tsv", "r") as checked:
-        with open(f"{TestPath}/NT_Calls.tsv", "r") as good:
-            with open(f"{TestPath}/SoloFullNTs.tsv", "r") as solocheck:
-                assert (solocheck.read() == good.read())
-
-    def test_consensus_agg(self):
-        # with open(f"{TestPath}/FullCons.tsv", "r") as checked:
-        with open(f"{TestPath}/Consensus.tsv", "r") as good:
-            with open(f"{TestPath}/SoloFullCons.tsv", "r") as solocheck:
-                assert (solocheck.read() == good.read())
