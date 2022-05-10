@@ -10,6 +10,7 @@ complicated. The following software is *required*:
 - Anaconda (Miniconda is fine)
 - [sra-tools](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit)
 - [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/)
+- [bbtools](https://formulae.brew.sh/formula/bbtools)
 
 First, set up a clean conda environment (i.e. with no other programs
 installed):
