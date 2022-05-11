@@ -7,7 +7,7 @@ concatonate merged and unmergable reads, and dereplicate the concatenated or sin
 It can be loaded as a module or run as a stand alone script. As the latter,
 it parses the file provided in the command argument,
 or a metadata table in the cwd, for accessions and then calls its own functions.
-Last edited on 5-2-22
+Last edited on 5-11-22
 todo: capture std out from program calls
     add timeouts
 """
@@ -16,7 +16,7 @@ import os
 import sys
 import time
 
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend/modules")
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir)))
 from sra_file_parse import find_fastqs, get_accessions, arg_parse
 
 # def get_fastq_stat(f_base_path, f_sra_acc):

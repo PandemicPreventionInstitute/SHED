@@ -14,7 +14,7 @@ import pytest
 @pytest.fixture(scope="session", autouse=True)
 def necessary_files():
     # setup
-    TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
+    TestPath = os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir))
     os.system(f"tar -xzf {TestPath}/testfiles.tar.gz -C {TestPath}")
 
     yield
