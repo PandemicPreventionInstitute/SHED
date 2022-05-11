@@ -10,10 +10,10 @@ import os
 import sys
 import pytest
 
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend")
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir, os.pardir)))
 import modules.sra_preproc as preproc
 
-TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
+TestPath = os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir))
 
 
 class TestBBToolsProcess:

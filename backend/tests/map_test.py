@@ -3,17 +3,17 @@
 """
 Writen by Devon Gregory
 This script tests the workings of the sra_map module using pytest
-Last edited on 5-7-22
+Last edited on 5-11-22
 """
 
 import os
 import sys
 import pytest
 
-sys.path.insert(1, os.getcwd().split("SHED")[0] + "SHED/backend")
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir, os.pardir)))
 from modules import sra_map
 
-TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
+TestPath = os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir))
 
 class TestMaping:
     """Tests for mapping module"""

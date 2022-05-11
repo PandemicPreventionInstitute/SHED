@@ -3,14 +3,14 @@
 """
 Writen by Devon Gregory
 This script tests the workings of the sra_output_aggregate module using pytest
-Last edited on 5-9-22
+Last edited on 5-11-22
 """
 
 import os
 import sys
 import pytest
 
-TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
+TestPath = os.path.abspath(os.path.join(os.path.realpath(__file__), os.pardir))
 class TestFullPipeline:
 
     def test_full_run(self):
