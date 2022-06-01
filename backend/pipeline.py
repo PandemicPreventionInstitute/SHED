@@ -10,6 +10,7 @@ todo:  add remaining modules
 import os
 import sys
 import argparse
+
 # import sra_query
 from modules import sra_file_parse
 from modules import sra_fetch
@@ -19,6 +20,7 @@ from modules import sra_vc
 from modules import sra_consensus
 from modules import sra_lineage
 from modules import sra_output_aggregate
+
 
 def arg_parse():
     """parses command arguments"""
@@ -42,8 +44,9 @@ def arg_parse():
     )
     return parser.parse_args()
 
+
 def main():
-    '''Main pipeline logic'''
+    """Main pipeline logic"""
     args = arg_parse()
     BASE_PATH = os.path.normpath(args.work_path)
     if not os.path.isdir(BASE_PATH):
@@ -76,7 +79,9 @@ def main():
     # get program copy of lineage dictionary
     lineage_definitions = sra_lineage.get_lineage_dict(BASE_PATH)
     if (not lineage_definitions) or (not isinstance(lineage_definitions, dict)):
-        print("Lineage definitions were not successfully read.  Lineage assignments will be skipped.")
+        print(
+            "Lineage definitions were not successfully read.  Lineage assignments will be skipped."
+        )
     #  process each SRA
     for sra_acc in accession_list:
         print(f"starting processing for {sra_acc}")
@@ -102,7 +107,9 @@ def main():
             if preproc_error_code == 0:
                 preproc_error_code = sra_preproc.concat_files(BASE_PATH, sra_acc)
                 if preproc_error_code == 0:
-                    preproc_error_code = sra_preproc.dereplicate_reads(BASE_PATH, sra_acc)
+                    preproc_error_code = sra_preproc.dereplicate_reads(
+                        BASE_PATH, sra_acc
+                    )
                     if preproc_error_code == 0:
                         preproc_code = 0
                     else:
@@ -136,7 +143,9 @@ def main():
         if mapping_code != 0:
             print(f"Mapping failed for {sra_acc} ({mapping_code}).  ")
             if mapping_code == 32512:
-                print("Minimap not found.  Please make sure it is installed an executable from the command line '$ minimap2 -h'")
+                print(
+                    "Minimap not found.  Please make sure it is installed an executable from the command line '$ minimap2 -h'"
+                )
                 sys.exit(1)
             continue
         # get variants and nt calls from sam with SAM Refiner
@@ -150,7 +159,9 @@ def main():
             print(f"Consensus generation failed for {sra_acc} ({consensus_code}).  ")
         # assign lineages to the sample
         if lineage_definitions and isinstance(lineage_definitions, dict):
-            lin_code = sra_lineage.find_lineages(lineage_definitions, BASE_PATH, sra_acc)
+            lin_code = sra_lineage.find_lineages(
+                lineage_definitions, BASE_PATH, sra_acc
+            )
             if lin_code != 0:
                 print(f"Lineage assignment failed for {sra_acc} ({lin_code}).  ")
         # collect sample info and aggregate into collections
@@ -159,13 +170,15 @@ def main():
             print(f"NT aggregation failed for {sra_acc} ({nt_agg_code}).  ")
         covar_agg_code = sra_output_aggregate.agg_vars(BASE_PATH, sra_acc)
         if covar_agg_code != 0:
-            print(f"Polymorphism aggregation failed for {sra_acc} ({covar_agg_code}).  ")
+            print(
+                f"Polymorphism aggregation failed for {sra_acc} ({covar_agg_code}).  "
+            )
 
         # post-processing
         # clean up
 
-
     print("End Pipeline")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
