@@ -5,7 +5,7 @@ validating  the Sequencing Hub for Environmental Data (SHED).
 
 ## Installation instructions
 
-Installating the required programs on a PPI machine is a little bit
+Installing the required programs on a PPI machine is a little bit
 complicated. The following software is *required*:
 - Anaconda (Miniconda is fine)
 - [sra-tools](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit)
@@ -32,7 +32,7 @@ And append it to your path:
 
 *BE SURE* that this path points correctly to the unpacked version of the SRA
 toolkit. The version of the SRA toolkit should be at least 2.11.2 to ensure
-that the required functionality is available. Packages managers like homebrew
+that the required functionality is available. Packages managers like Homebrew
 are currently installing versions below 2.11, necessitating manual install.
 
 Running this `export` command will work until the shell is closed, but to cause
@@ -67,9 +67,11 @@ packages needed than were installed with `pytest`. If this occurs, it can be
 solved with `conda config --set channel_priority false` and then rerunning the
 installation of fastx toolkit.
 
-Finally, `cd` to the folder in which the `pipeline.py` script is running and 
-install `SAM refiner` 
-with `curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_Refiner.py`. Do not use conda/bioconda because the version it installs is not the latest and will not have all of the required features.
- 
+Then, `cd` to the folder in which the `pipeline.py` script is running and 
+install `SAM refiner` with `curl 
+https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o 
+SAM_Refiner.py`. Do not use conda/bioconda because the version it installs is 
+not the latest and will not have all of the required features.
 
- 
+To set up [pre-commit hooks](https://pre-commit.com/), install the 
+`pre-commmit` package manager.
