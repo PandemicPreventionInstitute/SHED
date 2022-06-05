@@ -14,7 +14,7 @@ min_version("7.8.0")
 
 configfile: "config.yaml"
 
-include: "modules/snakefunctions.py"
+include: "modules/snakefunctions"
 
 DATE_STAMP = time.time()
 sra_query(config["query"], DATE_STAMP)
