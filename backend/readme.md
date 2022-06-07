@@ -2,7 +2,7 @@
 
 This folder contains the scripts and tests for the backend bioinformatics pipeline for SHED.  This pipeline will query NCBI's SRA to obtains sample metadata (saved with a timestamp tag) and then download and process the raw sequencing data.  The pipeline uses snakemake.  Please make sure [snakemake 7.8+](https://snakemake.readthedocs.io/en/stable/) and [Miniconda](https://docs.conda.io/en/latest/miniconda.html) are installed.  To run the pipeline use the command:
 ```bash
-$ snakemake -c1 --use-conda -k
+$ bash pipeline.sh
 ```
 The first run may require significant additional processing time for snakemake to download and build environments for the pipeline's dependancies.  The pipeline requires and will install:
 [NCBI's SRA Tools](https://github.com/ncbi/sra-tools)
@@ -21,11 +21,7 @@ To insure the correct query pattern, you may wish to run the query with [NCBI's 
     reprocess:
         True
 ```
-and run the pipeline with:
-```bash
-$ snakemake -c1 --use-conda -k -F
-```
-The number of cores the pipeline is run can be changed with the -c1 argument.  -c1 is one core, -c2 is two cores, etc.
+Any samples that aren't found by NCBI's SRA Tools prefetch aren't processed further and a file is written to the SRAs/ directory indicating a bad accession.
 
 
 ## Testing

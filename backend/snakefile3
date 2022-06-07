@@ -3,113 +3,37 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to peform the
 bioinformatics processing for SRA samples.
-Last edited on 6-5-22
-to do: impliment aggregation, clean up, tests
+Last edited on 6-7-22
+to do: add threading, impliment clean up, tests
 """
 import os
-import time
 from snakemake.utils import min_version
 
 min_version("7.8.0")
 
 configfile: "config.yaml"
 
-include: "modules/snakefunctions"
+include: "modules/snakefunctions.py"
 
-DATE_STAMP = time.time()
-sra_query(config["query"], DATE_STAMP)
-parse_xml_meta(DATE_STAMP)
-sra_accs = get_sample_acc(DATE_STAMP, config["reprocess"])
-
-# commit above 4 lines and uncomment next line to test w/o running the query
-
-# sra_accs = {'SRR18541040': {'bed': 'data/SNAP.bed', 'cut': ''}, 'ERR5996055': {'bed': 'data/articv3.bed', 'cut': ''}, 'SRR15294802': {'bed': 'data/SpikeSeq.bed', 'cut': ''}, 'SRR15240439': {'bed': 'data/SpikeSeq.bed', 'cut': ''}, 'SRR17887900': {'bed': 'data/articv4.bed', 'cut': ''}, 'SRR17888010': {'bed': 'data/articv4.bed', 'cut': ''}, 'SRR17689171': {'bed': 'Unknown', 'cut': '-f 25 '}, 'ERR5019844': {'bed': 'data/articv3.bed', 'cut': ''}}
+sra_accs = get_sample_acc2(config["reprocess"])
+qc_passed = qc_pass(sra_accs)
 
 rule all:
     """
     Establishes targets for snakemake and initial wildcard values
     """
     input:
-        expand("SRAs/{sra_acc}/{sra_acc}.sra", sra_acc=sra_accs),
-        expand("fastqs/{sra_acc}.qc.done", sra_acc=sra_accs),
-        "endpoints/Lineages.tsv"
+        expand("sams/{sra_acc_qced}.sam", sra_acc_qced=qc_passed),
+        "endpoints/aggregate.done"
 
-checkpoint download_sra:
-    """
-    Downloads the sra files for the samples collected in the query
-    using NCBI's SRA Tools prefetch
-    """
-    output:
-        "SRAs/{sra_acc}/{sra_acc}.sra"
-    log:
-        "logs/{sra_acc}.sra.log"
-    conda:
-        "envs/sra-tools.yaml"
-    shell:
-        "prefetch {wildcards.sra_acc} -O SRAs >>{log} 2>&1"
 
-rule get_fastqs:
-    """
-    Downloads the fastq files for the samples collected in the query
-    using NCBI's SRA Tools fasterq-dump.  Reads will be split into
-    seperate files for forward and reverse paired end, and single end
-    reads.  Unpaired reads from paired end sequencing (very rare)
-    won't be processed past qc.
-    """
-    input:
-        rules.download_sra.output
-    output:
-        touch("fastqs/{sra_acc}.fq.done")
-    log:
-        "logs/{sra_acc}.fq.log"
-    conda:
-        "envs/sra-tools.yaml"
-    shell:
-        "fasterq-dump --split-files -f -O fastqs {wildcards.sra_acc} >>{log} 2>&1"
-
-rule quality_check:
-    """
-    Checks the quality of the reads using fastp.  Reads are trimmed of 25 nts if
-    sequencing primers haven't been determined and quality trimmed.  Sequences not
-    at least 50 nts long are failed.  fastp defaults are otherwise used.
-    """
-    input:
-        ff="fastqs/{sra_acc}.fq.done"
-    output:
-        touch("fastqs/{sra_acc}.qc.done")
-    params:
-        gen="--dont_eval_duplication -5 -3 -l 50 ",
-        cutting=lambda wildcards: sra_accs[wildcards.sra_acc]["cut"]
-    log:
-        "logs/{sra_acc}.qc.log"
-    conda:
-        "envs/fastp.yaml"
-    shell:
-        """
-        if [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
-        then
-        fastp {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}.fastq -o fastqs/{wildcards.sra_acc}.se.qc.fq \
-        -j fastqs/{wildcards.sra_acc}.se.json -h fastqs/{wildcards.sra_acc}.se.html >>{log} 2>&1
-        fi
-        if [[ -f fastqs/{wildcards.sra_acc}_1.fastq ]]
-        then
-        fastp --detect_adapter_for_pe {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}_1.fastq \
-        -I fastqs/{wildcards.sra_acc}_2.fastq -o fastqs/{wildcards.sra_acc}_1.qc.fq -O fastqs/{wildcards.sra_acc}_2.qc.fq \
-        -j fastqs/{wildcards.sra_acc}.pe.json -h fastqs/{wildcards.sra_acc}.pe.html >>{log} 2>&1
-        fi
-        """
-
-# get the sample accs that pass the qc step
-passed_qc = find_qc_fqs(sra_accs)
-
-checkpoint mapping:
+rule mapping:
     """
     mapping of quality checked reads using minimap2 against the
     reference SARS-CoV-2 Wuhan-Hu-1 sequence using the short read
     presets (No wastewater sequences seems to have long reads)
     """
     input:
-        fqs=lambda wildcards: passed_qc[wildcards.sra_acc_qced],
         fa="data/SARS2.fasta"
     output:
         "sams/{sra_acc_qced}.sam"
@@ -118,14 +42,25 @@ checkpoint mapping:
     conda:
         "envs/minimap2.yaml"
     shell:
-        "minimap2 -ax sr {input.fa} {input.fqs} -o {output} --secondary=no --sam-hit-only >>{log} 2>&1"
+        """
+        if [[ -f fastqs/{wildcards.sra_acc_qced}_1.fastq && -f fastqs/{wildcards.sra_acc_qced}_2.fastq ]]
+        then
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc_qced}_1.fastq fastqs/{wildcards.sra_acc_qced}_2.fastq \
+        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        fi
+        if [[ -f fastqs/{wildcards.sra_acc_qced}.fastq ]]
+        then
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc_qced}.fastq \
+        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        fi
+        """
 
 rule sam2bam:
     """
     convert, sort and index the sams to bams using samtools (deb with ivar)
     """
     input:
-        sam="sams/{sra_acc_qced}.sam"
+        "sams/{sra_acc_qced}.sam"
     output:
         "sams/{sra_acc_qced,\D+\d+}.bam"
     log:
@@ -133,7 +68,7 @@ rule sam2bam:
     conda:
         "envs/ivar.yaml"
     shell:
-        "samtools sort {input.sam} -o {output} >>{log} 2>&1 && samtools index {output} >>{log} 2>&1"
+        "samtools sort {input} -o {output} >>{log} 2>&1 && samtools index {output} >>{log} 2>&1"
 
 rule primer_trim:
     """
@@ -220,7 +155,6 @@ rule vc:
         fi
         """
 
-
 rule lineages:
     """
     generates a lineage report using freyja
@@ -242,12 +176,10 @@ rule aggregate:
     to be replaced with actual aggregation script
     """
     input:
-        expand("endpoints/{sra_acc_qced}.tsv", sra_acc_qced=passed_qc),
-        expand("endpoints/{sra_acc_qced}.fa", sra_acc_qced=passed_qc),
-        expand("endpoints/{sra_acc_qced}.lineages.tsv", sra_acc_qced=passed_qc),
+        vcs=expand("endpoints/{sra_acc_qced}.tsv", sra_acc_qced=qc_passed),
+        cons=expand("endpoints/{sra_acc_qced}.fa", sra_acc_qced=qc_passed),
+        lins=expand("endpoints/{sra_acc_qced}.lineages.tsv", sra_acc_qced=qc_passed),
     output:
-        "endpoints/VCs.tsv",
-        "endpoints/Consensus.fa",
-        "endpoints/Lineages.tsv"
-    shell:
-        "touch endpoints/Lineages.tsv && touch endpoints/VCs.tsv && touch endpoints/Consensus.fa"
+        touch("endpoints/aggregate.done")
+    run:
+        aggregate_endpoints(input.vcs, input.cons, input.lins, config["reprocess"])

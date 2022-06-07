@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This script has functions to query NCBI's SRA database to obtain sample
 metadata for samples matching the search string 'SARS-CoV-2 wastewater'.
-Last edited on 6-5-22
+Last edited on 6-7-22
 """
 
 import os
@@ -10,6 +10,7 @@ import sys
 import subprocess
 import xml.parsers.expat
 import json
+import shutil
 
 
 def sra_query(search_str: str, date_stamp: str) -> int:
@@ -31,7 +32,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
     subprocess.run(
         [
             f"curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0' -L --alt-svc '' \
-            --anyauth -b ncbi https://www.ncbi.nlm.nih.gov/sra/?term={search_str} -o search_results_{date_stamp}.html"
+            --anyauth -b ncbi 'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' -o search_results_{date_stamp}.html"
         ],
         shell=True,
         check=True,
@@ -49,7 +50,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         sys.exit(2)
     subprocess.run(
         [
-            f"curl https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch\&rettype=runinfo\&db=sra\&WebEnv=MCID_{mcid}\&query_key={key} \
+            f"curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&rettype=runinfo&db=sra&WebEnv=MCID_{mcid}&query_key={key}' \
             -L -o sra_data_{date_stamp}.csv"
         ],
         shell=True,
@@ -57,7 +58,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
     )
     subprocess.run(
         [
-            f"curl https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch\&rettype=exp\&db=sra\&WebEnv=MCID_{mcid}\&query_key={key} \
+            f"curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&rettype=exp&db=sra&WebEnv=MCID_{mcid}&query_key={key}' \
             -L -o sra_meta_{date_stamp}.xml"
         ],
         shell=True,
@@ -246,10 +247,48 @@ def parse_xml_meta(date_stamp: str) -> int:
                 parse_xml.EndElementHandler = end_element
                 parse_xml.CharacterDataHandler = char_data
                 parse_xml.Parse(full_meta_in_fh.read())
+    shutil.copyfile(
+        f"sra_meta_collect_{date_stamp}.tsv",
+        "sra_meta_collect_current.tsv",
+    )
     return 0
 
 
-def get_sample_acc(date_stamp: str, redo: bool) -> list:
+def get_sample_acc1(redo: bool) -> list:
+    """
+    Called to get the accessions of the samples of the current query.
+
+    Parameters:
+    date_stamp - timestamp of current query - str
+    bool - boolean for reprocessing samples - bool
+
+    Functionality:
+        If reprocessing is not to be done, accessions of previously
+        downloaded and processed samples are collected from the current
+        meta collected values tsv. Sample accession are check against
+        previously processed samples, if relevent, and returned
+
+    Returns a list of the accessions
+    """
+    prev_accs = []
+    if (not redo) and os.path.isdir("fastqs/"):
+        for file in os.listdir("fastqs/"):
+            if file.endswith(".json"):
+                prev_accs.append(file.split(".")[0])
+    accs = []
+    with open("sra_meta_collect_current.tsv", "r") as in_fh:
+        for line in in_fh:
+            split_line = line.strip("\n").split("\t")
+            if (
+                split_line[0]
+                and (split_line[0].startswith("SRR") or split_line[0].startswith("ERR"))
+                and not split_line[0] in prev_accs
+            ):
+                accs.append(split_line[0])
+    return " ".join(accs)
+
+
+def get_sample_acc2(redo: bool) -> dict:
     """
     Called to get the accessions of the samples of the current query.
 
@@ -267,14 +306,13 @@ def get_sample_acc(date_stamp: str, redo: bool) -> list:
 
     Returns a dict of the accessions with primer trimming instructions.
     """
-
     prev_accs = []
-    if (not redo) and os.path.isdir(os.path.join(os.getcwd(), "fastqs/")):
+    if (not redo) and os.path.isdir("fastqs/"):
         for file in os.listdir("fastqs/"):
             if file.endswith(".json"):
                 prev_accs.append(file.split(".")[0])
     accs = {}
-    with open(f"sra_meta_collect_{date_stamp}.tsv", "r") as in_fh:
+    with open("sra_meta_collect_current.tsv", "r") as in_fh:
         for line in in_fh:
             split_line = line.strip("\n").split("\t")
             if (
@@ -282,13 +320,14 @@ def get_sample_acc(date_stamp: str, redo: bool) -> list:
                 and (split_line[0].startswith("SRR") or split_line[0].startswith("ERR"))
                 and not split_line[0] in prev_accs
             ):
-                accs[split_line[0]] = {"bed": split_line[3], "cut": ""}
-                if split_line[3] == "Unknown":
-                    accs[split_line[0]]["cut"] = "-f 25 "
+                if os.path.isfile(f"SRAs/{split_line[0]}/{split_line[0]}.sra"):
+                    accs[split_line[0]] = {"bed": split_line[3], "cut": ""}
+                    if split_line[3] == "Unknown":
+                        accs[split_line[0]]["cut"] = "-f 25 "
     return accs
 
 
-def find_qc_fqs(sample_accs: list) -> dict:
+def qc_pass(sample_accs: dict) -> list:
     """
     Called to discover qc checked fastq files generated by the quality_check rule
     and determine if they are of a quality worth continuing.
@@ -297,13 +336,14 @@ def find_qc_fqs(sample_accs: list) -> dict:
     sample_accs - accession list for the SRA samples - list
 
     Functionality:
-        Checks the fastqs subfolder for single or paired fastq files,
+        Checks the fastqs subfolder for single or paired qced fastq files,
         then checks the qc json for sufficient passed reads to conintue.
-        Currently requires over 500 passed reads.
+        Currently requires over 500 passed reads. returns list of passed samples
 
-    Returns a dict of the found fastqs if they pass qc.
+    Returns list of past accs
     """
-    passed_dict = {}
+
+    passed = []
     for acc in sample_accs:
         pe_files = [f"fastqs/{acc}_1.qc.fq", f"fastqs/{acc}_2.qc.fq"]
         se_file = f"fastqs/{acc}.qc.fq"
@@ -311,11 +351,121 @@ def find_qc_fqs(sample_accs: list) -> dict:
             with open(f"fastqs/{acc}.pe.json", "r") as json_fh:
                 json_as_dict = json.load(json_fh)
                 if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
-                    passed_dict[acc] = pe_files
+                    passed.append(acc)
         elif os.path.isfile(se_file):
             with open(f"fastqs/{acc}.se.json", "r") as json_fh:
                 json_as_dict = json.load(json_fh)
-                print(se_file)
                 if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
-                    passed_dict[acc] = [se_file]
-    return passed_dict
+                    passed.append(acc)
+
+    return passed
+
+
+def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
+    """
+    Called to aggregate the individual sample endpoints.
+
+    Parameters:
+    vc_list - list files for variant calls - list
+    con_list - list files for consensus - list
+    lin_list - list files for lineages - list
+    redo - boolean for the samples being reprocessed - bool
+
+    Functionality:
+        Adds sample data to the aggregate files unless it is
+        already present and reprocessing isn't being done
+
+    Returns 0 if successful.
+    """
+
+    for file in vc_list:
+        samp = file.split("/")[1].split(".")[0]
+        re_write = False
+        with open("endpoints/VCs.tsv", "a+") as agg:
+            agg.seek(0)
+            present = samp in agg.read()
+            if redo and present:
+                re_write = True
+            elif not present:
+                with open(file, "r") as samp_fh:
+                    agg.write(samp)
+                    agg.write("\n")
+                    agg.write(samp_fh.read())
+                    agg.write("\n--------\n")
+        if re_write:
+            old_file = ""
+            new_file = ""
+            with open("endpoints/VCs.tsv", "r") as agg:
+                old_file = agg.read()
+            old_split = old_file.split("\n--------\n")
+            for data in old_split:
+                if (not data.startswith(samp)) and data.strip():
+                    new_file += data
+                    new_file += "\n--------\n"
+            with open("endpoints/VCs.tsv", "w") as agg:
+                agg.write(new_file)
+                with open(file, "r") as samp_fh:
+                    agg.write(samp)
+                    agg.write("\n")
+                    agg.write(samp_fh.read())
+                    agg.write("\n--------\n")
+
+    for file in con_list:
+        samp = file.split("/")[1].split(".")[0]
+        re_write = False
+        with open("endpoints/Consensus.fa", "a+") as agg:
+            agg.seek(0)
+            present = samp in agg.read()
+            if redo and present:
+                re_write = True
+            elif not present:
+                with open(file, "r") as samp_fh:
+                    agg.write(samp_fh.read())
+        if re_write:
+            old_file = ""
+            new_file = ""
+            with open("endpoints/Consensus.fa", "r") as agg:
+                old_file = agg.read()
+            old_split = old_file.split(">")
+            for data in old_split:
+                if (not samp in data) and data.strip():
+                    new_file += ">"
+                    new_file += data
+            with open("endpoints/Consensus.fa", "w") as agg:
+                agg.write(new_file)
+                with open(file, "r") as samp_fh:
+                    agg.write(samp_fh.read())
+
+    for file in lin_list:
+        samp = file.split("/")[1].split(".")[0]
+        re_write = False
+        with open("endpoints/Lineages.tsv", "a+") as agg:
+            agg.seek(0)
+            present = samp in agg.read()
+            if redo and present:
+                re_write = True
+            elif not present:
+                with open(file, "r") as samp_fh:
+                    agg.write(samp)
+                    agg.write("\n")
+                    agg.write(samp_fh.read())
+                    agg.write("\n--------\n")
+        if re_write:
+            old_file = ""
+            new_file = ""
+            with open("endpoints/Lineages.tsv", "r") as agg:
+                old_file = agg.read()
+            old_split = old_file.split("\n--------\n")
+            for data in old_split:
+                if (not data.startswith(samp)) and data.strip():
+                    new_file += data
+                    new_file += "\n--------\n"
+            with open("endpoints/Lineages.tsv", "w") as agg:
+                agg.write(new_file)
+                with open(file, "r") as samp_fh:
+                    agg.write(samp)
+                    agg.write("\n")
+                    agg.write(samp_fh.read())
+                    agg.write("\n--------\n")
+
+    return 0
