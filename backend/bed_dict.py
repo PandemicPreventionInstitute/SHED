@@ -28,5 +28,5 @@ d = {
 
 j = json.dumps(d, indent=4)
 
-with open("data/bed_mapping.json", "w", encoding="utf-8") as outfile:
+with open("data/primer_mapping.json", "w", encoding="utf-8") as outfile:
     outfile.write(j)
