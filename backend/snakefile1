@@ -1,10 +1,10 @@
 
 """
-Writen by Devon Gregory
-This snakefile is meant to be run via snakemake to peform the
+Written by Devon Gregory
+This snakefile is meant to be run via snakemake to perform the
 bioinformatics processing for SRA samples.
 Last edited on 6-7-22
-to do: impliment tests
+to do: implement tests
 """
 import os
 import time
