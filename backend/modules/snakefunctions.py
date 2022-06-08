@@ -27,7 +27,12 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         the metadata.  The metadata is the downloaded with curl.  Files
         are tagged with the date stamp.
 
-    Returns 0 if no exceptions were raised
+        This function parses the text provided by the requested sample by
+        splitting on the MCID field -- this assumes that every sample will
+        have an MCID field. It also assumes that each sample will have
+        a query_key field.
+
+        Return: 0 if no exceptions were raised
     """
     subprocess.run(
         [
@@ -81,37 +86,28 @@ def get_primer_bed(primers_str: str) -> str:
 
     Returns string of the bed file
     """
-    bed = ""
-    if "ArticV4.1" in primers_str:
-        bed = "data/articv4.1.bed"
-    elif "ArticV4" in primers_str:
-        bed = "data/articv4.bed"
-    elif "NEBNext" in primers_str:
-        if "VarSkip" in primers_str:
-            if "Long" in primers_str:
-                bed = "data/NEBNextVSL.bed"
-            elif "V2" in primers_str:
-                bed = "data/NEBNextVSSv2.bed"
-            else:
-                bed = "data/NEBNextVSS.bed"
-        else:
-            bed = "data/articv3.bed"
-    elif "Artic" in primers_str:
-        bed = "data/articv3.bed"
-    elif "QiaSeq" in primers_str:
-        bed = "data/QiaSeq.bed"
-    elif "SNAPadd" in primers_str:
-        bed = "data/SNAPaddtlCov.bed"
-    elif "SNAP" in primers_str:
-        bed = "data/SNAP.bed"
-    elif "Spike-Amps" in primers_str:
-        bed = "data/SpikeSeq.bed"
-    elif "IonAmpliSeq" in primers_str:
-        bed = "Unknown"  # "data/IonAmpliSeq.bed" Seems to not be used in USA samples
-    elif "Paragon" in primers_str:
-        bed = "Unknown"  # "data/Paragon.bed" Used by one USA group
+
+    _primer_map_json = open("data/primer_mapping.json", encoding="utf-8")
+    _primer_map_dict = json.load(_primer_map_json)
+
+    keys = _primer_map_dict.keys()
+    contains_key = keys in primers_str
+
+    if sum(contains_key) == 1:  # iif exactly one match
+
+        bed = bed.get(keys[contains_key], "Unknown")
+
+        # If the match is a subdict, iterate through it  match there necessary
+        while isinstance(bed, dict):
+
+            keys = bed.keys()
+            contains_key = keys in primers_str
+            bed = bed.get(keys[contains_key], "Unknown")
+
     else:
+
         bed = "Unknown"
+
     return bed
 
 
