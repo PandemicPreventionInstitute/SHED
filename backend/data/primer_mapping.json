@@ -1,0 +1,19 @@
+{
+    "ArticV4.1": "data/articv4.1.bed",
+    "ArticV4": "data/articv4.bed",
+    "NEBNext": {
+        "VarSkip": {
+            "Long": "data/NEBNextVSL.bed",
+            "V2": "data/NEBNextVSSv2.bed",
+            "Other": "data/NEBNextVSS.bed"
+        },
+        "Other": "data/articv3.bed"
+    },
+    "Artic": "data/articv3.bed",
+    "QiaSeq": "data/QiaSeq.bed",
+    "SNAPadd": "data/SNAPaddtlCov.bed",
+    "SNAP": "data/SNAP.bed",
+    "Spike-Amps": "data/SpikeSeq.bed",
+    "IonAmpliSeq": "Unknown",
+    "Paragon": "Unknown"
+}
