@@ -22,9 +22,9 @@ d = {
     "SNAPadd": "data/SNAPaddtlCov.bed",
     "SNAP": "data/SNAP.bed",
     "Spike-Amps": "data/SpikeSeq.bed",
-    "IonAmpliSeq": "Unknown",  # "data/IonAmpliSeq.bed" Seems to not be used
-    "Paragon": "Unknown",
-}  # "data/Paragon.bed" Used by one USA group
+    "IonAmpliSeq": "Unknown",  # "data/IonAmpliSeq.bed" Seems to not be used in USA
+    "Paragon": "Unknown",  # "data/Paragon.bed" Used by one USA group
+}
 
 j = json.dumps(d, indent=4)
 

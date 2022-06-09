@@ -23,17 +23,16 @@ def sra_query(search_str: str, date_stamp: str) -> int:
 
     Functionality:
         curl is used to download the html results for the query.
-        The html is then parsed to find the MDID and key for downloading
-        the metadata.  The metadata is the downloaded with curl.  Files
+        The html is then parsed to find the MDID and key of the specific
+        query for downloading the metadata, also using using curl.  Files
         are tagged with the date stamp.
 
-        This function parses the text provided by the requested sample by
-        splitting on the MCID field -- this assumes that every sample will
-        have an MCID field. It also assumes that each sample will have
-        a query_key field.
+        Searches returning no results (and maybe only 1 result) will cause
+        a program exit.
 
         Return: 0 if no exceptions were raised
     """
+
     subprocess.run(
         [
             f"curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0' -L --alt-svc '' \
@@ -90,25 +89,197 @@ def get_primer_bed(primers_str: str) -> str:
     _primer_map_json = open("data/primer_mapping.json", encoding="utf-8")
     _primer_map_dict = json.load(_primer_map_json)
 
-    keys = _primer_map_dict.keys()
-    contains_key = keys in primers_str
+    # keys = _primer_map_dict.keys()
+    # contains_key = keys in primers_str
 
-    if sum(contains_key) == 1:  # iif exactly one match
+    # if sum(contains_key) == 1:  # if exactly one match
 
-        bed = bed.get(keys[contains_key], "Unknown")
+    # bed = bed.get(keys[contains_key], "Unknown")
 
-        # If the match is a subdict, iterate through it  match there necessary
-        while isinstance(bed, dict):
+    # # If the match is a subdict, iterate through it  match there necessary
+    # while isinstance(bed, dict):
 
-            keys = bed.keys()
-            contains_key = keys in primers_str
-            bed = bed.get(keys[contains_key], "Unknown")
+    # keys = bed.keys()
+    # contains_key = keys in primers_str
+    # bed = bed.get(keys[contains_key], "Unknown")
 
-    else:
+    # else:
 
-        bed = "Unknown"
+    # bed = "Unknown"
+
+    bed = "Unknown"
+    matching_dict = _primer_map_dict
+    while isinstance(matching_dict, dict) and bed == "Unknown":
+        for key in matching_dict:
+            if key in primers_str:
+                if isinstance(_primer_map_dict[key], str):
+                    bed = _primer_map_dict[key]
+                    break  # multiple keys may be present in primers_str, match the first key only
+                matching_dict = matching_dict[key]
+            else:
+                try:
+                    bed = matching_dict["Other"]
+                except KeyError:
+                    pass
 
     return bed
+
+
+def start_ele_fun(name, attrs, element_strs, elements_dict, out_fh):
+    """
+    Called to perform the actions and logic of dealing with the start
+    of an xml element.
+
+    Parameters:
+    name - name of the element - str
+    attrs - dict of elements attributes - dict
+    element_strs - list of the elements/subelements - list
+    elements_dict - dict to collect metadata from elements - dict
+    out_fh - file to write out all metadata - file object
+
+    Functionality:
+        parses the passed element info and updates/writes out metadata
+
+    Returns elements_dict
+    """
+
+    if len(element_strs) > 1:
+        if len(element_strs) > 2:
+            for elems in element_strs[2:]:
+                out_fh.write("    ")
+        out_fh.write(name)
+        out_fh.write(" :")
+        if attrs:
+            out_fh.write(" ")
+            out_fh.write(str(attrs))
+        out_fh.write("\n")
+    if name == "RUN":
+        try:
+            elements_dict["accession"] = attrs["accession"]
+        except KeyError as err:
+            elements_dict["accession"] = err
+
+    return elements_dict
+
+
+def end_ele_fun(name, element_strs, elements_dict, out_fh, lite_out_fh):
+    """
+    Called to perform the actions and logic of dealing with the end
+    of an xml element.
+
+    Parameters:
+    name - name of the element - str
+    element_strs - list of the elements/subelements - list
+    elements_dict - dict to collect metadata from elements - dict
+    out_fh - file to write out all metadata - file object
+    lite_out_fh - file to write out select metadata - file object
+
+    Functionality:
+        parses the passed element info and updates/writes out metadata
+
+    Returns elements_dict
+    """
+
+    if element_strs and len(element_strs) < 2:
+        out_fh.write("\n")
+        lite_out_fh.write(
+            f"{elements_dict['accession']}\t{elements_dict['date']}\t{elements_dict['loc']}\t"
+        )
+        if elements_dict["primers"]:
+            lite_out_fh.write(get_primer_bed(" ".join(elements_dict["primers"])))
+        else:
+            lite_out_fh.write("Unknown")
+        lite_out_fh.write("\t")
+        lite_out_fh.write(" ".join(elements_dict["primers"]))
+        lite_out_fh.write("\n")
+        elements_dict["accession"] = ""
+        elements_dict["date"] = ""
+        elements_dict["loc"] = ""
+        elements_dict["primers"] = []
+
+    return elements_dict
+
+
+def data_fun(data, element_strs, elements_dict, flags, out_fh):
+    """
+    Called to perform the actions and logic of dealing with the data
+    of an xml element.
+
+    Parameters:
+    name - name of the element - str
+    element_strs - list of the elements/subelements - list
+    elements_dict - dict to collect metadata from elements - dict
+    flags - dict of flags for collecting specific metadata - dict
+    out_fh - file to write out all metadata - file object
+
+    Functionality:
+        parses the passed data info and updates/writes out metadata
+
+    Returns elements_dict
+    """
+
+    if len(element_strs) > 1:
+        for elems in element_strs[1:]:
+            out_fh.write("    ")
+    out_fh.write(data)
+    out_fh.write("\n")
+    if flags["loc"]:
+        if element_strs[-1] == "VALUE":
+            if elements_dict["loc"]:
+                elements_dict["loc"] += ", " + data
+            else:
+                elements_dict["loc"] = data
+        flags["loc"] = False
+    if element_strs[-1] == "TAG" and (
+        data == "geo_loc_name"
+        or data == "geo loc name"
+        or "geographic location" in data
+    ):
+        flags["loc"] = True
+    if flags["date"]:
+        if element_strs[-1] == "VALUE":
+            elements_dict["date"] = data
+        flags["date"] = False
+    if element_strs[-1] == "TAG" and (data in ("collection_date", "collection date")):
+        flags["date"] = True
+    if "SNAP" in data.upper():
+        if "ADD" in data.upper():
+            elements_dict["primers"].append("SNAPadd")
+        else:
+            elements_dict["primers"].append("SNAP")
+    if "SWIFT" in data.upper():
+        elements_dict["primers"].append("SNAP")
+    if "QIASEQ" in data.upper():
+        elements_dict["primers"].append("QiaSeq")
+    if "NEBNEXT" in data.upper():
+        elements_dict["primers"].append("NEBNext")
+        if "VARSKIP" in data.upper():
+            elements_dict["primers"].append("VarSkip")
+        if "LONG" in data.upper():
+            elements_dict["primers"].append("Long")
+        if "SHORT" in data.upper():
+            elements_dict["primers"].append("Short")
+        if "V2" in data.upper():
+            elements_dict["primers"].append("V2")
+    if "ARTIC" in data.upper():
+        if "V3" in data.upper():
+            elements_dict["primers"].append("ArticV3")
+        elif "V4.1" in data.upper():
+            elements_dict["primers"].append("ArticV4.1")
+        elif "V4" in data.upper():
+            elements_dict["primers"].append("ArticV4")
+        else:
+            elements_dict["primers"].append("Artic")
+    if "PRJNA715712" in data:
+        elements_dict["primers"].append("Spike-Amps")
+    if "PRJNA748354" in data:
+        elements_dict["primers"].append("Spike-Amps")
+    if "FISHER" in data.upper() or "ION AMPLISEQ" in data.upper():
+        elements_dict["primers"].append("IonAmpliSeq")
+    if "PARAGON" in data.upper():
+        elements_dict["primers"].append("Paragon")
+
+    return elements_dict
 
 
 def parse_xml_meta(date_stamp: str) -> int:
@@ -139,105 +310,15 @@ def parse_xml_meta(date_stamp: str) -> int:
                 # 3 handler functions
                 def start_element(name, attrs):
                     element_strs.append(name)
-                    if len(element_strs) > 1:
-                        if len(element_strs) > 2:
-                            for elems in element_strs[2:]:
-                                out_fh.write("    ")
-                        out_fh.write(name)
-                        out_fh.write(" :")
-                        if attrs:
-                            out_fh.write(" ")
-                            out_fh.write(str(attrs))
-                        out_fh.write("\n")
-                    if name == "RUN":
-                        try:
-                            elements_dict["accession"] = attrs["accession"]
-                        except KeyError as err:
-                            elements_dict["accession"] = err
+                    start_ele_fun(name, attrs, element_strs, elements_dict, out_fh)
 
                 def end_element(name):
                     element_strs.pop()
-                    if element_strs and len(element_strs) < 2:
-                        out_fh.write("\n")
-                        lite_out_fh.write(
-                            f"{elements_dict['accession']}\t{elements_dict['date']}\t{elements_dict['loc']}\t"
-                        )
-                        if elements_dict["primers"]:
-                            lite_out_fh.write(
-                                get_primer_bed(" ".join(elements_dict["primers"]))
-                            )
-                        else:
-                            lite_out_fh.write("Unknown")
-                        lite_out_fh.write("\n")
-                        elements_dict["accession"] = ""
-                        elements_dict["date"] = ""
-                        elements_dict["loc"] = ""
-                        elements_dict["primers"] = []
+                    end_ele_fun(name, element_strs, elements_dict, out_fh, lite_out_fh)
 
                 def char_data(data):
                     if data and data.strip():
-                        if len(element_strs) > 1:
-                            for elems in element_strs[1:]:
-                                out_fh.write("    ")
-                        out_fh.write(data)
-                        out_fh.write("\n")
-                        if flags["loc"]:
-                            if element_strs[-1] == "VALUE":
-                                if elements_dict["loc"]:
-                                    elements_dict["loc"] += ", " + data
-                                else:
-                                    elements_dict["loc"] = data
-                            flags["loc"] = False
-                        if element_strs[-1] == "TAG" and (
-                            data == "geo_loc_name"
-                            or data == "geo loc name"
-                            or "geographic location" in data
-                        ):
-                            flags["loc"] = True
-                        if flags["date"]:
-                            if element_strs[-1] == "VALUE":
-                                elements_dict["date"] = data
-                            flags["date"] = False
-                        if element_strs[-1] == "TAG" and (
-                            data in ("collection_date", "collection date")
-                        ):
-                            flags["date"] = True
-                        if "SNAP" in data.upper():
-                            if "ADD" in data.upper():
-                                elements_dict["primers"].append("SNAPadd")
-                            else:
-                                elements_dict["primers"].append("SNAP")
-                        if "SWIFT" in data.upper():
-                            elements_dict["primers"].append("SNAP")
-                        if "QIASEQ" in data.upper():
-                            elements_dict["primers"].append("QiaSeq")
-                        if "NEBNEXT" in data.upper():
-                            elements_dict["primers"].append("NEBNext")
-                            if "VARSKIP" in data.upper():
-                                elements_dict["primers"].append("VarSkip")
-                            if "LONG" in data.upper():
-                                elements_dict["primers"].append("Long")
-                            if "SHORT" in data.upper():
-                                elements_dict["primers"].append("Short")
-                            if "V2" in data.upper():
-                                elements_dict["primers"].append("V2")
-                        if "ARTIC" in data.upper():
-                            if "V3" in data.upper():
-                                elements_dict["primers"].append("ArticV3")
-                            elif "V4.1" in data.upper():
-                                elements_dict["primers"].append("ArticV4.1")
-                            elif "V4" in data.upper():
-                                elements_dict["primers"].append("ArticV4")
-                            else:
-                                elements_dict["primers"].append("Artic")
-                        if "PRJNA715712" in data:
-                            elements_dict["primers"].append("Spike-Amps")
-                        if "PRJNA748354" in data:
-                            elements_dict["primers"].append("Spike-Amps")
-                        if "FISHER" in data.upper() or "ION AMPLISEQ" in data.upper():
-                            elements_dict["primers"].append("IonAmpliSeq")
-                        if "PARAGON" in data.upper():
-                            elements_dict["primers"].append("Paragon")
+                        data_fun(data, element_strs, elements_dict, flags, out_fh)
 
                 parse_xml.StartElementHandler = start_element
                 parse_xml.EndElementHandler = end_element
@@ -255,7 +336,6 @@ def get_sample_acc1(redo: bool) -> list:
     Called to get the accessions of the samples of the current query.
 
     Parameters:
-    date_stamp - timestamp of current query - str
     bool - boolean for reprocessing samples - bool
 
     Functionality:
@@ -289,7 +369,6 @@ def get_sample_acc2(redo: bool) -> dict:
     Called to get the accessions of the samples of the current query.
 
     Parameters:
-    date_stamp - timestamp of current query - str
     bool - boolean for reprocessing samples - bool
 
     Functionality:

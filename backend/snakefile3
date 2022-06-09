@@ -172,8 +172,8 @@ rule lineages:
 
 rule aggregate:
     """
-    placeholder needed to get snakemake to function smoothly.
-    to be replaced with actual aggregation script
+    calls aggregation function to collect sample data into aggregate files
+    need to add aggreagation of metadata at some point
     """
     input:
         vcs=expand("endpoints/{sra_acc_qced}.tsv", sra_acc_qced=qc_passed),
