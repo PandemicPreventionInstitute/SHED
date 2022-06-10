@@ -78,7 +78,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
     return 0
 
 
-def get_primer_bed(primers_str: str) -> str:
+def get_primer_bed(primers_str: str, mapping_file: str) -> str:
     """
     Called to determine the proper primer bed based on the str passed.
 
@@ -96,7 +96,7 @@ def get_primer_bed(primers_str: str) -> str:
     Returns string of the bed file
     """
 
-    with open("data/primer_mapping.json", encoding="utf-8") as _primer_map_json:
+    with open(mapping_file, encoding="utf-8") as _primer_map_json:
         _primer_map_dict = json.load(_primer_map_json)
 
     bed = "Unknown"
@@ -179,7 +179,11 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
             f"{elements_dict['accession']}\t{elements_dict['date']}\t{elements_dict['loc']}\t"
         )
         if elements_dict["primers"]:
-            lite_out_fh.write(get_primer_bed(" ".join(elements_dict["primers"])))
+            lite_out_fh.write(
+                get_primer_bed(
+                    "".join(elements_dict["primers"]), "data/primer_mapping.json"
+                )
+            )
         else:
             lite_out_fh.write("Unknown")
         lite_out_fh.write("\t")
@@ -268,7 +272,7 @@ def data_fun(data, element_strs, elements_dict, flags, out_fh):
     flags["date"] = modify_date_flag(flags, element_strs, elements_dict, data)
 
     # Add new primers observed in the data
-    new_elements = get_primer_bed(data.upper())
+    new_elements = get_primer_bed(data.upper(), "data/element_mapping.json")
     elements_dict["primers"].append(new_elements)
 
     return elements_dict
