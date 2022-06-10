@@ -35,8 +35,11 @@ def sra_query(search_str: str, date_stamp: str) -> int:
 
     subprocess.run(
         [
-            f"curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0' -L --alt-svc '' \
-            --anyauth -b ncbi 'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' -o search_results_{date_stamp}.html"
+            "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0)"
+            "Gecko/20100101 Firefox/50.0' -L --alt-svc ''"
+            "--anyauth -b ncbi"
+            f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}'"
+            f"-o search_results_{date_stamp}.html"
         ],
         shell=True,
         check=True,
@@ -44,7 +47,9 @@ def sra_query(search_str: str, date_stamp: str) -> int:
     mcid = ""
     key = -1
     try:
-        with open(f"search_results_{date_stamp}.html", "r") as search_fh:
+        with open(
+            f"search_results_{date_stamp}.html", "r", encoding="utf-8"
+        ) as search_fh:
             mcid = search_fh.read().split('value="MCID_')[1].split('"')[0]
             search_fh.seek(0)
             key = search_fh.read().split("query_key:&quot;")[1].split("&quot")[0]
@@ -54,16 +59,18 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         sys.exit(2)
     subprocess.run(
         [
-            f"curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&rettype=runinfo&db=sra&WebEnv=MCID_{mcid}&query_key={key}' \
-            -L -o sra_data_{date_stamp}.csv"
+            "curl  'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?"
+            f"save=efetch&rettype=runinfo&db=sra&WebEnv=MCID{mcid}&query_key={key}'"
+            "-L -o sra_data_{date_stamp}.csv"
         ],
         shell=True,
         check=True,
     )
     subprocess.run(
         [
-            f"curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?save=efetch&rettype=exp&db=sra&WebEnv=MCID_{mcid}&query_key={key}' \
-            -L -o sra_meta_{date_stamp}.xml"
+            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?"
+            f"save=efetch&rettype=exp&db=sra&WebEnv=MCID_{mcid}&query_key={key}'"
+            " -L -o sra_meta_{date_stamp}.xml"
         ],
         shell=True,
         check=True,
@@ -86,8 +93,8 @@ def get_primer_bed(primers_str: str) -> str:
     Returns string of the bed file
     """
 
-    _primer_map_json = open("data/primer_mapping.json", encoding="utf-8")
-    _primer_map_dict = json.load(_primer_map_json)
+    with open("data/primer_mapping.json", encoding="utf-8") as _primer_map_json:
+        _primer_map_dict = json.load(_primer_map_json)
 
     # keys = _primer_map_dict.keys()
     # contains_key = keys in primers_str
@@ -299,13 +306,20 @@ def parse_xml_meta(date_stamp: str) -> int:
     Returns 0 if no exceptions were raised
     """
 
-    with open(f"sra_meta_{date_stamp}.xml", "r") as full_meta_in_fh:
-        with open(f"sra_meta_{date_stamp}.txt", "w") as out_fh:
-            with open(f"sra_meta_collect_{date_stamp}.tsv", "w") as lite_out_fh:
+    with open(f"sra_meta_{date_stamp}.xml", "r", encoding="utf-8") as full_meta_in_fh:
+        with open(f"sra_meta_{date_stamp}.txt", "w", encoding="utf-8") as out_fh:
+            with open(
+                f"sra_meta_collect_{date_stamp}.tsv", "w", encoding="utf-8"
+            ) as lite_out_fh:
                 lite_out_fh.write("Accession\tcollectiong data\tgeo_loc\tprimers\n")
                 parse_xml = xml.parsers.expat.ParserCreate()
                 element_strs = []
-                elements_dict = {"accession": "", "date": "", "loc": "", "primers": []}
+                elements_dict = {
+                    "accession": "",
+                    "date": "",
+                    "loc": "",
+                    "primers": [],
+                }
                 flags = {"date": False, "loc": False}
                 # 3 handler functions
                 def start_element(name, attrs):
@@ -352,7 +366,7 @@ def get_sample_acc1(redo: bool) -> list:
             if file.endswith(".json"):
                 prev_accs.append(file.split(".")[0])
     accs = []
-    with open("sra_meta_collect_current.tsv", "r") as in_fh:
+    with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:
         for line in in_fh:
             split_line = line.strip("\n").split("\t")
             if (
@@ -387,7 +401,7 @@ def get_sample_acc2(redo: bool) -> dict:
             if file.endswith(".json"):
                 prev_accs.append(file.split(".")[0])
     accs = {}
-    with open("sra_meta_collect_current.tsv", "r") as in_fh:
+    with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:
         for line in in_fh:
             split_line = line.strip("\n").split("\t")
             if (
@@ -423,12 +437,12 @@ def qc_pass(sample_accs: dict) -> list:
         pe_files = [f"fastqs/{acc}_1.qc.fq", f"fastqs/{acc}_2.qc.fq"]
         se_file = f"fastqs/{acc}.qc.fq"
         if os.path.isfile(pe_files[0]) and os.path.isfile(pe_files[1]):
-            with open(f"fastqs/{acc}.pe.json", "r") as json_fh:
+            with open(f"fastqs/{acc}.pe.json", "r", encoding="utf-8") as json_fh:
                 json_as_dict = json.load(json_fh)
                 if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
                     passed.append(acc)
         elif os.path.isfile(se_file):
-            with open(f"fastqs/{acc}.se.json", "r") as json_fh:
+            with open(f"fastqs/{acc}.se.json", "r", encoding="utf-8") as json_fh:
                 json_as_dict = json.load(json_fh)
                 if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
                     passed.append(acc)
@@ -462,7 +476,7 @@ def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
             if redo and present:
                 re_write = True
             elif not present:
-                with open(file, "r") as samp_fh:
+                with open(file, "r", encoding="utf-8") as samp_fh:
                     agg.write(samp)
                     agg.write("\n")
                     agg.write(samp_fh.read())
@@ -470,16 +484,16 @@ def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
         if re_write:
             old_file = ""
             new_file = ""
-            with open("endpoints/VCs.tsv", "r") as agg:
+            with open("endpoints/VCs.tsv", "r", encoding="utf-8") as agg:
                 old_file = agg.read()
             old_split = old_file.split("\n--------\n")
             for data in old_split:
                 if (not data.startswith(samp)) and data.strip():
                     new_file += data
                     new_file += "\n--------\n"
-            with open("endpoints/VCs.tsv", "w") as agg:
+            with open("endpoints/VCs.tsv", "w", encoding="utf-8") as agg:
                 agg.write(new_file)
-                with open(file, "r") as samp_fh:
+                with open(file, "r", encoding="utf-8") as samp_fh:
                     agg.write(samp)
                     agg.write("\n")
                     agg.write(samp_fh.read())
@@ -494,21 +508,21 @@ def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
             if redo and present:
                 re_write = True
             elif not present:
-                with open(file, "r") as samp_fh:
+                with open(file, "r", encoding="utf-8") as samp_fh:
                     agg.write(samp_fh.read())
         if re_write:
             old_file = ""
             new_file = ""
-            with open("endpoints/Consensus.fa", "r") as agg:
+            with open("endpoints/Consensus.fa", "r", encoding="utf-8") as agg:
                 old_file = agg.read()
             old_split = old_file.split(">")
             for data in old_split:
                 if (not samp in data) and data.strip():
                     new_file += ">"
                     new_file += data
-            with open("endpoints/Consensus.fa", "w") as agg:
+            with open("endpoints/Consensus.fa", "w", encoding="utf-8") as agg:
                 agg.write(new_file)
-                with open(file, "r") as samp_fh:
+                with open(file, "r", encoding="utf-8") as samp_fh:
                     agg.write(samp_fh.read())
 
     for file in lin_list:
@@ -520,7 +534,7 @@ def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
             if redo and present:
                 re_write = True
             elif not present:
-                with open(file, "r") as samp_fh:
+                with open(file, "r", encoding="utf-8") as samp_fh:
                     agg.write(samp)
                     agg.write("\n")
                     agg.write(samp_fh.read())
@@ -528,16 +542,16 @@ def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
         if re_write:
             old_file = ""
             new_file = ""
-            with open("endpoints/Lineages.tsv", "r") as agg:
+            with open("endpoints/Lineages.tsv", "r", encoding="utf-8") as agg:
                 old_file = agg.read()
             old_split = old_file.split("\n--------\n")
             for data in old_split:
                 if (not data.startswith(samp)) and data.strip():
                     new_file += data
                     new_file += "\n--------\n"
-            with open("endpoints/Lineages.tsv", "w") as agg:
+            with open("endpoints/Lineages.tsv", "w", encoding="utf-8") as agg:
                 agg.write(new_file)
-                with open(file, "r") as samp_fh:
+                with open(file, "r", encoding="utf-8") as samp_fh:
                     agg.write(samp)
                     agg.write("\n")
                     agg.write(samp_fh.read())
