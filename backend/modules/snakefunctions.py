@@ -193,6 +193,51 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
     return elements_dict
 
 
+def modify_loc_flag(flags, element_strs, elements_dict, data):
+    """
+    This function modifies the location flag for the XML element from its
+    initial value if necessary.
+    """
+
+    loc_flag = flags["loc"]
+
+    if flags["loc"]:
+
+        if flags["loc"] and element_strs[-1] == "VALUE":
+            if elements_dict["loc"]:
+                elements_dict["loc"] += ", " + data
+            else:
+                elements_dict["loc"] = data
+        loc_flag = False
+
+    if element_strs[-1] == "TAG" and (
+        data == "geo_loc_name"
+        or data == "geo loc name"
+        or "geographic location" in data
+    ):
+        loc_flag = True
+
+    return loc_flag
+
+
+def modify_date_flag(flags, element_strs, elements_dict, data):
+    """
+    This function modifies the date flag for the XML element from its initial
+    value if necessary.
+    """
+
+    date_flag = flags["date"]
+
+    if flags["date"]:
+        if element_strs[-1] == "VALUE":
+            elements_dict["date"] = data
+        date_flag = False
+    if element_strs[-1] == "TAG" and (data in ("collection_date", "collection date")):
+        date_flag = True
+
+    return date_flag
+
+
 def data_fun(data, element_strs, elements_dict, flags, out_fh):
     """
     Called to perform the actions and logic of dealing with the data
@@ -211,65 +256,20 @@ def data_fun(data, element_strs, elements_dict, flags, out_fh):
     Returns elements_dict
     """
 
+    # Add whitespace and newlines to outfile
     if len(element_strs) > 1:
         for _ in element_strs[1:]:
             out_fh.write("    ")
     out_fh.write(data)
     out_fh.write("\n")
-    if flags["loc"] and element_strs[-1] == "VALUE":
-        if elements_dict["loc"]:
-            elements_dict["loc"] += ", " + data
-        else:
-            elements_dict["loc"] = data
-    flags["loc"] = False
-    if element_strs[-1] == "TAG" and (
-        data == "geo_loc_name"
-        or data == "geo loc name"
-        or "geographic location" in data
-    ):
-        flags["loc"] = True
-    if flags["date"]:
-        if element_strs[-1] == "VALUE":
-            elements_dict["date"] = data
-        flags["date"] = False
-    if element_strs[-1] == "TAG" and (data in ("collection_date", "collection date")):
-        flags["date"] = True
-    if "SNAP" in data.upper():
-        if "ADD" in data.upper():
-            elements_dict["primers"].append("SNAPadd")
-        else:
-            elements_dict["primers"].append("SNAP")
-    if "SWIFT" in data.upper():
-        elements_dict["primers"].append("SNAP")
-    if "QIASEQ" in data.upper():
-        elements_dict["primers"].append("QiaSeq")
-    if "NEBNEXT" in data.upper():
-        elements_dict["primers"].append("NEBNext")
-        if "VARSKIP" in data.upper():
-            elements_dict["primers"].append("VarSkip")
-        if "LONG" in data.upper():
-            elements_dict["primers"].append("Long")
-        if "SHORT" in data.upper():
-            elements_dict["primers"].append("Short")
-        if "V2" in data.upper():
-            elements_dict["primers"].append("V2")
-    if "ARTIC" in data.upper():
-        if "V3" in data.upper():
-            elements_dict["primers"].append("ArticV3")
-        elif "V4.1" in data.upper():
-            elements_dict["primers"].append("ArticV4.1")
-        elif "V4" in data.upper():
-            elements_dict["primers"].append("ArticV4")
-        else:
-            elements_dict["primers"].append("Artic")
-    if "PRJNA715712" in data:
-        elements_dict["primers"].append("Spike-Amps")
-    if "PRJNA748354" in data:
-        elements_dict["primers"].append("Spike-Amps")
-    if "FISHER" in data.upper() or "ION AMPLISEQ" in data.upper():
-        elements_dict["primers"].append("IonAmpliSeq")
-    if "PARAGON" in data.upper():
-        elements_dict["primers"].append("Paragon")
+
+    # Modify location and date flags if needed
+    flags["loc"] = modify_loc_flag(flags, element_strs, elements_dict, data)
+    flags["date"] = modify_date_flag(flags, element_strs, elements_dict, data)
+
+    # Add new primers observed in the data
+    new_elements = get_primer_bed(data.upper())
+    elements_dict["primers"].append(new_elements)
 
     return elements_dict
 
