@@ -181,7 +181,8 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
         if elements_dict["primers"]:
             lite_out_fh.write(
                 get_primer_bed(
-                    "".join(elements_dict["primers"]), "data/primer_mapping.json"
+                    "".join(elements_dict["primers"]),
+                    "data/primer_mapping.json",
                 )
             )
         else:
