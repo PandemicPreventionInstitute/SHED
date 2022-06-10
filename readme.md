@@ -11,7 +11,7 @@ complicated. The following software is *required*:
 - [sra-tools](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit)
 - [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/)
 
-First, set up a clean conda environment (i.e. with no other programs
+First, set up a clean conda environment (i.e., with no other programs
 installed):
 `conda create --name myenv python --no-default-packages`
 
