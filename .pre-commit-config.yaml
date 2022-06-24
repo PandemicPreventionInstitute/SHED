@@ -2,10 +2,13 @@ repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
     hooks:
-    -   id: trailing-whitespace
-    -   id: end-of-file-fixer
-    -   id: check-added-large-files
-    -   id: check-yaml
+    -   id: trailing-whitespace # Trims trailing whitespace
+    -   id: end-of-file-fixer # Checks that a file ends in a newline
+    -   id: check-added-large-files # Ensures large files haven't been committed
+    -   id: check-yaml # Checks yaml files have parseable syntax
+    -   id: check-case-conflict # Don't allow names that conflict on a case-insensitive OS
+    -   id: check-merge-conflict # Don't allow merge conflict markers to be committed
+    -   id: debug-statements # Checks for debugger imports or breakpoint calls in python
 -   repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
@@ -27,3 +30,7 @@ repos:
           "-rn", # Only display messages
           "-sn", # Don't display the score
         ]
+-   repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.8.0.4
+    hooks:
+    -   id: shellcheck

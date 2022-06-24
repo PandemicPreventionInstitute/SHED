@@ -1,6 +1,6 @@
-# Sequencing Hub for Environmental Data 
+# Sequencing Hub for Environmental Data
 
-This repository will hold the bioinformatic pipeline and basic analyses 
+This repository will hold the bioinformatic pipeline and basic analyses
 validating  the Sequencing Hub for Environmental Data (SHED).
 
 ## Installation instructions
@@ -49,7 +49,7 @@ mkdir -p ./etc/conda/activate.d
 mkdir -p ./etc/conda/deactivate.d
 touch ./etc/conda/activate.d/env_vars.sh
 touch ./etc/conda/deactivate.d/env_vars.sh
-```  
+```
 - Edit the ` ./etc/conda/activate.d/env_vars.sh` so that it looks like the
   following:
 ```
@@ -67,11 +67,11 @@ packages needed than were installed with `pytest`. If this occurs, it can be
 solved with `conda config --set channel_priority false` and then rerunning the
 installation of fastx toolkit.
 
-Then, `cd` to the folder in which the `pipeline.py` script is running and 
-install `SAM refiner` with `curl 
-https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o 
-SAM_Refiner.py`. Do not use conda/bioconda because the version it installs is 
+Then, `cd` to the folder in which the `pipeline.py` script is running and
+install `SAM refiner` with `curl
+https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o
+SAM_Refiner.py`. Do not use conda/bioconda because the version it installs is
 not the latest and will not have all of the required features.
 
-To set up [pre-commit hooks](https://pre-commit.com/), install the 
+To set up [pre-commit hooks](https://pre-commit.com/), install the
 `pre-commmit` package manager.
