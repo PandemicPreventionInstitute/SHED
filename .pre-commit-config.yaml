@@ -34,3 +34,11 @@ repos:
     rev: v0.8.0.4
     hooks:
     -   id: shellcheck
+-   repo: https://github.com/lorenzwalthert/pre-commit-hooks
+    rev: v0.0.0.9016
+    hooks:
+    -   id: style-files # Style in Tidyverse style with {styler}
+    -   id: parsable-R # Checks that .R files are valid R code
+    -   id: no-browser-statement # Checks that there's no browser() call in .R code
+    -   id: use-tidy-description
+    -   id: lintr # Lints .R files with {lintr}
