@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This script has functions to query NCBI's SRA database to obtain sample
 metadata for samples matching the search string 'SARS-CoV-2 wastewater'.
-Last edited on 6-7-22
+Last edited on 7-1-22
 """
 
 import os
@@ -35,10 +35,10 @@ def sra_query(search_str: str, date_stamp: str) -> int:
 
     subprocess.run(
         [
-            "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0)"
-            "Gecko/20100101 Firefox/50.0' -L --alt-svc ''"
-            "--anyauth -b ncbi"
-            f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}'"
+            "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) "
+            "Gecko/20100101 Firefox/50.0' -L --alt-svc '' "
+            "--anyauth -b ncbi "
+            f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' "
             f"-o search_results_{date_stamp}.html"
         ],
         shell=True,
@@ -59,18 +59,18 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         sys.exit(2)
     subprocess.run(
         [
-            "curl  'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?"
-            f"save=efetch&rettype=runinfo&db=sra&WebEnv=MCID{mcid}&query_key={key}'"
-            "-L -o sra_data_{date_stamp}.csv"
+            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
+            f"cgi?rettype=runinfo&WebEnv=MCID_{mcid}&query_key={key}' "
+            f"-L -o sra_data_{date_stamp}.csv"
         ],
         shell=True,
         check=True,
     )
     subprocess.run(
         [
-            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?"
-            f"save=efetch&rettype=exp&db=sra&WebEnv=MCID_{mcid}&query_key={key}'"
-            " -L -o sra_meta_{date_stamp}.xml"
+            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
+            f"cgi?rettype=exp&WebEnv=MCID_{mcid}&query_key={key}' "
+            f"-L -o sra_meta_{date_stamp}.xml"
         ],
         shell=True,
         check=True,
@@ -92,29 +92,32 @@ def get_primer_bed(primers_str: str, mapping_file: str) -> str:
         parses the passed string for specific keywords to determine the most
         likely primers used in the sequencing.
 
-
     Returns string of the bed file
     """
 
     with open(mapping_file, encoding="utf-8") as _primer_map_json:
         _primer_map_dict = json.load(_primer_map_json)
-
     bed = "Unknown"
     matching_dict = _primer_map_dict
     while isinstance(matching_dict, dict) and bed == "Unknown":
+        new_dict = 0
         for key in matching_dict:
             if key in primers_str:
                 # Multiple keys may be present in primers_str. Match the first
                 # key only.
-                if isinstance(_primer_map_dict[key], str):
-                    bed = _primer_map_dict[key]
+                if isinstance(matching_dict[key], str):
+                    bed = matching_dict[key]
                     break
                 matching_dict = matching_dict[key]
-            else:
-                try:
-                    bed = matching_dict["Other"]
-                except KeyError:
-                    pass
+                new_dict = 1
+                break
+            try:
+                bed = matching_dict["Other"]
+                break
+            except KeyError:
+                pass
+        if new_dict == 0:
+            break
 
     return bed
 
@@ -273,7 +276,7 @@ def data_fun(data, element_strs, elements_dict, flags, out_fh):
     flags["date"] = modify_date_flag(flags, element_strs, elements_dict, data)
 
     # Add new primers observed in the data
-    new_elements = get_primer_bed(data.upper(), "data/element_mapping.json")
+    new_elements = get_primer_bed(data.upper(), "data/elements_mapping.json")
     elements_dict["primers"].append(new_elements)
 
     return elements_dict
@@ -316,7 +319,9 @@ def parse_xml_meta(date_stamp: str) -> int:
                     element_strs.append(name)
                     start_ele_fun(name, attrs, element_strs, elements_dict, out_fh)
 
-                def end_element():
+                def end_element(name):
+                    # name is used by parse_xml and must be a parameter of this function
+                    assert name
                     element_strs.pop()
                     end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh)
 

@@ -3,7 +3,7 @@
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 bioinformatics processing for SRA samples.
-Last edited on 6-7-22
+Last edited on 7-1-22
 to do: implement tests
 """
 import os
@@ -26,6 +26,7 @@ acc_list = get_sample_acc1(config["reprocess"])
 # acc_list = "SRR19451936 SRR19433247 SRR18583185 SRR18583239 SRR15294802 SRR15294332 SRR15240788 SRR15240814 SRR15240439 SRR17887892 SRR17887900 SRR17887928 SRR17888005 SRR17888008 SRR17888010 SRR17888013 ERR5014717"
 # acc_list = "SRR18541040 ERR5996055 SRR15294802 SRR15240439 SRR17887900 SRR17888010 SRR17689171 ERR5019844"
 # acc_list = "SRR1asdf40439 SRR15240439 SRR17887900 SRR17888010"
+
 
 rule download_sra:
     """
