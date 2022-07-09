@@ -2,8 +2,8 @@
 """
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
-bioinformatics processing for SRA samples.
-Last edited on 7-1-22
+query and SRA download for the bioinformatics pipeline.
+Last edited on 7-9-22
 to do: implement tests
 """
 import os
@@ -16,6 +16,7 @@ configfile: "config.yaml"
 
 include: "modules/snakefunctions.py"
 
+# query SRA, get the meta data and pull accessions from it
 DATE_STAMP = time.time()
 sra_query(config["query"], DATE_STAMP)
 parse_xml_meta(DATE_STAMP)
@@ -31,8 +32,8 @@ acc_list = get_sample_acc1(config["reprocess"])
 rule download_sra:
     """
     Downloads the sra files for the samples collected in the query
-    using NCBI's SRA Tools prefetch, catches bad accessions, otherwise
-    errors are caught by snakemake
+    using NCBI's SRA Tools prefetch, catches bad accession formats, otherwise
+    errors cause an exit
     """
     log:
         "logs/sra.log"
