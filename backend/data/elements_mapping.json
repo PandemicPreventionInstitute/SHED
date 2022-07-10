@@ -1,4 +1,11 @@
 {
+
+    "ARTIC": {
+        "V3": "ArticV3",
+        "V4.1": "ArticV4.1",
+        "V4": "Articv4",
+        "Other": "Artic"
+    },
     "SNAP": {
         "ADD": "SNAPadd",
         "Other": "SNAP"
@@ -9,13 +16,8 @@
         "VARSKIP": "NEBNext VarSkip",
         "LONG": "NEBNext Long",
         "SHORT": "NEBNext Short",
-        "V2": "NEBNext V2"
-    },
-    "ARCTIC": {
-        "V3": "ArcticV3",
-        "V4.1": "ArcticV4.1",
-        "V4": "Arcticv4",
-        "Other": "Arctic"
+        "V2": "NEBNext V2",
+		"Other": "NEBNext"
     },
     "PRJNA715712": "Spike-Amps",
     "PRJNA748354": "Spike-Amps",

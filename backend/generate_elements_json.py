@@ -6,6 +6,12 @@ and parsed when generating the data data file.
 import json
 
 d = {
+    "ARCTIC": {
+        "V3": "ArcticV3",
+        "V4.1": "ArcticV4.1",
+        "V4": "Arcticv4",
+        "Other": "Arctic",
+    },
     "SNAP": {"ADD": "SNAPadd", "Other": "SNAP"},
     "SWIFT": "SNAP",
     "QIASEQ": "QiaSeq",
@@ -14,12 +20,6 @@ d = {
         "LONG": "NEBNext Long",
         "SHORT": "NEBNext Short",
         "V2": "NEBNext V2",
-    },
-    "ARCTIC": {
-        "V3": "ArcticV3",
-        "V4.1": "ArcticV4.1",
-        "V4": "Arcticv4",
-        "Other": "Arctic",
     },
     "PRJNA715712": "Spike-Amps",
     "PRJNA748354": "Spike-Amps",

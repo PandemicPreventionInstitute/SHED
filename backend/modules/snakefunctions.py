@@ -1,8 +1,8 @@
 """
 Writen by Devon Gregory
-This script has functions to query NCBI's SRA database to obtain sample
-metadata for samples matching the search string 'SARS-CoV-2 wastewater'.
-Last edited on 6-7-22
+This script has functions called by the snakefiles to query NCBI'
+SRA and download and process the files for the results.
+Last edited on 7-9-22
 """
 
 import os
@@ -23,7 +23,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
 
     Functionality:
         curl is used to download the html results for the query.
-        The html is then parsed to find the MDID and key of the specific
+        The html is then parsed to find the MCID and key of the specific
         query for downloading the metadata, also using using curl.  Files
         are tagged with the date stamp.
 
@@ -35,10 +35,10 @@ def sra_query(search_str: str, date_stamp: str) -> int:
 
     subprocess.run(
         [
-            "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0)"
-            "Gecko/20100101 Firefox/50.0' -L --alt-svc ''"
-            "--anyauth -b ncbi"
-            f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}'"
+            "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) "
+            "Gecko/20100101 Firefox/50.0' -L --alt-svc '' "
+            "--anyauth -b ncbi "
+            f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' "
             f"-o search_results_{date_stamp}.html"
         ],
         shell=True,
@@ -59,18 +59,18 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         sys.exit(2)
     subprocess.run(
         [
-            "curl  'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?"
-            f"save=efetch&rettype=runinfo&db=sra&WebEnv=MCID{mcid}&query_key={key}'"
-            "-L -o sra_data_{date_stamp}.csv"
+            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
+            f"cgi?rettype=runinfo&WebEnv=MCID_{mcid}&query_key={key}' "
+            f"-L -o sra_data_{date_stamp}.csv"
         ],
         shell=True,
         check=True,
     )
     subprocess.run(
         [
-            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?"
-            f"save=efetch&rettype=exp&db=sra&WebEnv=MCID_{mcid}&query_key={key}'"
-            " -L -o sra_meta_{date_stamp}.xml"
+            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
+            f"cgi?rettype=exp&WebEnv=MCID_{mcid}&query_key={key}' "
+            f"-L -o sra_meta_{date_stamp}.xml"
         ],
         shell=True,
         check=True,
@@ -80,41 +80,48 @@ def sra_query(search_str: str, date_stamp: str) -> int:
 
 def get_primer_bed(primers_str: str, mapping_file: str) -> str:
     """
-    Called to determine the proper primer bed based on the str passed.
+    Called to determine  either the proper primer bed or primers used
+    based on the str passed.
 
     NOTE: This function only matches the first key in the dict. Later keys
-    that match will be ignored.
+    that match will be ignored.  json fiels must be formatted in the correct
+    order to facilitate proper matching
 
     Parameters:
     primers_str - string of potential primer info - str
+    mapping_file - json file that contains the matching information - str
 
     Functionality:
         parses the passed string for specific keywords to determine the most
-        likely primers used in the sequencing.
+        likely primers used in the sequencing or the primer bed for the found
+        potential primers
 
-
-    Returns string of the bed file
+    Returns string of the bed file or a primer keyword
     """
 
     with open(mapping_file, encoding="utf-8") as _primer_map_json:
         _primer_map_dict = json.load(_primer_map_json)
-
     bed = "Unknown"
     matching_dict = _primer_map_dict
     while isinstance(matching_dict, dict) and bed == "Unknown":
+        new_dict = 0
         for key in matching_dict:
             if key in primers_str:
                 # Multiple keys may be present in primers_str. Match the first
                 # key only.
-                if isinstance(_primer_map_dict[key], str):
-                    bed = _primer_map_dict[key]
+                if isinstance(matching_dict[key], str):
+                    bed = matching_dict[key]
                     break
                 matching_dict = matching_dict[key]
-            else:
-                try:
-                    bed = matching_dict["Other"]
-                except KeyError:
-                    pass
+                new_dict = 1
+                break
+            try:
+                bed = matching_dict["Other"]
+                break
+            except KeyError:
+                pass
+        if new_dict == 0:
+            break
 
     return bed
 
@@ -169,6 +176,7 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
 
     Functionality:
         parses the passed element info and updates/writes out metadata
+        if the sample data has ended
 
     Returns elements_dict
     """
@@ -187,8 +195,8 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
             )
         else:
             lite_out_fh.write("Unknown")
-        lite_out_fh.write("\t")
-        lite_out_fh.write(" ".join(elements_dict["primers"]))
+        # lite_out_fh.write("\t")
+        # lite_out_fh.write(" ".join(elements_dict["primers"]))
         lite_out_fh.write("\n")
         elements_dict["accession"] = ""
         elements_dict["date"] = ""
@@ -200,8 +208,23 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
 
 def modify_loc_flag(flags, element_strs, elements_dict, data):
     """
-    This function modifies the location flag for the XML element from its
-    initial value if necessary.
+    This function gets/ stores location data and sets the flag for
+    getting the data when the xml data for location is
+    being parsed
+
+    Parameters:
+    flags - dictionary of flags - dict
+    element_strs - string for the xml element - str
+    elements_dict - dict for data from the xml elements - dict
+    data - str of the xml element's data - str
+
+    Functionality:
+        Checks to see if the location flag is True and if so stores
+        the data for the location and sets the flag back to False.
+        Otherwise checks to see if the element is for the location tag
+        and sets the flag as True if so.
+
+    Returns loc_flag
     """
 
     loc_flag = flags["loc"]
@@ -227,8 +250,23 @@ def modify_loc_flag(flags, element_strs, elements_dict, data):
 
 def modify_date_flag(flags, element_strs, elements_dict, data):
     """
-    This function modifies the date flag for the XML element from its initial
-    value if necessary.
+    This function gets/ stores collection date and sets the flag for
+    getting the data when the xml data for the date is
+    being parsed
+
+    Parameters:
+    flags - dictionary of flags - dict
+    element_strs - string for the xml element - str
+    elements_dict - dict for data from the xml elements - dict
+    data - str of the xml element's data - str
+
+    Functionality:
+        Checks to see if the date flag is True and if so stores
+        the data for the collection date and sets the flag back to False.
+        Otherwise checks to see if the element is for the date tag
+        and sets the flag as True if so.
+
+    Returns loc_flag
     """
 
     date_flag = flags["date"]
@@ -273,7 +311,7 @@ def data_fun(data, element_strs, elements_dict, flags, out_fh):
     flags["date"] = modify_date_flag(flags, element_strs, elements_dict, data)
 
     # Add new primers observed in the data
-    new_elements = get_primer_bed(data.upper(), "data/element_mapping.json")
+    new_elements = get_primer_bed(data.upper(), "data/elements_mapping.json")
     elements_dict["primers"].append(new_elements)
 
     return elements_dict
@@ -316,7 +354,9 @@ def parse_xml_meta(date_stamp: str) -> int:
                     element_strs.append(name)
                     start_ele_fun(name, attrs, element_strs, elements_dict, out_fh)
 
-                def end_element():
+                def end_element(name):
+                    # name is used by parse_xml and must be a parameter of this function
+                    assert name
                     element_strs.pop()
                     end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh)
 
@@ -338,10 +378,6 @@ def parse_xml_meta(date_stamp: str) -> int:
 def get_sample_acc1(redo: bool) -> list:
     """
     Called to get the accessions of the samples of the current query.
-
-    TODO: This function still defines three handler functions within this
-    function definition and so will redefine them each time this function is
-    called. Fix by moving the handler functions above.
 
     Parameters:
     bool - boolean for reprocessing samples - bool
@@ -414,6 +450,7 @@ def qc_pass(sample_accs: dict) -> list:
     """
     Called to discover qc checked fastq files generated by the quality_check rule
     and determine if they are of a quality worth continuing.
+    Potentilal TODO: have the cut off in the config.yaml and pass it here
 
     Parameters:
     sample_accs - accession list for the SRA samples - list
@@ -423,22 +460,15 @@ def qc_pass(sample_accs: dict) -> list:
         then checks the qc json for sufficient passed reads to conintue.
         Currently requires over 500 passed reads. returns list of passed samples
 
-    Returns list of past accs
+    Returns list of passed accs
     """
 
     passed = []
     for acc in sample_accs:
-        pe_files = [f"fastqs/{acc}_1.qc.fq", f"fastqs/{acc}_2.qc.fq"]
-        se_file = f"fastqs/{acc}.qc.fq"
-        if os.path.isfile(pe_files[0]) and os.path.isfile(pe_files[1]):
-            with open(f"fastqs/{acc}.pe.json", "r", encoding="utf-8") as json_fh:
-                json_as_dict = json.load(json_fh)
-                if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
-                    passed.append(acc)
-        elif os.path.isfile(se_file):
-            with open(f"fastqs/{acc}.se.json", "r", encoding="utf-8") as json_fh:
-                json_as_dict = json.load(json_fh)
-                if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
+        if os.path.isfile(f"sams/{acc}.sam"):
+            with open(f"sams/{acc}.sam", "r", encoding="utf-8") as sam_file:
+                lines = len(sam_file.read().split("\n"))
+                if lines > 502:
                     passed.append(acc)
 
     return passed
@@ -446,19 +476,44 @@ def qc_pass(sample_accs: dict) -> list:
 
 def add_sample(agg, file, samp):
     """
-    This function add the sample to the file
+    This function adds the pased sample data to the passed file
+
+    Parameters:
+    agg - aggregate file - open file handle
+    file - name of the sample file - str
+    samp - sample accession - str
+
+    Functionality:
+        Opens the sample file and writes date from it to the aggreagate file
+
+    Returns
     """
 
     with open(file, "r", encoding="utf-8") as samp_fh:
-        agg.write(samp)
-        agg.write("\n")
+        if file.endswith(".tsv"):
+            agg.write(samp)
+            agg.write("\n")
         agg.write(samp_fh.read())
-        agg.write("\n--------\n")
+        if file.endswith(".tsv"):
+            agg.write("\n--------\n")
 
 
 def check_if_present(agg, redo, file, samp):
     """
     This function checks if the sample is present in the aggregated file.
+
+    Parameters:
+    agg - aggregate file - open file handle
+    redo - boolean to indicate if samples are to be reprocessed - bool
+    file - name of the sample file - str
+    samp - sample accession - str
+
+    Functionality:
+        Parses the aggreagate file data from the current sample.  If not found
+        the data is added to the aggregate file.  If it is found and redo is
+        True, re_write is set to true.
+
+    Returns re_write
     """
 
     agg.seek(0)
@@ -477,6 +532,17 @@ def re_write_tsv_file(re_write_file, samp, file):
     """
     This function takes the variant call or lineage call tsv file and adds the
     new variant calls as necessary.
+
+    Parameters:
+    re_write_file - aggregate file - str
+    samp - sample accession - str
+    file - name of the sample file - str
+
+    Functionality:
+        Reads the current aggregate file and re-writes it without the old data
+        for the sample and with the new data
+
+    Returns
     """
 
     old_file = ""
@@ -504,7 +570,18 @@ def re_write_consensus_file(con_file, samp, file):
     """
     This function re-writes the consensus file if necessary. This function is
     separate from the more general re_write_tsv_file() because the consensus
-    is in fastq format.
+    is in fasta format.
+
+    Parameters:
+    con_file - aggregate file - str
+    samp - sample accession - str
+    file - name of the sample file - str
+
+    Functionality:
+        Reads the current aggregate file and re-writes it without the old data
+        for the sample and with the new data
+
+    Returns
     """
 
     old_file = ""
