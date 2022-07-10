@@ -1,9 +1,15 @@
 #! /bin/bash
 
-echo "Enter number of cores to use in running the pipeline"
+# Writen by Devon Gregory
+# bash to execute the 3 snakefiles in turn
+# Last edited on 7-9-22
 
+echo "Enter number of cores to use in running the pipeline"
+# get how many cos should be used to run the workflow
 read -r cores
 
+# Queries NCBI's SRA for matches to the config.yaml query string
+# downloads the sra formated sample file for each match
 run="snakemake -c${cores} --use-conda -k -F -s snakefile1"
 if $run
 then
@@ -13,6 +19,9 @@ echo "snakemake1 run failed"
 exit 1
 fi
 
+# Checks to see what sra files were downloaded from the query results
+# Writes fastq files based on the sra files and runs a quality check
+# and trims if no primers are identified
 run="snakemake -c${cores} --use-conda -k -F -s snakefile2"
 if $run
 then
@@ -22,6 +31,9 @@ echo "snakemake2 run failed"
 exit 1
 fi
 
+# checks which samples passed the quality check
+# those that did are mapped and primer trimmed if applicalbe
+# variants are called, consensus sequences generated and lineages assigned
 run="snakemake -c${cores} --use-conda -k -F -s snakefile3"
 if $run
 then

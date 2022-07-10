@@ -1,9 +1,9 @@
 
 """
 Writen by Devon Gregory
-This snakefile is meant to be run via snakemake to peform the
+This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
-Last edited on 7-1-22
+Last edited on 7-9-22
 to do: add threading, impliment clean up, tests
 """
 import os
@@ -31,7 +31,8 @@ rule mapping:
     """
     mapping of quality checked reads using minimap2 against the
     reference SARS-CoV-2 Wuhan-Hu-1 sequence using the short read
-    presets (No wastewater sequences seems to have long reads)
+    presets (No wastewater sequences seem to have long reads)
+    Checks for both paired end and single end files
     """
     input:
         fa="data/SARS2.fasta"
@@ -47,8 +48,7 @@ rule mapping:
         then
         minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc_qced}_1.fastq fastqs/{wildcards.sra_acc_qced}_2.fastq \
         -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
-        fi
-        if [[ -f fastqs/{wildcards.sra_acc_qced}.fastq ]]
+        elif [[ -f fastqs/{wildcards.sra_acc_qced}.fastq ]]
         then
         minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc_qced}.fastq \
         -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
@@ -57,7 +57,7 @@ rule mapping:
 
 rule sam2bam:
     """
-    convert, sort and index the sams to bams using samtools (deb with ivar)
+    convert, sort and index the sams to bams using samtools (comes with ivar)
     """
     input:
         "sams/{sra_acc_qced}.sam"
@@ -73,8 +73,6 @@ rule sam2bam:
 rule primer_trim:
     """
     trim primers from samples where the sequencing primers can be determined using ivar
-    todo: it would probably be good to have a following rule that pulls out the success of the
-    trimming and raises an alert if it seems to have failed.
     """
     input:
         "sams/{sra_acc_qced}.bam"
@@ -95,6 +93,7 @@ rule primer_trim:
 rule consensus:
     """
     uses ivar to generate a consensus sequence
+    uses primer trimmed bam if available, otherwise uses basal bam
     """
     input:
         "sams/{sra_acc_qced}.trim.done",
@@ -119,7 +118,8 @@ rule consensus:
 
 rule vc:
     """
-    calls variants with ivar and depths with samtools, also produces a coverage depth
+    calls variants with ivar and depths with samtools
+    trimmed bams are used if primers were discovered, otherwise basal bams are used
     """
     input:
         "sams/{sra_acc_qced}.trim.done",
@@ -180,7 +180,7 @@ rule lineages:
 rule aggregate:
     """
     calls aggregation function to collect sample data into aggregate files
-    need to add aggreagation of metadata at some point
+    potential TODO: add aggregation of metadata
     """
     input:
         vcs=expand("endpoints/{sra_acc_qced}.tsv", sra_acc_qced=qc_passed),
