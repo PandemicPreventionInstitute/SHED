@@ -12,3 +12,4 @@ backend/logs/
 *.xml
 *.html
 .snakemake
+*/--anyauth
