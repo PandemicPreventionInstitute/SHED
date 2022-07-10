@@ -465,17 +465,10 @@ def qc_pass(sample_accs: dict) -> list:
 
     passed = []
     for acc in sample_accs:
-        pe_files = [f"fastqs/{acc}_1.qc.fq", f"fastqs/{acc}_2.qc.fq"]
-        se_file = f"fastqs/{acc}.qc.fq"
-        if os.path.isfile(pe_files[0]) and os.path.isfile(pe_files[1]):
-            with open(f"fastqs/{acc}.pe.json", "r", encoding="utf-8") as json_fh:
-                json_as_dict = json.load(json_fh)
-                if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
-                    passed.append(acc)
-        elif os.path.isfile(se_file):
-            with open(f"fastqs/{acc}.se.json", "r", encoding="utf-8") as json_fh:
-                json_as_dict = json.load(json_fh)
-                if json_as_dict["filtering_result"]["passed_filter_reads"] > 500:
+        if os.path.isfile(f"sams/{acc}.sam"):
+            with open(f"sams/{acc}.sam", "r", encoding="utf-8") as sam_file:
+                lines = len(sam_file.read().split("\n"))
+                if lines > 502:
                     passed.append(acc)
 
     return passed

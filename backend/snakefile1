@@ -1,9 +1,8 @@
-
 """
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 query and SRA download for the bioinformatics pipeline.
-Last edited on 7-9-22
+Last edited on 7-10-22
 to do: implement tests
 """
 import os
@@ -12,11 +11,14 @@ from snakemake.utils import min_version
 
 min_version("7.8.0")
 
+
 configfile: "config.yaml"
+
 
 include: "modules/snakefunctions.py"
 
-# query SRA, get the meta data and pull accessions from it
+
+query SRA, get the meta data and pull accessions from it
 DATE_STAMP = time.time()
 sra_query(config["query"], DATE_STAMP)
 parse_xml_meta(DATE_STAMP)
@@ -36,11 +38,11 @@ rule download_sra:
     errors cause an exit
     """
     log:
-        "logs/sra.log"
+        "logs/sra.log",
     params:
-        acc_list
-    #conda:
-       # "envs/sra-tools.yaml"
+        acc_list,
+    conda:
+        "envs/sra-tools.yaml"
     shell:
         """
         set +e

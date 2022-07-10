@@ -1,9 +1,8 @@
-
 """
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to peform the
 initial bioinformatics processing for SRA samples.
-Last edited on 7-9-22
+Last edited on 7-10-22
 to do: add threading, impliment clean up, tests
 """
 import os
@@ -11,9 +10,12 @@ from snakemake.utils import min_version
 
 min_version("7.8.0")
 
+
 configfile: "config.yaml"
 
+
 include: "modules/snakefunctions.py"
+
 
 sra_accs = get_sample_acc2(config["reprocess"])
 
@@ -24,6 +26,8 @@ rule all:
     """
     input:
         expand("fastqs/{sra_acc}.qc.done", sra_acc=sra_accs),
+        expand("sams/{sra_acc}.sam", sra_acc=sra_accs),
+
 
 rule get_fastqs:
     """
@@ -34,15 +38,16 @@ rule get_fastqs:
     won't be processed past qc.
     """
     input:
-        "SRAs/{sra_acc}/{sra_acc}.sra"
+        "SRAs/{sra_acc}/{sra_acc}.sra",
     output:
-        touch("fastqs/{sra_acc}.fq.done")
+        touch("fastqs/{sra_acc}.fq.done"),
     log:
-        "logs/{sra_acc}.fq.log"
+        "logs/{sra_acc}.fq.log",
     conda:
         "envs/sra-tools.yaml"
     shell:
         "cd SRAs/; fasterq-dump --split-files -f -O ../fastqs {wildcards.sra_acc} >>../{log} 2>&1"
+
 
 rule quality_check:
     """
@@ -52,14 +57,14 @@ rule quality_check:
     fastp defaults are otherwise used.
     """
     input:
-        rules.get_fastqs.output
+        rules.get_fastqs.output,
     output:
-        touch("fastqs/{sra_acc}.qc.done")
+        touch("fastqs/{sra_acc}.qc.done"),
     params:
         gen="--dont_eval_duplication -5 -3 -l 50 ",
-        cutting=lambda wildcards: sra_accs[wildcards.sra_acc]["cut"]
+        cutting=lambda wildcards: sra_accs[wildcards.sra_acc]["cut"],
     log:
-        "logs/{sra_acc}.qc.log"
+        "logs/{sra_acc}.qc.log",
     conda:
         "envs/fastp.yaml"
     shell:
@@ -74,5 +79,34 @@ rule quality_check:
         fastp --detect_adapter_for_pe {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}_1.fastq \
         -I fastqs/{wildcards.sra_acc}_2.fastq -o fastqs/{wildcards.sra_acc}_1.qc.fq -O fastqs/{wildcards.sra_acc}_2.qc.fq \
         -j fastqs/{wildcards.sra_acc}.pe.json -h fastqs/{wildcards.sra_acc}.pe.html >>{log} 2>&1
+        fi
+        """
+
+
+rule mapping:
+    """
+    mapping of quality checked reads using minimap2 against the
+    reference SARS-CoV-2 Wuhan-Hu-1 sequence using the short read
+    presets (No wastewater sequences seem to have long reads)
+    Checks for both paired end and single end files
+    """
+    input:
+        fa="data/SARS2.fasta",
+    output:
+        "sams/{sra_acc}.sam",
+    log:
+        "logs/{sra_acc}.mapping.log",
+    conda:
+        "envs/minimap2.yaml"
+    shell:
+        """
+        if [[ -f fastqs/{wildcards.sra_acc}_1.fastq && -f fastqs/{wildcards.sra_acc}_2.fastq ]]
+        then
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.fastq fastqs/{wildcards.sra_acc}_2.fastq \
+        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        elif [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
+        then
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.fastq \
+        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
         fi
         """
