@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to peform the
 initial bioinformatics processing for SRA samples.
-Last edited on 7-10-22
+Last edited on 7-11-22
 to do: add threading, impliment clean up, tests
 """
 import os
@@ -19,7 +19,6 @@ include: f"{snakepath}/modules/snakefunctions.py"
 
 
 sra_accs = get_sample_acc2(config["reprocess"])
-
 
 rule all:
     """
@@ -72,7 +71,7 @@ rule quality_check:
         """
         if [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
         then
-        fastp {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}.fastq -o fastqs/{wildcards.sra_acc}.se.qc.fq \
+        fastp {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}.fastq -o fastqs/{wildcards.sra_acc}.qc.fq \
         -j fastqs/{wildcards.sra_acc}.se.json -h fastqs/{wildcards.sra_acc}.se.html >>{log} 2>&1
         fi
         if [[ -f fastqs/{wildcards.sra_acc}_1.fastq ]]
@@ -92,6 +91,7 @@ rule mapping:
     Checks for both paired end and single end files
     """
     input:
+        "fastqs/{sra_acc}.qc.done",
         fa=f"{snakepath}/data/SARS2.fasta",
     output:
         "sams/{sra_acc}.sam",
@@ -101,13 +101,13 @@ rule mapping:
         "envs/minimap2.yaml"
     shell:
         """
-        if [[ -f fastqs/{wildcards.sra_acc}_1.fastq && -f fastqs/{wildcards.sra_acc}_2.fastq ]]
+        if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]
         then
-        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.fastq fastqs/{wildcards.sra_acc}_2.fastq \
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.qc.fq fastqs/{wildcards.sra_acc}_2.qc.fq \
         -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
-        elif [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
+        elif [[ -f fastqs/{wildcards.sra_acc}.qc.fq ]]
         then
-        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.fastq \
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.qc.fq \
         -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
         fi
         """

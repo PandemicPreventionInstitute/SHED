@@ -1,0 +1,4 @@
+/mnt/e/Rockefeller/Git/SHED/backend/.snakemake/conda/000355f53e86171a83bc8ee6fa7ff240/lib/python3.10/site-packages/cvxpy/problems/problem.py:1337: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  warnings.warn(
+building mix/depth matrices
+demixing

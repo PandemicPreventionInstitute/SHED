@@ -1,0 +1,10 @@
+[M::mm_idx_gen::0.009*1.11] collected minimizers
+[M::mm_idx_gen::0.009*1.05] sorted minimizers
+[M::main::0.010*1.03] loaded/built the index for 1 target sequence(s)
+[M::mm_mapopt_update::0.010*1.02] mid_occ = 1000
+[M::mm_idx_stat] kmer size: 21; skip: 11; is_hpc: 0; #seq: 1
+[M::mm_idx_stat::0.010*0.99] distinct minimizers: 4989 (99.98% are singletons); average occurrences: 1.002; average spacing: 5.979; total length: 29903
+[M::worker_pipeline::0.014*0.87] mapped 30 sequences
+[M::main] Version: 2.24-r1122
+[M::main] CMD: minimap2 -ax sr -o sams/ERR9812678.sam --secondary=no --sam-hit-only /mnt/e/Rockefeller/Git/SHED/backend/data/SARS2.fasta fastqs/ERR9812678_1.qc.fq fastqs/ERR9812678_2.qc.fq
+[M::main] Real time: 0.018 sec; CPU: 0.013 sec; Peak RSS: 0.005 GB

@@ -2,7 +2,7 @@
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 query and SRA download for the bioinformatics pipeline.
-Last edited on 7-10-22
+Last edited on 7-11-22
 to do: implement tests
 """
 import os
@@ -19,9 +19,13 @@ include: f"{snakepath}/modules/snakefunctions.py"
 
 # query SRA, get the meta data and pull accessions from it
 if config["query"]:
-    DATE_STAMP = time.time()
-    sra_query(config["query"], DATE_STAMP)
-    parse_xml_meta(DATE_STAMP)
+
+    if config["run_ID"]:
+        RUN_ID = config["run_ID"]
+    else:
+        RUN_ID = time.time()
+    sra_query(config["query"], RUN_ID)
+    parse_xml_meta(RUN_ID)
 acc_list = get_sample_acc1(config["reprocess"])
 
 
@@ -40,6 +44,10 @@ rule download_sra:
     shell:
         """
         set +e
+        if [[ ! -d SRAs ]]
+        then
+        mkdir SRAs
+        fi
         acc='{params}'
         for f in $acc
         do

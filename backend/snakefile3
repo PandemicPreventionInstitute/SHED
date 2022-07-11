@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
-Last edited on 7-10-22
+Last edited on 7-11-22
 to do: add threading, impliment clean up, tests
 """
 import os
@@ -17,7 +17,7 @@ configfile: f"{snakepath}/config.yaml"
 
 include: f"{snakepath}/modules/snakefunctions.py"
 
-
+UPDATE = config["freya_update"]
 sra_accs = get_sample_acc2(config["reprocess"])
 qc_passed = qc_pass(sra_accs)
 
@@ -37,7 +37,7 @@ rule sam2bam:
     input:
         "sams/{sra_acc_qced}.sam",
     output:
-        "sams/{sra_acc_qced,\D+\d+}.bam",
+        "sams/{sra_acc_qced}.bam",
     log:
         "logs/{sra_acc_qced}.bam.log",
     conda:
@@ -55,13 +55,13 @@ rule primer_trim:
     output:
         touch("sams/{sra_acc_qced}.trim.done"),
     params:
-        lambda wildcards: (sra_accs[wildcards.sra_acc_qced]["bed"]),
+        bed=lambda wildcards: (sra_accs[wildcards.sra_acc_qced]["bed"]),
     log:
         "logs/{sra_acc_qced}.trim.log",
     conda:
         "envs/ivar.yaml"
     shell:
-        "if [ ! {params} == 'Unknown' ]; then ivar trim -b {snakepath}/{params} -p sams/{wildcards.sra_acc_qced}.trimmed \
+        "if [ ! {params.bed} == 'Unknown' ]; then ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc_qced}.trimmed \
         -i {input} -e -q 15 -m 30 -s 4  >>{log} 2>&1 && \
         samtools sort sams/{wildcards.sra_acc_qced}.trimmed.bam -o sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 \
         && samtools index sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 ; fi"
@@ -138,7 +138,7 @@ rule update_freyja:
     conda:
         "envs/freyja.yaml"
     shell:
-        "if [[ {config["freya_update"]} == True ]]; then freyja update; fi"
+        "if [[ {UPDATE} == True ]]; then freyja update; fi"
 
 
 rule lineages:

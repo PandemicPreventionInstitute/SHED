@@ -46,7 +46,7 @@ The second section handles writing the fastq files with NCBI SRA Tools' fasterq-
 
 ## Testing
 ## not yet implimented
-The pipeline and its modules are tested with [pytest](https://docs.pytest.org/en/7.1.x/).  The testing scripts can be found in the .tests subdirectory.  To run the tests, run pytest in the backend directory.
+The pipeline and its modules are tested with [pytest](https://docs.pytest.org/en/7.1.x/).  The testing scripts can be found in the tests subdirectory.  To run the tests, run pytest in the backend directory.
 
 ```bash
 path/to/SHED/backend:$ pytest
