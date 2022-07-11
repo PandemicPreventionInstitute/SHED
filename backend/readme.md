@@ -21,7 +21,7 @@ To modify the NCBI SRA query string, edit the config.yaml file, ie:
     query:
         wastewater+SARS-CoV-2+USA
 ```
-To insure the correct query pattern, you may wish to run the query with [NCBI's web interface](https://www.ncbi.nlm.nih.gov/sra) and copy the string from the resulting url.
+To insure the correct query pattern, you may wish to run the query with [NCBI's web interface](https://www.ncbi.nlm.nih.gov/sra) and copy the string from the resulting url.  Having no query string in the config.yaml will lead to the pipeline using the previous run (assuming the query results are present).
 
 SRA samples that have already been downloaded and processing will will be reprocessed if the flag in the the config.yaml is set to True
 ```

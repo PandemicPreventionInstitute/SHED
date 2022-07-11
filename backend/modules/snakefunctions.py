@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This script has functions called by the snakefiles to query NCBI'
 SRA and download and process the files for the results.
-Last edited on 7-9-22
+Last edited on 7-10-22
 """
 
 import os
@@ -11,6 +11,8 @@ import subprocess
 import xml.parsers.expat
 import json
 import shutil
+
+snakemodpath = os.path.realpath(os.path.join(sys.path[0], ".."))
 
 
 def sra_query(search_str: str, date_stamp: str) -> int:
@@ -99,7 +101,9 @@ def get_primer_bed(primers_str: str, mapping_file: str) -> str:
     Returns string of the bed file or a primer keyword
     """
 
-    with open(mapping_file, encoding="utf-8") as _primer_map_json:
+    with open(
+        os.path.join(snakemodpath, mapping_file), "r", encoding="utf-8"
+    ) as _primer_map_json:
         _primer_map_dict = json.load(_primer_map_json)
     bed = "Unknown"
     matching_dict = _primer_map_dict
@@ -195,8 +199,6 @@ def end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh):
             )
         else:
             lite_out_fh.write("Unknown")
-        # lite_out_fh.write("\t")
-        # lite_out_fh.write(" ".join(elements_dict["primers"]))
         lite_out_fh.write("\n")
         elements_dict["accession"] = ""
         elements_dict["date"] = ""

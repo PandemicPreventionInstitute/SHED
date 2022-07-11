@@ -6,3 +6,6 @@ query:
 
 reprocess:
     True
+
+freya_update:
+    False

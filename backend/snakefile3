@@ -11,10 +11,11 @@ from snakemake.utils import min_version
 min_version("7.8.0")
 
 
-configfile: "config.yaml"
+snakepath = os.path.realpath(sys.path[0])
+configfile: f"{snakepath}/config.yaml"
 
 
-include: "modules/snakefunctions.py"
+include: f"{snakepath}/modules/snakefunctions.py"
 
 
 sra_accs = get_sample_acc2(config["reprocess"])
@@ -60,9 +61,9 @@ rule primer_trim:
     conda:
         "envs/ivar.yaml"
     shell:
-        "if [ ! {params} == 'Unknown' ]; then ivar trim -b {params} -p sams/{wildcards.sra_acc_qced}.trimmed \
+        "if [ ! {params} == 'Unknown' ]; then ivar trim -b {snakepath}/{params} -p sams/{wildcards.sra_acc_qced}.trimmed \
         -i {input} -e -q 15 -m 30 -s 4  >>{log} 2>&1 && \
-        samtools sort sams/{wildcards.sra_acc_qced}.trimmed.bam -o sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1\
+        samtools sort sams/{wildcards.sra_acc_qced}.trimmed.bam -o sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 \
         && samtools index sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 ; fi"
 
 
@@ -73,7 +74,7 @@ rule consensus:
     """
     input:
         "sams/{sra_acc_qced}.trim.done",
-        fa="data/SARS2.fasta",
+        fa=f"{snakepath}/data/SARS2.fasta",
     output:
         "endpoints/{sra_acc_qced}.fa",
     log:
@@ -100,8 +101,8 @@ rule vc:
     """
     input:
         "sams/{sra_acc_qced}.trim.done",
-        fa="data/SARS2.fasta",
-        gff="data/NC_045512.2.gff3",
+        fa=f"{snakepath}/data/SARS2.fasta",
+        gff=f"{snakepath}/data/NC_045512.2.gff3",
     output:
         tsv="endpoints/{sra_acc_qced}.tsv",
         depth="endpoints/{sra_acc_qced}.depth",
@@ -137,7 +138,7 @@ rule update_freyja:
     conda:
         "envs/freyja.yaml"
     shell:
-        "freyja update"
+        "if [[ {config["freya_update"]} == True ]]; then freyja update; fi"
 
 
 rule lineages:

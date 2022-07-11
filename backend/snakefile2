@@ -11,10 +11,11 @@ from snakemake.utils import min_version
 min_version("7.8.0")
 
 
-configfile: "config.yaml"
+snakepath = os.path.realpath(sys.path[0])
+configfile: f"{snakepath}/config.yaml"
 
 
-include: "modules/snakefunctions.py"
+include: f"{snakepath}/modules/snakefunctions.py"
 
 
 sra_accs = get_sample_acc2(config["reprocess"])
@@ -91,7 +92,7 @@ rule mapping:
     Checks for both paired end and single end files
     """
     input:
-        fa="data/SARS2.fasta",
+        fa=f"{snakepath}/data/SARS2.fasta",
     output:
         "sams/{sra_acc}.sam",
     log:
