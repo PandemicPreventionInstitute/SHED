@@ -52,7 +52,6 @@ def test_full():
                 "snakemake",
                 "-f",
                 "-j1",
-                "-c1",
                 "--keep-target-files",
                 "--directory",
                 workdir,
@@ -86,6 +85,3 @@ def test_full():
         # and overwrite the method `compare_files(generated_file, expected_file),
         # also see common.py.
         common.OutputChecker(data_path, expected_path, workdir).check()
-
-
-test_full()

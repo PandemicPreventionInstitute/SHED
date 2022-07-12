@@ -31,7 +31,12 @@ class OutputChecker:
                 if str(f).startswith(".snakemake"):
                     continue
                 if f in expected_files:
-                    if not (str(f).endswith(".html") or str(f).endswith(".log")):
+                    if not (
+                        str(f).endswith(".html")
+                        or str(f).endswith(".log")
+                        or str(f).startswith("sra_")
+                        or "lineage" in str(f).lower()
+                    ):
                         self.compare_files(self.workdir / f, self.expected_path / f)
                 elif f in input_files:
                     # ignore input files
