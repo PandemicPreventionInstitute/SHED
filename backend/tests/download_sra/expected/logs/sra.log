@@ -1,9 +1,0 @@
-
-2022-07-11T15:06:00 prefetch.2.11.0 err: name not found while resolving query within virtual file system module - failed to resolve accession 'ERR9812480' - no data ( 404 )
-
-2022-07-11T15:06:01 prefetch.2.11.0: 1) Downloading 'SRR14010117'...
-2022-07-11T15:06:01 prefetch.2.11.0:  Downloading via HTTPS...
-2022-07-11T15:06:01 prefetch.2.11.0:  HTTPS download succeed
-2022-07-11T15:06:01 prefetch.2.11.0:  'SRR14010117' is valid
-2022-07-11T15:06:01 prefetch.2.11.0: 1) 'SRR14010117' was downloaded successfully
-2022-07-11T15:06:01 prefetch.2.11.0: 'SRR14010117' has 0 unresolved dependencies
