@@ -48,7 +48,7 @@ The first section, snakefile1, is responsible for calling functions to query NCB
 For the current run, the latter will also be writen to sra_meta_collect_current.tsv.  With these results, a snakemake rule downloads sra files for each sample via NCBI SRA Tools' prefetch in the SRAs subdirectory.
 The second section handles writing the fastq files with NCBI SRA Tools' fasterq-dump, checking the reads' qualities using fastp and mapping quality passed reads with minimap2.  For samples that don't have known primers, fastp also trims 25nts from the 5' end of the reads. The outputs for this section are writen in the fastqs subdirectory or the sams subdirectory for the mapping.  The final section continues to process samples that have over 500 reads that mapped to the reference SARS-CoV-2 genome (NC_045512.2).  This section trims primers, calls variants and generates consensus using ivar, and assignes lineages with freyja.  Trimmed mapped reads are written to the sams subdirectory in bam format.  For each sample processed fully, the endpoints subdirectory will contain the tsv files for the variants and lineages, depth and quality files, and fasta files for the consensus sequence.  Data for all processed samples are aggregated into VCs.tsv for variants, Lineages.tsv for lineages and Consensus.fa for consensus.  By default, freyja runs without updating the lineage definitions.  To update the definitions, change the config.yaml freya_update entry to True.
 '''
-    freya_update:
+    freyja_update:
         True
 '''
 
