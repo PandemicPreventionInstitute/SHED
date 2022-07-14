@@ -17,3 +17,11 @@ def test_mapping():
     ]
 
     common.run_unit_test("mapping", "sams/ERR9813149.sam", additional_variable)
+
+
+if __name__ == "__main__":
+
+    # Stand alone testing.  testfiles.tar.gz will need to be decompressed prior to running.
+    # Must be run in the backend subdir to work.
+
+    test_mapping()

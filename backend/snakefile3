@@ -17,7 +17,7 @@ configfile: f"{snakepath}/config.yaml"
 
 include: f"{snakepath}/modules/snakefunctions.py"
 
-UPDATE = config["freya_update"]
+UPDATE = config["freyja_update"]
 sra_accs = get_sample_acc2(config["reprocess"])
 qc_passed = qc_pass(sra_accs)
 
