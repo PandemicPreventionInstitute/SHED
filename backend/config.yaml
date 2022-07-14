@@ -8,7 +8,7 @@ query:
 reprocess:
     True
 
-freya_update:
+freyja_update:
     False
 
 run_ID:
