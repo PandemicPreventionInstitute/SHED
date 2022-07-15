@@ -6,7 +6,6 @@ path/to/SHED/backend:$ bash pipeline.sh
 ```
 You will be asked to provide the number of processor cores to use in running the pipeline before starting.  The first run will require significant additional processing time for snakemake to download and build environments for the pipeline's dependancies.  The pipeline requires and will install:
 
-[NCBI's SRA Tools](https://github.com/ncbi/sra-tools)
 
 [fastp](https://github.com/OpenGene/fastp)
 
@@ -15,6 +14,13 @@ You will be asked to provide the number of processor cores to use in running the
 [ivar](https://github.com/andersen-lab/ivar)
 
 [freyja](https://github.com/andersen-lab/Freyja)
+
+Users must also install [NCBI's SRA Tools](https://github.com/ncbi/sra-tools) v3.0, downloadable at https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/ for specific opererating systems.  Test functionality with:
+```bash
+$ prefetch -V
+$ fasterq-dump -V
+```
+These should indicate version 3.0 for the tools.
 
 To modify the NCBI SRA query string, edit the config.yaml file, ie:
 ```

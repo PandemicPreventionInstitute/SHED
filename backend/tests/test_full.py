@@ -52,3 +52,11 @@ def test_full():
         # and overwrite the method `compare_files(generated_file, expected_file),
         # also see common.py.
         common.OutputChecker(data_path, expected_path, workdir).check()
+
+
+if __name__ == "__main__":
+
+    # Stand alone testing.  testfiles.tar.gz will need to be decompressed prior to running.
+    # Must be run in the backend subdir to work.
+
+    test_full()

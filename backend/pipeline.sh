@@ -24,7 +24,7 @@ fi
 # Checks to see what sra files were downloaded from the query results
 # Writes fastq files based on the sra files and runs a quality check
 # and trims if no primers are identified, then maps
-run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile2 --latency-wait 15"
+run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile2"
 if $run
 then
 echo "snakefile2 run successful"

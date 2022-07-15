@@ -43,8 +43,6 @@ rule get_fastqs:
         touch("fastqs/{sra_acc}.fq.done"),
     log:
         "logs/{sra_acc}.fq.log",
-    conda:
-        "envs/sra-tools.yaml"
     shell:
         "cd SRAs/; fasterq-dump --split-files -f -O ../fastqs {wildcards.sra_acc} >>../{log} 2>&1"
 
@@ -98,7 +96,7 @@ rule mapping:
     log:
         "logs/{sra_acc}.mapping.log",
     conda:
-        "envs/minimap2.yaml"
+         "envs/minimap2.yaml"
     shell:
         """
         if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]

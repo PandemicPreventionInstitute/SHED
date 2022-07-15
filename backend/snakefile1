@@ -39,8 +39,6 @@ rule download_sra:
         "logs/sra.log",
     params:
         acc_list,
-    conda:
-        "envs/sra-tools.yaml"
     shell:
         """
         set +e
