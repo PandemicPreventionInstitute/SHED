@@ -20,7 +20,11 @@ Users must also install [NCBI's SRA Tools](https://github.com/ncbi/sra-tools) v3
 $ prefetch -V
 $ fasterq-dump -V
 ```
-These should indicate version 3.0 for the tools.
+These should indicate version 3.0 for the tools. And
+```bash
+$ prefetch SRR17866146
+```
+should download SRR17866146.sra into the directory SRR17866146/.
 
 To modify the NCBI SRA query string, edit the config.yaml file, ie:
 ```
