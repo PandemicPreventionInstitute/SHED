@@ -1,4 +1,4 @@
 channels:
   - bioconda
 dependencies:
-  - fastp=0.23.2=hd36eab0_1
+  - fastp=0.23.2
