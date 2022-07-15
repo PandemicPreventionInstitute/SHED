@@ -108,6 +108,7 @@ class OutputChecker:
                         str(file).endswith(".html")
                         or str(file).endswith(".sam")
                         or str(file).endswith(".bam")
+                        or str(file).endswith(".bai")
                         or str(file).endswith(".log")
                         or str(file).startswith("sra_")
                         or "lineage" in str(file).lower()
