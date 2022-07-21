@@ -70,11 +70,10 @@ export PATH="$PATH:/Users/zsusswein/sratoolkit.3.0.0-mac64/bin"
 But replace `zsusswein` in the path with your own username.
 
 Although some of the required packages will install automatically when running
-the pipeline in `backend/` (e.g., `fastx_toolkit`), others will not. It's
-safest to install everything in `backend/requirements.txt` manually to avoid
-weird errors cropping up. These should be installed with the `mamba` package
-manager, not conda. In addition, be sure to check that the correct versions
-are being installed.
+the pipeline in `backend/` (e.g., `fastx_toolkit`), SRA-toolkit will not.
+Everything else will be automatically installed by the pipeline to the
+appropriate version on the first run once the appropriate mamba environment is
+set up. See `backend/readme.md` for more specific setup information.
 
 ## Developer settings
 If you're going to be working on the pipeline, please set up
