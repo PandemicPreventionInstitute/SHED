@@ -13,3 +13,4 @@ backend/logs/
 *.html
 .snakemake
 */--anyauth
+.DS_Store
