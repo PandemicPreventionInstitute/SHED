@@ -41,10 +41,10 @@ Aside from the number of cores used by the pipeline, some other aspects can be c
 To insure the correct query pattern, you may wish to run the query with [NCBI's web interface](https://www.ncbi.nlm.nih.gov/sra) and copy the string from the resulting url.  Having no query string in the config.yaml will lead to the pipeline using the previous run (assuming the query results are present).  If a query returns unusable (no) results, the pipeline will report such and exit.
 
 Metadata for the samples returned by the query are downloaded and processed into files with a timestamp in the name.  To use a custom ID instead of a timestamp, put the desired ID into the config.yaml run_ID entry, ie:
-'''
+```
     run_ID:
         run1
-'''
+```
 
 SRA samples that have already been downloaded and processing will will be reprocessed if the flag in the config.yaml is set to True
 ```
