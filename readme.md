@@ -1,19 +1,25 @@
-# Sequencing Hub for Environmental Data 
+# Sequencing Hub for Environmental Data
 
-This repository will hold the bioinformatic pipeline and basic analyses 
-validating  the Sequencing Hub for Environmental Data (SHED).
+This repository holds the bioinformatic pipeline used by the Sequencing Hub
+for Environmental Data (SHED).
 
 ## Installation instructions
 
-Installating the required programs on a PPI machine is a little bit
-complicated. The following software is *required*:
-- Anaconda (Miniconda is fine)
-- [sra-tools](https://github.com/ncbi/sra-tools/wiki/02.-Installing-SRA-Toolkit)
-- [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/)
+Installing the required programs on a PPI machine is a little bit
+complicated. There are pipeline-specific installation instructions in the
+`readme.md` in the `backend/` directory. This `readme.md` contains
+instructions for prerequisites for installation on a PPI machine.
 
-First, set up a clean conda environment (i.e. with no other programs
-installed):
-`conda create --name myenv python --no-default-packages`
+The pipeline is designed to work with Conda and Mamba (a derivative of Conda).
+Both need to be installed.
+
+The pipeline will not work properly unless it's in a **Mamba** environment,
+not a _Conda environment_. This should be accomplished by generating a clean
+environment with nothing installed (i.e., no default installs).
+
+```
+conda create --name myenv --no-default-packages
+```
 
 Then, activate this environment and, in your home directory, run the following
 command to download a compressed version of the SRA toolkit:
@@ -24,20 +30,24 @@ instructions on the SRA install instructions website but the `-R` flag is added 
 Otherwise the generated file is not actually a zipped version of the required
 files, rather it is an empty file that will cause subsequent steps to fail.
 
+You can also download a prebuilt binary from the [SRA
+Github](https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit)
+
 Next, as the SRA install instructions suggest, unzip the file:
 `tar -vxzf sratoolkit.tar.gz`
 
 And append it to your path:
-`export PATH=$PATH:$PWD/sratoolkit.2.11.2-mac64/bin`
+`export PATH=$PATH:$PWD/sratoolkit.3.0.0-mac64/bin`
 
 *BE SURE* that this path points correctly to the unpacked version of the SRA
-toolkit. The version of the SRA toolkit should be at least 2.11.2 to ensure
-that the required functionality is available. Packages managers like homebrew
-are currently installing versions below 2.11, necessitating manual install.
+toolkit. The version of the SRA toolkit should be at least `3.0.0` to ensure
+that the required functionality is available. Packages managers like Homebrew
+and Anaconda/Bioconda are currently installing versions below 3.0,
+necessitating manual install.
 
 Running this `export` command will work until the shell is closed, but to cause
-the export to automatically occur when activating the environment in the future, it should be added to the Anaconda
-environment startup files.
+the export to automatically occur when activating the environment in the future,
+it should be added to the Anaconda environment startup files.
 This can be accomplished by doing the following:
 
 - Locate the directory for the conda environment by (in the activated
@@ -49,27 +59,25 @@ mkdir -p ./etc/conda/activate.d
 mkdir -p ./etc/conda/deactivate.d
 touch ./etc/conda/activate.d/env_vars.sh
 touch ./etc/conda/deactivate.d/env_vars.sh
-```  
+```
 - Edit the ` ./etc/conda/activate.d/env_vars.sh` so that it looks like the
   following:
 ```
 #!/bin/sh
 
-export PATH="$PATH:/Users/zsusswein/sratoolkit.2.11.2-mac64/bin"
+export PATH="$PATH:/Users/zsusswein/sratoolkit.3.0.0-mac64/bin"
 ```
 But replace `zsusswein` in the path with your own username.
 
-Then, install `pytest` with `conda install pytest`.
+Although some of the required packages will install automatically when running
+the pipeline in `backend/` (e.g., `fastx_toolkit`), SRA-toolkit will not.
+Everything else will be automatically installed by the pipeline to the
+appropriate version on the first run once the appropriate mamba environment is
+set up. See `backend/readme.md` for more specific setup information.
 
-Install the FASTX-toolkit with `conda install -c bioconda
-fastx_toolkit`. I was getting issues with slightly different versions of
-packages needed than were installed with `pytest`. If this occurs, it can be
-solved with `conda config --set channel_priority false` and then rerunning the
-installation of fastx toolkit.
-
-Finally, `cd` to the folder in which the `pipeline.py` script is running and 
-install `SAM refiner` 
-with `curl https://raw.githubusercontent.com/degregory/SAM_Refiner/main/SAM_Refiner.py -o SAM_Refiner.py`. Do not use conda/bioconda because the version it installs is not the latest and will not have all of the required features.
- 
-
- 
+## Developer settings
+If you're going to be working on the pipeline, please set up
+[pre-commit hooks](https://pre-commit.com/). Install the
+`pre-commmit` package manager and install pre-commit into the `SHED/`
+directory after cloning a local copy of the repository. As usual, please work
+on a branch off of `dev` and open a PR with any changes.

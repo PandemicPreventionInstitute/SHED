@@ -1,0 +1,4 @@
+channels:
+  - bioconda
+dependencies:
+  - ivar=1.3.1

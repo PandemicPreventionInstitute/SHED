@@ -1,0 +1,27 @@
+{
+
+    "ARTIC": {
+        "V3": "ArticV3",
+        "V4.1": "ArticV4.1",
+        "V4": "Articv4",
+        "Other": "Artic"
+    },
+    "SNAP": {
+        "ADD": "SNAPadd",
+        "Other": "SNAP"
+    },
+    "SWIFT": "SNAP",
+    "QIASEQ": "QiaSeq",
+    "NEBNEXT": {
+        "VARSKIP": "NEBNext VarSkip",
+        "LONG": "NEBNext Long",
+        "SHORT": "NEBNext Short",
+        "V2": "NEBNext V2",
+		"Other": "NEBNext"
+    },
+    "PRJNA715712": "Spike-Amps",
+    "PRJNA748354": "Spike-Amps",
+    "FISHER": "IonAmpliSeq",
+    "ION AMPLISEQ": "IonAmpliSeq",
+    "PARAGON": "Paragon"
+}

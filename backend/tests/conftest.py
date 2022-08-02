@@ -1,31 +1,30 @@
-#!/bin/env python3
-
 """
-Writen by Devon Gregory
-This script tests the workings of the sra_fetch module using pytest
-Last edited on 5-8-22
+Fixture for decompressing testing support files
+and removing them after the test
 """
-
-import os
-import sys
+import subprocess as sp
 import pytest
 
 
 @pytest.fixture(scope="session", autouse=True)
 def necessary_files():
+    """
+    decompresses at start and yields so that the removal is
+    done after the tests
+    """
     # setup
-    TestPath = os.getcwd().split("SHED")[0] + "SHED/backend/tests"
-    os.system(f"tar -xzf {TestPath}/testfiles.tar.gz -C {TestPath}")
+    sp.run("tar xzf tests/testfiles.tar.gz -C tests", shell=True, check=True)
 
     yield
     # tear down
-    os.system(f"rm -rf {TestPath}/lists")
-    os.system(f"rm -rf {TestPath}/fastas")
-    os.system(f"rm -rf {TestPath}/fastqs")
-    os.system(f"rm -rf {TestPath}/SRAs")
-    os.system(f"rm -rf {TestPath}/processing")
-    os.system(f"rm -rf {TestPath}/data")
-    os.system(f"rm -rf {TestPath}/sams")
-    os.system(f"rm -rf {TestPath}/tsvs")
-    os.system(f"rm -rf {TestPath}/Sam_refiner.py")
-    os.system(f"rm -rf {TestPath}/*.tsv")
+    sp.run("rm -rf tests/aggregate", shell=True, check=True)
+    sp.run("rm -rf tests/consensus", shell=True, check=True)
+    sp.run("rm -rf tests/download_sra", shell=True, check=True)
+    sp.run("rm -rf tests/full", shell=True, check=True)
+    sp.run("rm -rf tests/get_fastqs", shell=True, check=True)
+    sp.run("rm -rf tests/lineages", shell=True, check=True)
+    sp.run("rm -rf tests/mapping", shell=True, check=True)
+    sp.run("rm -rf tests/primer_trim", shell=True, check=True)
+    sp.run("rm -rf tests/quality_check", shell=True, check=True)
+    sp.run("rm -rf tests/sam2bam", shell=True, check=True)
+    sp.run("rm -rf tests/vc", shell=True, check=True)

@@ -1,0 +1,64 @@
+"""
+Written by Devon Gregory
+This snakefile is meant to be run via snakemake to perform the
+query and SRA download for the bioinformatics pipeline.
+Last edited on 7-11-22
+to do: implement tests
+"""
+import os
+import time
+from snakemake.utils import min_version
+
+min_version("7.8.0")
+
+snakepath = os.path.realpath(sys.path[0])
+configfile: f"{snakepath}/config.yaml"
+
+
+include: f"{snakepath}/modules/snakefunctions.py"
+
+# query SRA, get the meta data and pull accessions from it
+if config["query"]:
+
+    if config["run_ID"]:
+        RUN_ID = config["run_ID"]
+    else:
+        RUN_ID = time.time()
+    sra_query(config["query"], RUN_ID)
+    parse_xml_meta(RUN_ID)
+acc_list = get_sample_acc1(config["reprocess"])
+
+
+rule download_sra:
+    """
+    Downloads the sra files for the samples collected in the query
+    using NCBI's SRA Tools prefetch, catches accession with no data to download,
+    otherwise errors cause an exit
+    """
+    log:
+        "logs/sra.log",
+    params:
+        acc_list,
+    shell:
+        """
+        set +e
+        if [[ ! -d SRAs ]]
+        then
+        mkdir SRAs
+        fi
+        acc='{params}'
+        for f in $acc
+        do
+        prefetch $f -O SRAs/ >>{log} 2>&1
+        exitcode=$?
+        if [ $exitcode -eq 3 ]
+        then
+            touch 'SRAs/'$f'.no.data'
+        elif [ $exitcode -ne 0 ]
+        then
+            echo "prefetch failed with exitcode:"
+            echo "$exitcode"
+            exit 1
+        fi
+        done
+        """
