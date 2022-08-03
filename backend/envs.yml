@@ -1,0 +1,23 @@
+name: shed-backend
+channels:
+  - bioconda
+  - conda-forge
+  - default
+dependencies:
+  - python=3.8.8
+  - pip=20.2.4
+  - six=1.15.0
+  - ipython=7.19.0
+  - nomkl=3.0
+  - numpy=1.19.2
+  - pandas=1.1.5
+  - traitlets=5.0.5
+  - wheel=0.35.1
+  - mamba
+  - snakemake
+  - fastp=0.23.2
+  - minimap2=2.24
+  - ivar=1.3.1
+  - freyja=1.3.8
+  - pip:
+    - pyarrow==1.0.1
