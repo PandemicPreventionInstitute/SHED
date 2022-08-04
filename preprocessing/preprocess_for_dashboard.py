@@ -13,7 +13,7 @@ def generate_lineage_abundance(path, sra_id):
     """
 
     lin_dt = []
-    with open(path + "endpoints/" + sra_id + ".lineages.tsv", encoding="utf-8") as file:
+    with open(path + sra_id + ".lineages.tsv", encoding="utf-8") as file:
         for line in file:
 
             one_line = line.split("\t")
@@ -26,4 +26,9 @@ def generate_lineage_abundance(path, sra_id):
         np.column_stack((lineage, abundance)), columns=("lineage", "abundance")
     )
     lin_abun["lineage"] = lin_abun["lineage"].apply(lambda row_str: row_str.strip("\n"))
-    return lin_abun.to_csv(path + sra_id + "_lin_abun.csv", index=False)
+    try:
+        lin_abun.to_csv(path + sra_id + "_lin_abun.csv", index=False)
+        return 0
+    except OSError as error:
+        print(error)
+        return 1
