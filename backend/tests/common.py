@@ -26,7 +26,6 @@ def run_snakemake(workdir, target, add_args):
             "-j1",
             "--directory",
             workdir,
-            "--use-conda",
         ]
     else:
         command_list = [
@@ -36,7 +35,6 @@ def run_snakemake(workdir, target, add_args):
             "-j1",
             "--directory",
             workdir,
-            "--use-conda",
         ]
 
     # Run the test job.
