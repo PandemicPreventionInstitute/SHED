@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
-Last edited on 7-11-22
+Last edited on 8-10-22
 to do: add threading, impliment clean up, tests
 """
 import os
@@ -40,8 +40,6 @@ rule sam2bam:
         "sams/{sra_acc_qced}.bam",
     log:
         "logs/{sra_acc_qced}.bam.log",
-    conda:
-        "envs/ivar.yaml"
     shell:
         "samtools sort {input} -o {output} >>{log} 2>&1 && samtools index {output} >>{log} 2>&1"
 
@@ -58,8 +56,6 @@ rule primer_trim:
         bed=lambda wildcards: (sra_accs[wildcards.sra_acc_qced]["bed"]),
     log:
         "logs/{sra_acc_qced}.trim.log",
-    conda:
-        "envs/ivar.yaml"
     shell:
         "if [ ! {params.bed} == 'Unknown' ]; then ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc_qced}.trimmed \
         -i {input} -e -q 15 -m 30 -s 4  >>{log} 2>&1 && \
@@ -79,8 +75,6 @@ rule consensus:
         "endpoints/{sra_acc_qced}.fa",
     log:
         "logs/{sra_acc_qced}.con.log",
-    conda:
-        "envs/ivar.yaml"
     shell:
         """
         if [[ -f sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam ]]
@@ -108,8 +102,6 @@ rule vc:
         depth="endpoints/{sra_acc_qced}.depth",
     log:
         "logs/{sra_acc_qced}.ivar.log",
-    conda:
-        "envs/ivar.yaml"
     shell:
         """
         if [[ -f sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam ]]
@@ -135,8 +127,6 @@ rule update_freyja:
     """
     output:
         temp(touch("freyja.updated")),
-    conda:
-        "envs/freyja.yaml"
     shell:
         "if [[ {UPDATE} == True ]]; then freyja update; fi"
 
@@ -152,8 +142,6 @@ rule lineages:
         "endpoints/{sra_acc_qced}.lineages.tsv",
     log:
         "logs/{sra_acc_qced}.lin.log",
-    conda:
-        "envs/freyja.yaml"
     shell:
         "freyja demix {input.infiles} --output {output} >>{log} 2>&1"
 

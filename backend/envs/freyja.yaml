@@ -1,4 +1,0 @@
-channels:
-  - bioconda
-dependencies:
-  - freyja=1.3.8

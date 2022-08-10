@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to peform the
 initial bioinformatics processing for SRA samples.
-Last edited on 7-11-22
+Last edited on 8-10-22
 to do: add threading, impliment clean up, tests
 """
 import os
@@ -62,9 +62,7 @@ rule quality_check:
         gen="--dont_eval_duplication -5 -3 -l 50 ",
         cutting=lambda wildcards: sra_accs[wildcards.sra_acc]["cut"],
     log:
-        "logs/{sra_acc}.qc.log",
-    conda:
-        "envs/fastp.yaml"
+        "logs/{sra_acc}.qc.log"
     shell:
         """
         if [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
@@ -95,8 +93,6 @@ rule mapping:
         "sams/{sra_acc}.sam",
     log:
         "logs/{sra_acc}.mapping.log",
-    conda:
-         "envs/minimap2.yaml"
     shell:
         """
         if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]

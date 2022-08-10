@@ -1,8 +1,10 @@
+# This branch is for use with docker
+
 # SHED Backend Pipeline
 
 This folder contains the scripts and tests for the backend bioinformatics pipeline for SHED.  This pipeline will query NCBI's SRA with a string in the config.yaml (see below) to obtain sample metadata (saved with a timestamp tag) and then download and process the raw sequencing data.
 ## Dependencies
-The pipeline uses snakemake.  Please make sure [snakemake 7.8+](https://snakemake.readthedocs.io/en/stable/) and [Miniconda](https://docs.conda.io/en/latest/miniconda.html) are installed.  Users must also install [NCBI's SRA Tools](https://github.com/ncbi/sra-tools) v3.0, downloadable at https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/ for specific opererating systems.  Test the functionality of SRA Tools with:
+The pipeline uses snakemake.  Please make sure [snakemake 7.8.5](https://snakemake.readthedocs.io/en/stable/) and [Miniconda](https://docs.conda.io/en/latest/miniconda.html) are installed.  Users must also install [NCBI's SRA Tools](https://github.com/ncbi/sra-tools) v3.0, downloadable at https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/ for specific opererating systems.  Test the functionality of SRA Tools with:
 ```bash
 $ prefetch -V
 $ fasterq-dump -V

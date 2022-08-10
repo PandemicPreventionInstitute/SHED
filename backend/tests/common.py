@@ -1,6 +1,6 @@
 """
 Common code for unit testing of rules generated with Snakemake 7.8.0.
-Last edited on 7-12-22
+Last edited on 8-10-22
 """
 
 import os
