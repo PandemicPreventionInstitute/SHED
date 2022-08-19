@@ -30,6 +30,7 @@ repos:
         [
           "-rn", # Only display messages
           "-sn", # Don't display the score
+          "--disable=import-error"
         ]
 -   repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.8.0.4
