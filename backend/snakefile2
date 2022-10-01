@@ -6,9 +6,9 @@ Last edited on 7-11-22
 to do: add threading, impliment clean up, tests
 """
 import os
-from snakemake.utils import min_version
+#from snakemake.utils import min_version
 
-min_version("7.8.0")
+#min_version("7.8.0")
 
 
 snakepath = os.path.realpath(sys.path[0])
