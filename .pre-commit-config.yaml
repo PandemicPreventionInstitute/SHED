@@ -18,19 +18,6 @@ repos:
         # pre-commit's default_language_version, see
         # https://pre-commit.com/#top_level-default_language_version
         language_version: python3.9
-- repo: local
-  hooks:
-    - id: pylint
-      name: pylint
-      entry: pylint
-      exclude: backend/tests/common.py
-      language: system
-      types: [python]
-      args:
-        [
-          "-rn", # Only display messages
-          "-sn", # Don't display the score
-        ]
 -   repo: https://github.com/shellcheck-py/shellcheck-py
     rev: v0.8.0.4
     hooks:
