@@ -5,7 +5,7 @@ import pandas as pd
 import duckdb
 
 
-def parse_lineages_file(SRA_ID: str) -> pd.DataFrame:
+def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
 
     df = pd.read_csv(
         f"endpoints/{SRA_ID}.lineages.tsv",
@@ -46,17 +46,21 @@ def parse_summarized_lineages(SRA_ID: str, regex: re.Pattern) -> pd.DataFrame:
         nrows=1,
     )
 
+    # File is not column oriented. All data is on one row.
     # Elements are in order: string | lineage | % | lineage | % ....
     # Pull out the lineage names which should be elements 1, 3, ..., n-1
     # and lin % which should be 2, 4, ..., n
     summarized_lineages = [
-        parse_pattern(df[i][0], regex) for i in range(1, len(df.columns) - 1, 2)
+        parse_pattern(df[i][0], regex)
+        for i in range(1, len(df.columns) - 1, 2)
     ]
     lineage_percentages = [
         parse_pattern(df[i][0], regex) for i in range(2, len(df.columns), 2)
     ]
 
-    return pd.DataFrame({"name": summarized_lineages, "p": lineage_percentages})
+    return pd.DataFrame(
+        {"name": summarized_lineages, "p": lineage_percentages}
+    )
 
 
 def get_metadata() -> pd.DataFrame:
@@ -72,18 +76,24 @@ def get_metadata() -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    # Duckdb is automatically executed on all cores
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
         "%Y-%m-%d %H:%M:%S"
     )
+    # Duckdb is automatically executed on all cores
     metadata = get_metadata()
     metadata["run_at"] = timestamp
+
     regex = compile_regex()
     SRA_IDs = metadata["Accession"].tolist()
 
-    # Get the full lineage outputs
-    pool = Pool(processes=cpu_count())
-    res = pool.map(parse_lineages_file, SRA_IDs)
-    dfs = pd.concat(res, ignore_index=True)  # the final result
+    with Pool(processes=cpu_count()) as pool:
 
-    print(dfs)
+        # Get the full lineage outputs
+        res = pool.map(parse_full_lineages, SRA_IDs)
+        full_lineage_outputs = pd.concat(res, ignore_index=True)
+        full_lineage_outputs["run_at"] = timestamp
+
+        # Get the summarized lineage outputs
+        res = pool.map(parse_summarized_lineages, SRA_IDs)
+        summarized_lineage_outputs = pd.concat(res, ignore_index=True)
+        summarized_lineage_outputs["run_at"] = timestamp
