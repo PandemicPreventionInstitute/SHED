@@ -1,3 +1,4 @@
+import os
 import re
 import datetime
 from multiprocessing import Pool, cpu_count
@@ -27,6 +28,17 @@ def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
     return df
 
 
+def load_full_df(SRA_ID: str) -> pd.DataFrame:
+
+    try:
+        df = parse_full_lineages(SRA_ID)
+
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=["SRA_ID", "lineages", "abundances"])
+
+    return df
+
+
 def compile_regex() -> re.Pattern:
     return re.compile(r"[A-Za-z]+|\.[0-9]+")
 
@@ -35,7 +47,9 @@ def parse_pattern(name: str, regex_pattern: re.Pattern) -> str:
     return re.findall(regex_pattern, name)[0]
 
 
-def parse_summarized_lineages(SRA_ID: str, regex: re.Pattern) -> pd.DataFrame:
+def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
+
+    regex = compile_regex()
 
     df = pd.read_table(
         f"endpoints/{SRA_ID}.lineages.tsv",
@@ -63,7 +77,18 @@ def parse_summarized_lineages(SRA_ID: str, regex: re.Pattern) -> pd.DataFrame:
     )
 
 
-def get_metadata() -> pd.DataFrame:
+def load_summarized_df(SRA_ID: str) -> pd.DataFrame:
+
+    try:
+        df = parse_summarized_lineages(SRA_ID)
+
+    except FileNotFoundError:
+        df = pd.DataFrame(columns=["SRA_ID", "lineages", "abundances"])
+
+    return df
+
+
+def get_sample_metadata() -> pd.DataFrame:
     con = duckdb.connect(":memory:")
     meta = con.execute(
         """
@@ -77,23 +102,61 @@ def get_metadata() -> pd.DataFrame:
 
 if __name__ == "__main__":
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-        "%Y-%m-%d %H:%M:%S"
+        "%Y-%m-%d"
     )
     # Duckdb is automatically executed on all cores
-    metadata = get_metadata()
-    metadata["run_at"] = timestamp
+    sample_metadata = get_sample_metadata()
+    sample_metadata["run_at"] = timestamp
 
     regex = compile_regex()
-    SRA_IDs = metadata["Accession"].tolist()
+    SRA_IDs = sample_metadata["Accession"].tolist()
 
     with Pool(processes=cpu_count()) as pool:
 
         # Get the full lineage outputs
-        res = pool.map(parse_full_lineages, SRA_IDs)
-        full_lineage_outputs = pd.concat(res, ignore_index=True)
-        full_lineage_outputs["run_at"] = timestamp
+        res = pool.map(load_full_df, SRA_IDs)
+        full_lineage_output = pd.concat(res, ignore_index=True)
+        full_lineage_output["run_at"] = timestamp
 
         # Get the summarized lineage outputs
-        res = pool.map(parse_summarized_lineages, SRA_IDs)
-        summarized_lineage_outputs = pd.concat(res, ignore_index=True)
-        summarized_lineage_outputs["run_at"] = timestamp
+        res = pool.map(load_summarized_df, SRA_IDs)
+        summarized_lineage_output = pd.concat(res, ignore_index=True)
+        summarized_lineage_output["run_at"] = timestamp
+
+    s3_access_key_id = os.environ["s3_access_key_id"]
+    s3_secret_access_key = os.environ["s3_secret_access_key"]
+
+    con = duckdb.connect(":memory:")  # in-memory db
+
+    con.execute(
+        f"""
+
+    INSTALL httpfs;
+    LOAD httpfs;
+    SET s3_region='us-east-1';
+    SET s3_access_key_id='{s3_access_key_id}';
+    SET s3_secret_access_key='{s3_secret_access_key}';
+
+               """
+    )
+
+    for dataset in [
+        "sample_metadata",
+        "full_lineage_output",
+        "summarized_lineage_output",
+    ]:
+
+        con.execute(
+            f"""
+
+        COPY (
+
+        SELECT *
+        FROM {dataset}
+
+             )
+
+        TO 's3://ppi-openshed/{dataset}/{timestamp}.parquet';
+
+        """
+        )
