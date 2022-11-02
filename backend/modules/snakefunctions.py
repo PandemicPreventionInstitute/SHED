@@ -38,8 +38,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
     subprocess.run(
         [
             "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) "
-            "Gecko/20100101 Firefox/50.0' -L --alt-svc '' "
-            "--anyauth -b ncbi "
+            "Gecko/20100101 Firefox/50.0' -L "
             f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' "
             f"-o search_results_{date_stamp}.html"
         ],
