@@ -156,7 +156,7 @@ if __name__ == "__main__":
 
              )
 
-        TO 's3://ppi-openshed/{dataset}/{timestamp}.parquet';
+        TO 's3://ppi-shed/{dataset}/{timestamp}.parquet';
 
         """
         )
