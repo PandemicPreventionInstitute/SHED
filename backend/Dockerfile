@@ -1,5 +1,4 @@
 FROM snakemake/snakemake
-# Switch to git pull and put on ECR
 COPY . .
 RUN /bin/bash -c "conda config --set channel_priority strict"
 RUN conda env create -f docker_environment.yml
@@ -12,4 +11,5 @@ RUN mkdir /root/.ncbi/
 COPY  ./user-settings.mkfg /root/.ncbi/user-settings.mkfg
 RUN /bin/bash -c "bash pipeline.sh"
 RUN /bin/bash -c "pip install duckdb"
+RUN /bin/bash -c "pip install yaml"
 RUN /bin/bash -c "python insert_to_db.py"
