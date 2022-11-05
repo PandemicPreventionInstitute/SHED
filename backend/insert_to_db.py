@@ -4,6 +4,36 @@ import datetime
 from multiprocessing import Pool, cpu_count
 import pandas as pd
 import duckdb
+from subprocess import check_output
+from yaml import safe_load
+
+
+def get_git_revision_hash() -> str:
+    return check_output(["git", "rev-parse", "HEAD"]).decode("ascii").strip()
+
+
+def get_run_config_file() -> pd.DataFrame:
+
+    with open("config.yaml", "r") as stream:
+
+        d = safe_load(stream)
+
+    df = pd.DataFrame(d, index=[0])
+
+    return df
+
+
+def get_pipeline_run_metadata(timestamp: str) -> pd.DataFrame:
+
+    latest_git_hash = get_git_revision_hash()
+
+    df = get_run_config_file()
+
+    df["run_at"] = timestamp
+
+    df["git_hash"] = latest_git_hash
+
+    return df
 
 
 def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
@@ -102,11 +132,13 @@ def get_sample_metadata() -> pd.DataFrame:
 
 if __name__ == "__main__":
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-        "%Y-%m-%d"
+        "%Y-%m-%d %H:%M:%S"
     )
     # Duckdb is automatically executed on all cores
     sample_metadata = get_sample_metadata()
     sample_metadata["run_at"] = timestamp
+
+    run_metadata = get_pipeline_run_metadata(timestamp)
 
     regex = compile_regex()
     SRA_IDs = sample_metadata["Accession"].tolist()
@@ -142,6 +174,7 @@ if __name__ == "__main__":
 
     for dataset in [
         "sample_metadata",
+        "run_metadata",
         "full_lineage_output",
         "summarized_lineage_output",
     ]:
@@ -156,7 +189,7 @@ if __name__ == "__main__":
 
              )
 
-        TO 's3://ppi-shed/{dataset}/{timestamp}.parquet';
+        TO 's3://ppi-dev/shed/{dataset}/{timestamp}.parquet';
 
         """
         )
