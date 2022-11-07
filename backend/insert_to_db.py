@@ -70,7 +70,7 @@ def load_full_df(SRA_ID: str) -> pd.DataFrame:
 
 
 def compile_regex() -> re.Pattern:
-    return re.compile(r"[A-Za-z]+|\.[0-9]+")
+    return re.compile(r"[A-Za-z]+[A-Za-z0-9\.]*|0\.[0-9]+")
 
 
 def parse_pattern(name: str, regex_pattern: re.Pattern) -> str:
@@ -86,7 +86,7 @@ def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
         skiprows=1,
         header=None,
         engine="python",
-        sep="\t| ",
+        sep="\t|, ",
         nrows=1,
     )
 
@@ -95,15 +95,14 @@ def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
     # Pull out the lineage names which should be elements 1, 3, ..., n-1
     # and lin % which should be 2, 4, ..., n
     summarized_lineages = [
-        parse_pattern(df[i][0], regex)
-        for i in range(1, len(df.columns) - 1, 2)
+        parse_pattern(df[i][0], regex) for i in range(1, len(df.columns) - 1, 2)
     ]
     lineage_percentages = [
         parse_pattern(df[i][0], regex) for i in range(2, len(df.columns), 2)
     ]
 
     return pd.DataFrame(
-        {"name": summarized_lineages, "p": lineage_percentages}
+        {"SRA_ID": SRA_ID, "name": summarized_lineages, "p": lineage_percentages}
     )
 
 
@@ -113,7 +112,7 @@ def load_summarized_df(SRA_ID: str) -> pd.DataFrame:
         df = parse_summarized_lineages(SRA_ID)
 
     except FileNotFoundError:
-        df = pd.DataFrame(columns=["SRA_ID", "lineages", "abundances"])
+        df = pd.DataFrame(columns=["SRA_ID", "name", "p"])
 
     return df
 
@@ -132,17 +131,18 @@ def get_sample_metadata() -> pd.DataFrame:
 
 if __name__ == "__main__":
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-        "%Y-%m-%d %H:%M:%S"
+        "%Y-%m-%d_%H.%M.%S"
     )
     # Duckdb is automatically executed on all cores
     sample_metadata = get_sample_metadata()
     sample_metadata["run_at"] = timestamp
 
     run_metadata = get_pipeline_run_metadata(timestamp)
-
+    run_metadata.to_csv(f"{timestamp}_run_meta.csv", index=False)
     regex = compile_regex()
     SRA_IDs = sample_metadata["Accession"].tolist()
 
+    sample_metadata.to_csv(f"{timestamp}_samp_meta.csv", index=False)
     with Pool(processes=cpu_count()) as pool:
 
         # Get the full lineage outputs
@@ -155,41 +155,49 @@ if __name__ == "__main__":
         summarized_lineage_output = pd.concat(res, ignore_index=True)
         summarized_lineage_output["run_at"] = timestamp
 
-    s3_access_key_id = os.environ["s3_access_key_id"]
-    s3_secret_access_key = os.environ["s3_secret_access_key"]
-
-    con = duckdb.connect(":memory:")  # in-memory db
-
-    con.execute(
-        f"""
-
-    INSTALL httpfs;
-    LOAD httpfs;
-    SET s3_region='us-east-1';
-    SET s3_access_key_id='{s3_access_key_id}';
-    SET s3_secret_access_key='{s3_secret_access_key}';
-
-               """
+    summarized_lineage_output.to_csv(
+        f"{timestamp}_summarized_lineage_meta.csv", index=False
     )
+    full_lineage_output.to_csv(f"{timestamp}_full_lineage_meta.csv", index=False)
 
-    for dataset in [
-        "sample_metadata",
-        "run_metadata",
-        "full_lineage_output",
-        "summarized_lineage_output",
-    ]:
+    try:
+        s3_access_key_id = os.environ["s3_access_key_id"]
+        s3_secret_access_key = os.environ["s3_secret_access_key"]
+    except KeyError:
+        print("s3 keys not found, skipping upload")
+    else:
+        con = duckdb.connect(":memory:")  # in-memory db
 
         con.execute(
             f"""
 
-        COPY (
+        INSTALL httpfs;
+        LOAD httpfs;
+        SET s3_region='us-east-1';
+        SET s3_access_key_id='{s3_access_key_id}';
+        SET s3_secret_access_key='{s3_secret_access_key}';
 
-        SELECT *
-        FROM {dataset}
-
-             )
-
-        TO 's3://ppi-dev/shed/{dataset}/{timestamp}.parquet';
-
-        """
+                   """
         )
+
+        for dataset in [
+            "sample_metadata",
+            "run_metadata",
+            "full_lineage_output",
+            "summarized_lineage_output",
+        ]:
+
+            con.execute(
+                f"""
+
+            COPY (
+
+            SELECT *
+            FROM {dataset}
+
+                 )
+
+            TO 's3://ppi-dev/shed/{dataset}/{timestamp}.parquet';
+
+            """
+            )
