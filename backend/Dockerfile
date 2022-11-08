@@ -11,5 +11,5 @@ RUN mkdir /root/.ncbi/
 COPY  ./user-settings.mkfg /root/.ncbi/user-settings.mkfg
 RUN /bin/bash -c "bash pipeline.sh"
 RUN /bin/bash -c "pip install duckdb"
-RUN /bin/bash -c "pip install yaml"
+# RUN /bin/bash -c "pip install yaml"
 RUN /bin/bash -c "python insert_to_db.py"
