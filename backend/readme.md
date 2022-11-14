@@ -64,7 +64,9 @@ Lineage assignment by freyja is based on updatable lineage definitions.  To have
 '''
 
 ## Workflow Details
-The pipeline is split into three snakefiles/sections and relies on python functions found in modules/snakefuncions.py.  Each snakefile may be run separately, ie
+The pipeline is split into three snakefiles/sections and relies on python
+functions found in modules/snakefunctions.py.  Each snakefile may be run
+separately, ie
 ```bash
 path/to/SHED/backend:$ snakemake -cN --use-conda -k -F -s snakefile1
 ```

@@ -38,8 +38,7 @@ def sra_query(search_str: str, date_stamp: str) -> int:
     subprocess.run(
         [
             "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) "
-            "Gecko/20100101 Firefox/50.0' -L --alt-svc '' "
-            "--anyauth -b ncbi "
+            "Gecko/20100101 Firefox/50.0' -L "
             f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' "
             f"-o search_results_{date_stamp}.html"
         ],
@@ -341,7 +340,7 @@ def parse_xml_meta(date_stamp: str) -> int:
             with open(
                 f"sra_meta_collect_{date_stamp}.tsv", "w", encoding="utf-8"
             ) as lite_out_fh:
-                lite_out_fh.write("Accession\tcollectiong data\tgeo_loc\tprimers\n")
+                lite_out_fh.write("Accession\tsample_collection_date\tgeo_loc\tprimers\n")
                 parse_xml = xml.parsers.expat.ParserCreate()
                 element_strs = []
                 elements_dict = {
