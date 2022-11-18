@@ -4,7 +4,7 @@
 # bash to execute the 3 snakefiles in turn
 # Last edited on 7-10-22
 
-#echo "Enter number of cores to use in running the pipeline"
+echo "Enter number of cores to use in running the pipeline"
 # get how many cores should be used to run the workflow
 availcores=$(nproc)
 echo "${availcores} cores detected"
