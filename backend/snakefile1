@@ -28,6 +28,12 @@ if config["query"]:
     parse_xml_meta(RUN_ID)
 acc_list = get_sample_acc1(config["reprocess"])
 
+rule all:
+    """
+    Establishes targets for snakemake and initial wildcard values
+    """
+    input:
+        expand("SRAs/{sra_acc}.sra.done", sra_acc=acc_list),
 
 rule download_sra:
     """
@@ -35,10 +41,10 @@ rule download_sra:
     using NCBI's SRA Tools prefetch, catches accession with no data to download,
     otherwise errors cause an exit
     """
+    output:
+        temp(touch("SRAs/{sra_acc}.sra.done")),
     log:
-        "logs/sra.log",
-    params:
-        acc_list,
+        "logs/{sra_acc}.sra.log",
     shell:
         """
         set +e
@@ -46,19 +52,15 @@ rule download_sra:
         then
         mkdir SRAs
         fi
-        acc='{params}'
-        for f in $acc
-        do
-        prefetch $f -O SRAs/ >>{log} 2>&1
+        prefetch {wildcards.sra_acc} -O SRAs >>{log} 2>&1
         exitcode=$?
         if [ $exitcode -eq 3 ]
         then
-            touch 'SRAs/'$f'.no.data'
+            touch 'SRAs/'{wildcards.sra_acc}'.no.data'
         elif [ $exitcode -ne 0 ]
         then
             echo "prefetch failed with exitcode:"
             echo "$exitcode"
             exit 1
         fi
-        done
         """
