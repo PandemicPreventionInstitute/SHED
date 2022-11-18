@@ -63,6 +63,7 @@ rule quality_check:
         cutting=lambda wildcards: sra_accs[wildcards.sra_acc]["cut"],
     log:
         "logs/{sra_acc}.qc.log",
+    threads: 3
     conda:
         "envs/fastp.yaml"
     shell:
@@ -95,6 +96,7 @@ rule mapping:
         "sams/{sra_acc}.sam",
     log:
         "logs/{sra_acc}.mapping.log",
+    threads: 4
     conda:
          "envs/minimap2.yaml"
     shell:
