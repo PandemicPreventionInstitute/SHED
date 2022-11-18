@@ -340,7 +340,9 @@ def parse_xml_meta(date_stamp: str) -> int:
             with open(
                 f"sra_meta_collect_{date_stamp}.tsv", "w", encoding="utf-8"
             ) as lite_out_fh:
-                lite_out_fh.write("Accession\tsample_collection_date\tgeo_loc\tprimers\n")
+                lite_out_fh.write(
+                    "Accession\tsample_collection_date\tgeo_loc\tprimers\n"
+                )
                 parse_xml = xml.parsers.expat.ParserCreate()
                 element_strs = []
                 elements_dict = {
@@ -406,7 +408,7 @@ def get_sample_acc1(redo: bool) -> list:
                 and not split_line[0] in prev_accs
             ):
                 accs.append(split_line[0])
-    return " ".join(accs)
+    return accs
 
 
 def get_sample_acc2(redo: bool) -> dict:
