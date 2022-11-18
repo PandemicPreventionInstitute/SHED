@@ -6,8 +6,10 @@
 
 #echo "Enter number of cores to use in running the pipeline"
 # get how many cores should be used to run the workflow
-# read -r cores
-cores=1
+availcores=$(nproc)
+echo "${availcores} cores detected"
+read -r cores
+# cores=1
 workingdir=$( dirname -- "$( readlink -f -- "$0"; )"; )
 
 # Queries NCBI's SRA for matches to the config.yaml query string
