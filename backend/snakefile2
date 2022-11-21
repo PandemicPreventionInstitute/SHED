@@ -3,7 +3,7 @@ Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
 Last edited on 11-21-22
-to do: add threading, impliment clean up, tests
+to do: impliment clean up
 """
 import os
 #from snakemake.utils import min_version
@@ -16,6 +16,9 @@ configfile: f"{snakepath}/config.yaml"
 
 
 include: f"{snakepath}/modules/snakefunctions.py"
+
+# dertermine working dir path
+workdir: config["work_path"]
 
 UPDATE = config["freyja_update"]
 sra_accs = get_sample_acc2(config["reprocess"])
