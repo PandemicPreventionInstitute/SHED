@@ -1,9 +1,9 @@
 """
 Writen by Devon Gregory
-This snakefile is meant to be run via snakemake to peform the
-initial bioinformatics processing for SRA samples.
-Last edited on 7-11-22
-to do: add threading, impliment clean up, tests
+This snakefile is meant to be run via snakemake to finish the
+bioinformatics processing for SRA samples.
+Last edited on 11-21-22
+to do: impliment clean up
 """
 import os
 #from snakemake.utils import min_version
@@ -17,95 +17,170 @@ configfile: f"{snakepath}/config.yaml"
 
 include: f"{snakepath}/modules/snakefunctions.py"
 
+# dertermine working dir path
+workdir: config["work_path"]
 
+UPDATE = config["freyja_update"]
 sra_accs = get_sample_acc2(config["reprocess"])
+qc_passed = qc_pass(sra_accs)
 
 rule all:
     """
     Establishes targets for snakemake and initial wildcard values
     """
     input:
-        expand("fastqs/{sra_acc}.qc.done", sra_acc=sra_accs),
-        expand("sams/{sra_acc}.sam", sra_acc=sra_accs),
+        expand("sams/{sra_acc_qced}.bam", sra_acc_qced=qc_passed),
+        "endpoints/aggregate.done",
 
 
-rule get_fastqs:
+rule sam2bam:
     """
-    Writes the fastq files for the samples collected in the query
-    using NCBI's SRA Tools fasterq-dump.  Reads will be split into
-    seperate files for forward and reverse paired end, and single end
-    reads.  Unpaired reads from paired end sequencing (very rare)
-    won't be processed past qc.
+    convert, sort and index the sams to bams using samtools (comes with ivar)
     """
     input:
-        "SRAs/{sra_acc}/{sra_acc}.sra",
+        "sams/{sra_acc_qced}.sam",
     output:
-        touch("fastqs/{sra_acc}.fq.done"),
+        "sams/{sra_acc_qced}.bam",
     log:
-        "logs/{sra_acc}.fq.log",
-    shell:
-        "cd SRAs/; fasterq-dump --split-files -f -O ../fastqs {wildcards.sra_acc} >>../{log} 2>&1"
-
-
-rule quality_check:
-    """
-    Checks the quality of the reads using fastp.  Reads are trimmed of detected
-    adapters, 25 5' nts if sequencing primers haven't been determined, and
-    quality trimmed.  Sequences not at least 50 nts long are culled.
-    fastp defaults are otherwise used.
-    """
-    input:
-        rules.get_fastqs.output,
-    output:
-        touch("fastqs/{sra_acc}.qc.done"),
-    params:
-        gen="--dont_eval_duplication -5 -3 -l 50 ",
-        cutting=lambda wildcards: sra_accs[wildcards.sra_acc]["cut"],
-    log:
-        "logs/{sra_acc}.qc.log",
+        "logs/{sra_acc_qced}.bam.log",
     conda:
-        "envs/fastp.yaml"
+        "envs/freyja.yaml"
+    threads: 4
     shell:
-        """
-        if [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
-        then
-        fastp {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}.fastq -o fastqs/{wildcards.sra_acc}.qc.fq \
-        -j fastqs/{wildcards.sra_acc}.se.json -h fastqs/{wildcards.sra_acc}.se.html >>{log} 2>&1
-        fi
-        if [[ -f fastqs/{wildcards.sra_acc}_1.fastq ]]
-        then
-        fastp --detect_adapter_for_pe {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}_1.fastq \
-        -I fastqs/{wildcards.sra_acc}_2.fastq -o fastqs/{wildcards.sra_acc}_1.qc.fq -O fastqs/{wildcards.sra_acc}_2.qc.fq \
-        -j fastqs/{wildcards.sra_acc}.pe.json -h fastqs/{wildcards.sra_acc}.pe.html >>{log} 2>&1
-        fi
-        """
+        "samtools sort {input} -o {output} -@ 4 >>{log} 2>&1 && samtools index {output} >>{log} 2>&1"
 
 
-rule mapping:
+rule primer_trim:
     """
-    mapping of quality checked reads using minimap2 against the
-    reference SARS-CoV-2 Wuhan-Hu-1 sequence using the short read
-    presets (No wastewater sequences seem to have long reads)
-    Checks for both paired end and single end files
+    trim primers from samples where the sequencing primers can be determined using ivar
     """
     input:
-        "fastqs/{sra_acc}.qc.done",
+        "sams/{sra_acc_qced}.bam",
+    output:
+        touch("sams/{sra_acc_qced}.trim.done"),
+    params:
+        bed=lambda wildcards: (sra_accs[wildcards.sra_acc_qced]["bed"]),
+    log:
+        "logs/{sra_acc_qced}.trim.log",
+    conda:
+        "envs/freyja.yaml"
+    shell:
+        "if [ ! {params.bed} == 'Unknown' ]; then ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc_qced}.trimmed \
+        -i {input} -e -q 15 -m 30 -s 4  >>{log} 2>&1 && \
+        samtools sort sams/{wildcards.sra_acc_qced}.trimmed.bam -o sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 \
+        && samtools index sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 ; fi"
+
+
+rule consensus:
+    """
+    uses ivar to generate a consensus sequence
+    uses primer trimmed bam if available, otherwise uses basal bam
+    """
+    input:
+        "sams/{sra_acc_qced}.trim.done",
         fa=f"{snakepath}/data/SARS2.fasta",
     output:
-        "sams/{sra_acc}.sam",
+        "endpoints/{sra_acc_qced}.fa",
     log:
-        "logs/{sra_acc}.mapping.log",
+        "logs/{sra_acc_qced}.con.log",
     conda:
-         "envs/minimap2.yaml"
+        "envs/freyja.yaml"
     shell:
         """
-        if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]
+        if [[ -f sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam ]]
         then
-        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.qc.fq fastqs/{wildcards.sra_acc}_2.qc.fq \
-        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
-        elif [[ -f fastqs/{wildcards.sra_acc}.qc.fq ]]
-        then
-        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.qc.fq \
-        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam 2>>{log} | \
+        ivar consensus -p endpoints/{wildcards.sra_acc_qced} -q 15 -t 0.5 >>{log} 2>&1
+        else
+        samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc_qced}.bam 2>>{log} | \
+        ivar consensus -p endpoints/{wildcards.sra_acc_qced} -q 15 -t 0.5 >>{log} 2>&1
         fi
         """
+
+
+rule vc:
+    """
+    calls variants with ivar and depths with samtools
+    trimmed bams are used if primers were discovered, otherwise basal bams are used
+    """
+    input:
+        "sams/{sra_acc_qced}.trim.done",
+        fa=f"{snakepath}/data/SARS2.fasta",
+        gff=f"{snakepath}/data/NC_045512.2.gff3",
+    output:
+        tsv="endpoints/{sra_acc_qced}.tsv",
+        depth="endpoints/{sra_acc_qced}.depth",
+    log:
+        "logs/{sra_acc_qced}.ivar.log",
+    conda:
+        "envs/freyja.yaml"
+    shell:
+        """
+        if [[ -f sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam ]]
+        then
+        samtools mpileup -aa -A -d 600000 -B -Q 0 \
+        sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam | ivar variants -p \
+        endpoints/{wildcards.sra_acc_qced} -q 0 -t 0 -r {input.fa} -g {input.gff} > {log} 2>&1
+        samtools mpileup -aa -A -d 600000 -Q 0 -q 0 -B -f {input.fa} \
+        sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam | cut -f1-4 > {output.depth} 2> {log}
+        else
+        samtools mpileup -aa -A -d 600000 -B -Q 0 \
+        sams/{wildcards.sra_acc_qced}.bam | ivar variants -p \
+        endpoints/{wildcards.sra_acc_qced} -q 0 -t 0 -r {input.fa} -g {input.gff} > {log} 2>&1
+        samtools mpileup -aa -A -d 600000 -Q 20 -q 0 -B -f {input.fa} \
+        sams/{wildcards.sra_acc_qced}.bam | cut -f1-4 > {output.depth} 2> {log}
+        fi
+        """
+
+
+rule update_freyja:
+    """
+    makes sure freyja is up to date
+    """
+    output:
+        temp(touch("freyja.updated")),
+    conda:
+        "envs/freyja.yaml"
+    shell:
+        "if [[ {UPDATE} == True ]]; then freyja update; fi"
+
+
+rule lineages:
+    """
+    generates a lineage report using freyja
+    """
+    input:
+        rules.update_freyja.output,
+        infiles=rules.vc.output,
+    output:
+        "endpoints/{sra_acc_qced}.lineages.tsv",
+    log:
+        "logs/{sra_acc_qced}.lin.log",
+    conda:
+        "envs/freyja.yaml"
+    threads: 10
+    shell:
+        "freyja demix {input.infiles} --output {output} >>{log} 2>&1"
+
+
+rule aggregate:
+    """
+    calls aggregation function to collect sample data into aggregate files
+    potential TODO: add aggregation of metadata
+    """
+    input:
+        vcs=expand(
+            "endpoints/{sra_acc_qced}.tsv", sra_acc_qced=qc_passed, allow_missing=True
+        ),
+        cons=expand(
+            "endpoints/{sra_acc_qced}.fa", sra_acc_qced=qc_passed, allow_missing=True
+        ),
+        lins=expand(
+            "endpoints/{sra_acc_qced}.lineages.tsv",
+            sra_acc_qced=qc_passed,
+            allow_missing=True,
+        ),
+    output:
+        touch("endpoints/aggregate.done"),
+    run:
+        aggregate_endpoints(input.vcs, input.cons, input.lins, config["reprocess"])

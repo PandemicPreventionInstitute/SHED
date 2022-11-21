@@ -1,6 +1,6 @@
 """
 Common code for unit testing of rules generated with Snakemake 7.8.0.
-Last edited on 7-12-22
+Last edited on 11-21-22
 """
 
 import os
@@ -109,6 +109,7 @@ class OutputChecker:
                         or str(file).endswith(".sam")
                         or str(file).endswith(".bam")
                         or str(file).endswith(".bai")
+                        or str(file).endswith(".done")
                         or str(file).endswith(".log")
                         or str(file).startswith("sra_")
                         or "lineage" in str(file).lower()
