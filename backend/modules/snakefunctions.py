@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This script has functions called by the snakefiles to query NCBI'
 SRA and download and process the files for the results.
-Last edited on 7-10-22
+Last edited on 11-21-22
 """
 
 import os

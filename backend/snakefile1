@@ -2,7 +2,7 @@
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 query and SRA download for the bioinformatics pipeline.
-Last edited on 7-11-22
+Last edited on 11-21-22
 to do: implement tests
 """
 import os
@@ -33,8 +33,6 @@ rule all:
     Establishes targets for snakemake and initial wildcard values
     """
     input:
-        expand("SRAs/{sra_acc}.sra.done", sra_acc=acc_list),
-        expand("fastqs/{sra_acc}.qc.done", sra_acc=acc_list),
         expand("sams/{sra_acc}.sam.done", sra_acc=acc_list),
 
 rule download_sra:
@@ -93,7 +91,7 @@ rule get_fastqs:
         exitcode=$?
         if [ $exitcode -eq 3 ]
         then
-            touch 'fastqs/'{wildcards.sra_acc}'.no.data'
+            touch '../fastqs/'{wildcards.sra_acc}'.no.data'
         elif [ $exitcode -ne 0 ]
         then
             echo "prefetch failed with exitcode:"
@@ -160,10 +158,10 @@ rule mapping:
         if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]
         then
         minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.qc.fq fastqs/{wildcards.sra_acc}_2.qc.fq \
-        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        -o sams/{wildcards.sra_acc}.sam --secondary=no --sam-hit-only >>{log} 2>&1
         elif [[ -f fastqs/{wildcards.sra_acc}.qc.fq ]]
         then
         minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.qc.fq \
-        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        -o sams/{wildcards.sra_acc}.sam --secondary=no --sam-hit-only >>{log} 2>&1
         fi
         """

@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
-Last edited on 7-11-22
+Last edited on 11-21-22
 to do: add threading, impliment clean up, tests
 """
 import os
