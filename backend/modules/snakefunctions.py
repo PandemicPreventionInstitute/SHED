@@ -378,7 +378,7 @@ def parse_xml_meta(date_stamp: str) -> int:
     return 0
 
 
-def get_sample_acc1(redo: bool) -> list:
+def get_sample_acc1(redo: bool) -> dict:
     """
     Called to get the accessions of the samples of the current query.
 
@@ -391,14 +391,14 @@ def get_sample_acc1(redo: bool) -> list:
         meta collected values tsv. Sample accession are check against
         previously processed samples, if relevent, and returned
 
-    Returns a list of the accessions
+    Returns a dict of the accessions with primer trimming instructions.
     """
     prev_accs = []
-    if (not redo) and os.path.isdir("fastqs/"):
-        for file in os.listdir("fastqs/"):
-            if file.endswith(".json"):
+    if (not redo) and os.path.isdir("sams"):
+        for file in os.listdir("sams/"):
+            if file.endswith(".sam"):
                 prev_accs.append(file.split(".")[0])
-    accs = []
+    accs = {}
     with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:
         for line in in_fh:
             split_line = line.strip("\n").split("\t")
@@ -407,7 +407,9 @@ def get_sample_acc1(redo: bool) -> list:
                 and (split_line[0].startswith("SRR") or split_line[0].startswith("ERR"))
                 and not split_line[0] in prev_accs
             ):
-                accs.append(split_line[0])
+                accs[split_line[0]] = {"bed": split_line[3], "cut": ""}
+                if split_line[3] == "Unknown":
+                    accs[split_line[0]]["cut"] = "-f 25 "
     return accs
 
 
@@ -429,9 +431,9 @@ def get_sample_acc2(redo: bool) -> dict:
     Returns a dict of the accessions with primer trimming instructions.
     """
     prev_accs = []
-    if (not redo) and os.path.isdir("fastqs/"):
-        for file in os.listdir("fastqs/"):
-            if file.endswith(".json"):
+    if (not redo) and os.path.isdir("endpoints/"):
+        for file in os.listdir("endpoints/"):
+            if file.endswith(".lineages.tsv"):
                 prev_accs.append(file.split(".")[0])
     accs = {}
     with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:
@@ -442,7 +444,7 @@ def get_sample_acc2(redo: bool) -> dict:
                 and (split_line[0].startswith("SRR") or split_line[0].startswith("ERR"))
                 and not split_line[0] in prev_accs
             ):
-                if os.path.isfile(f"SRAs/{split_line[0]}/{split_line[0]}.sra"):
+                if os.path.isfile(f"sams/{split_line[0]}.sam"):
                     accs[split_line[0]] = {"bed": split_line[3], "cut": ""}
                     if split_line[3] == "Unknown":
                         accs[split_line[0]]["cut"] = "-f 25 "

@@ -34,6 +34,8 @@ rule all:
     """
     input:
         expand("SRAs/{sra_acc}.sra.done", sra_acc=acc_list),
+        expand("fastqs/{sra_acc}.qc.done", sra_acc=acc_list),
+        expand("sams/{sra_acc}.sam.done", sra_acc=acc_list),
 
 rule download_sra:
     """
@@ -63,5 +65,105 @@ rule download_sra:
             echo "prefetch failed with exitcode:"
             echo "$exitcode"
             exit 1
+        fi
+        """
+
+
+rule get_fastqs:
+    """
+    Writes the fastq files for the samples collected in the query
+    using NCBI's SRA Tools fasterq-dump.  Reads will be split into
+    seperate files for forward and reverse paired end, and single end
+    reads.  Unpaired reads from paired end sequencing (very rare)
+    won't be processed past qc.
+    """
+    input:
+        rules.download_sra.output,
+    output:
+        temp(touch("fastqs/{sra_acc}.fq.done")),
+    log:
+        "logs/{sra_acc}.fq.log",
+    shell:
+        """
+        set +e
+
+        cd SRAs
+
+        fasterq-dump --split-files -f -O ../fastqs {wildcards.sra_acc} >>../{log} 2>&1
+        exitcode=$?
+        if [ $exitcode -eq 3 ]
+        then
+            touch 'fastqs/'{wildcards.sra_acc}'.no.data'
+        elif [ $exitcode -ne 0 ]
+        then
+            echo "prefetch failed with exitcode:"
+            echo "$exitcode"
+            exit 1
+        fi
+        """
+
+
+rule quality_check:
+    """
+    Checks the quality of the reads using fastp.  Reads are trimmed of detected
+    adapters, 25 5' nts if sequencing primers haven't been determined, and
+    quality trimmed.  Sequences not at least 50 nts long are culled.
+    fastp defaults are otherwise used.
+    """
+    input:
+        rules.get_fastqs.output,
+    output:
+        temp(touch("fastqs/{sra_acc}.qc.done")),
+    params:
+        gen="--dont_eval_duplication -5 -3 -l 50 ",
+        cutting=lambda wildcards: acc_list[wildcards.sra_acc]["cut"],
+    log:
+        "logs/{sra_acc}.qc.log",
+    threads: 3
+    conda:
+        "envs/fastp.yaml"
+    shell:
+        """
+        if [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
+        then
+        fastp {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}.fastq -o fastqs/{wildcards.sra_acc}.qc.fq \
+        -j fastqs/{wildcards.sra_acc}.se.json -h fastqs/{wildcards.sra_acc}.se.html >>{log} 2>&1
+        fi
+        if [[ -f fastqs/{wildcards.sra_acc}_1.fastq ]]
+        then
+        fastp --detect_adapter_for_pe {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}_1.fastq \
+        -I fastqs/{wildcards.sra_acc}_2.fastq -o fastqs/{wildcards.sra_acc}_1.qc.fq -O fastqs/{wildcards.sra_acc}_2.qc.fq \
+        -j fastqs/{wildcards.sra_acc}.pe.json -h fastqs/{wildcards.sra_acc}.pe.html >>{log} 2>&1
+        fi
+        """
+
+
+rule mapping:
+    """
+    mapping of quality checked reads using minimap2 against the
+    reference SARS-CoV-2 Wuhan-Hu-1 sequence using the short read
+    presets (No wastewater sequences seem to have long reads)
+    Checks for both paired end and single end files
+    """
+    input:
+        "fastqs/{sra_acc}.qc.done",
+        fa=f"{snakepath}/data/SARS2.fasta",
+    output:
+        temp(touch("sams/{sra_acc}.sam.done")),
+    log:
+        "logs/{sra_acc}.mapping.log",
+    threads: 4
+    conda:
+         "envs/minimap2.yaml"
+    shell:
+        """
+        if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]
+        then
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.qc.fq fastqs/{wildcards.sra_acc}_2.qc.fq \
+        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
+        elif [[ -f fastqs/{wildcards.sra_acc}.qc.fq ]]
+        then
+        minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.qc.fq \
+        -o {output} --secondary=no --sam-hit-only >>{log} 2>&1
         fi
         """
