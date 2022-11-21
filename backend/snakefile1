@@ -45,6 +45,7 @@ rule download_sra:
         temp(touch("SRAs/{sra_acc}.sra.done")),
     log:
         "logs/{sra_acc}.sra.log",
+    resources: download_streams=1,
     shell:
         """
         set +e

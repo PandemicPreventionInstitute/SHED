@@ -14,7 +14,7 @@ workingdir=$( dirname -- "$( readlink -f -- "$0"; )"; )
 
 # Queries NCBI's SRA for matches to the config.yaml query string
 # downloads the sra formated sample file for each match
-run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile1"
+run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile1 --resources download_streams=2"
 if $run
 then
 echo "snakefile1 run successful"
