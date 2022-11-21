@@ -3,7 +3,6 @@ Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 query and SRA download for the bioinformatics pipeline.
 Last edited on 11-21-22
-to do: implement tests
 """
 import os
 import time
@@ -14,12 +13,13 @@ import time
 snakepath = os.path.realpath(sys.path[0])
 configfile: f"{snakepath}/config.yaml"
 
-
 include: f"{snakepath}/modules/snakefunctions.py"
+
+# dertermine working dir path
+workdir: config["work_path"]
 
 # query SRA, get the meta data and pull accessions from it
 if config["query"]:
-
     if config["run_ID"]:
         RUN_ID = config["run_ID"]
     else:
