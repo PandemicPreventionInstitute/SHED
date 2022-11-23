@@ -473,7 +473,7 @@ def qc_pass(sample_acc: str) -> int:
         with open(f"sams/{sample_acc}.sam", "r", encoding="utf-8") as sam_file:
             lines = len(sam_file.read().split("\n"))
             if lines > 502:
-                passed.append(acc)
+                passed = 1
 
     return passed
 
