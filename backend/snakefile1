@@ -2,7 +2,7 @@
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 query and SRA download for the bioinformatics pipeline.
-Last edited on 11-21-22
+Last edited on 11-23-22
 """
 import os
 import time
@@ -30,12 +30,14 @@ if config["query"]:
     parse_xml_meta(RUN_ID)
 acc_list = get_sample_acc1(config["reprocess"])
 
+
 rule all:
     """
     Establishes targets for snakemake and initial wildcard values
     """
     input:
-        expand("sams/{sra_acc}.sam.done", sra_acc=acc_list),
+        expand("sams/{sra_acc}.bam.done", sra_acc=acc_list),
+        expand("{sra_acc}.cleanup.done", sra_acc=acc_list),
 
 rule download_sra:
     """
@@ -168,18 +170,29 @@ rule mapping:
         fi
         """
 
+rule qc_pass_check:
+    """
+    check to see if enough reads mapped to be worth continuing
+    """
+    input:
+        rules.mapping.output,
+    output:
+        temp(touch("sams/{sra_acc}.qc_pass.done")),
+    run:
+        if qc_pass(wildcards.sra_acc):
+            shell("touch sams/{wildcards.sra_acc}.qc.passed")
+        else:
+            shell("touch sams/{wildcards.sra_acc}.qc.failed")
 
 rule sam2bam:
     """
     convert, sort and index the sams to bams using samtools (comes with ivar)
-    if qualcheck passed
     """
     input:
-        "sams/{sra_acc}.sam",
+        rules.qc_pass_check.output,
+        rules.mapping.output,
     output:
         temp(touch("sams/{sra_acc}.bam.done")),
-    params:
-        passed=lambda wildcards: qc_pass(wildcards.sra_acc),
     log:
         "logs/{sra_acc}.bam.log",
     conda:
@@ -187,8 +200,24 @@ rule sam2bam:
     threads: 4
     shell:
         """
-        if [[ {params.passed} ]]
+        if [[ -f sams/{wildcards.sra_acc}.qc.passed ]]
         then
-        samtools sort {input} -o {output} -@ 4 >>{log} 2>&1 && samtools index {output} >>{log} 2>&1
+        samtools sort sams/{wildcards.sra_acc}.sam -o sams/{wildcards.sra_acc}.bam -@ 4 >>{log} 2>&1
+        samtools index sams/{wildcards.sra_acc}.bam >>{log} 2>&1
         fi
         """
+
+
+rule cleanup:
+    """
+    removes unwanted intermediate files
+    """
+    input:
+        rules.sam2bam.output,
+    output:
+        temp(touch("{sra_acc}.cleanup.done")),
+    run:
+        if config["cleanup"]:
+            shell("rm fastqs/{wildcards.sra_acc}*.fastq")
+            shell("rm fastqs/{wildcards.sra_acc}*.fq")
+            shell("rm sams/{wildcards.sra_acc}.sam")

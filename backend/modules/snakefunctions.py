@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This script has functions called by the snakefiles to query NCBI'
 SRA and download and process the files for the results.
-Last edited on 11-21-22
+Last edited on 11-23-22
 """
 
 import os
@@ -395,8 +395,8 @@ def get_sample_acc1(redo: bool) -> dict:
     """
     prev_accs = []
     if (not redo) and os.path.isdir("sams"):
-        for file in os.listdir("fastqs/"):
-            if file.endswith(".json"):
+        for file in os.listdir("sams/"):
+            if file.endswith(".bam.bai") or file.endswith("qc.failed"):
                 prev_accs.append(file.split(".")[0])
     accs = {}
     with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:

@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
-Last edited on 11-21-22
+Last edited on 11-23-22
 to do: impliment clean up
 """
 import os
@@ -32,6 +32,7 @@ rule all:
     input:
         expand("sams/{sra_acc}.trim.done", sra_acc=sra_accs),
         "endpoints/aggregate.done",
+        expand("{sra_acc}.cleanup2.done", sra_acc=sra_accs),
 
 rule primer_trim:
     """
@@ -40,7 +41,7 @@ rule primer_trim:
     input:
         "sams/{sra_acc}.bam",
     output:
-        touch("sams/{sra_acc}.trim.done"),
+        temp(touch("sams/{sra_acc}.trim.done")),
     params:
         bed=lambda wildcards: (sra_accs[wildcards.sra_acc]["bed"]),
     log:
@@ -48,10 +49,15 @@ rule primer_trim:
     conda:
         "envs/freyja.yaml"
     shell:
-        "if [ ! {params.bed} == 'Unknown' ]; then ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc}.trimmed \
+        """
+        if [ ! {params.bed} == 'Unknown' ]
+        then
+        ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc}.trimmed \
         -i {input} -e -q 15 -m 30 -s 4  >>{log} 2>&1 && \
         samtools sort sams/{wildcards.sra_acc}.trimmed.bam -o sams/{wildcards.sra_acc}.trimmed.sorted.bam >>{log} 2>&1 \
-        && samtools index sams/{wildcards.sra_acc}.trimmed.sorted.bam >>{log} 2>&1 ; fi"
+        && samtools index sams/{wildcards.sra_acc}.trimmed.sorted.bam >>{log} 2>&1
+        fi
+        """
 
 
 rule consensus:
@@ -153,17 +159,35 @@ rule aggregate:
     """
     input:
         vcs=expand(
-            "endpoints/{sra_acc}.tsv", sra_acc=sra_accs, allow_missing=True
-        ),
+            "endpoints/{sra_acc}.tsv", sra_acc=sra_accs
+            ),
         cons=expand(
-            "endpoints/{sra_acc}.fa", sra_acc=sra_accs, allow_missing=True
-        ),
+            "endpoints/{sra_acc}.fa", sra_acc=sra_accs
+            ),
         lins=expand(
             "endpoints/{sra_acc}.lineages.tsv",
             sra_acc=sra_accs,
-            allow_missing=True,
-        ),
+            ),
     output:
-        touch("endpoints/aggregate.done"),
+        temp(touch("endpoints/aggregate.done")),
     run:
         aggregate_endpoints(input.vcs, input.cons, input.lins, config["reprocess"])
+
+
+rule cleanup:
+    """
+    removes unwanted intermediate files
+    """
+    input:
+        rules.aggregate.output,
+        "endpoints/{sra_acc}.tsv",
+        "endpoints/{sra_acc}.fa",
+        "endpoints/{sra_acc}.lineages.tsv",
+    output:
+        temp(touch("{sra_acc}.cleanup2.done")),
+    run:
+        if config["cleanup"]:
+            shell("rm sams/{wildcards.sra_acc}*trimmed.bam")
+            if os.path.isfile(f"sams/{wildcards.sra_acc}.trimmed.sorted.bam"):
+                shell("rm sams/{wildcards.sra_acc}.bam")
+                shell("rm sams/{wildcards.sra_acc}.bam.bai")
