@@ -3,7 +3,6 @@ Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
 Last edited on 11-23-22
-to do: impliment clean up
 """
 import os
 #from snakemake.utils import min_version
