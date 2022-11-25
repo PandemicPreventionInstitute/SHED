@@ -18,8 +18,6 @@ should download SRR17866146.sra into the directory SRR17866146/. The pipeline wi
 
 [minimap2](https://github.com/lh3/minimap2)
 
-[ivar](https://github.com/andersen-lab/ivar)
-
 [freyja](https://github.com/andersen-lab/Freyja)
 
 If an error arrises indicating the pipeline was unable to install one or more of these programs, the user may need to provide a pristine conda environment for the pipeline.
@@ -58,23 +56,33 @@ and will not be reprocessed if the flag is set to False
 ```
 Any samples that aren't found by NCBI's SRA Tools prefetch aren't processed further and a file is written to the SRAs/ directory indicating no data for that accession.
 Lineage assignment by freyja is based on updatable lineage definitions.  To have the pipeline update the definitions, change the config.yaml freyja_update entry to True.
-'''
+```
     freyja_update:
         True
-'''
+```
+Users can also specify the directory for the pipeline to be run with the work_path entry.  Having no directory specified with use the working directroy from where the pipeline was executed.
+```
+    work_path:
+        True
+```
+Some redundant intermediate files can be removed by changing the cleanup entry to True.
+```
+    cleanup:
+    True
+```
 
 ## Workflow Details
-The pipeline is split into three snakefiles/sections and relies on python
+The pipeline is split into two snakefiles/sections and relies on python
 functions found in modules/snakefunctions.py.  Each snakefile may be run
 separately, ie
 ```bash
 path/to/SHED/backend:$ snakemake -cN --use-conda -k -F -s snakefile1
 ```
 The first section, snakefile1, is responsible for calling functions to query NCBI's SRA and obtain/process the metadata for the search's results.  The query results will be saved as search_results_TIMESTAMP.html, with the TIMESTAMP based on the time of running.  Partial and complete metadata will be downloaded as sra_data_TIMESTAMP.csv sra_meta_TIMESTAMP.xml respectively.  The xml will be converted into a more readable format as sra_meta_TIMESTAMP.txt and select metadata (accession, collection date, location and primer.bed) written to sra_meta_collect_TIMESTAMP.tsv.
-For the current run, the latter will also be written to sra_meta_collect_current.tsv.  With these results, a snakemake rule downloads sra files for each sample via NCBI SRA Tools' prefetch in the SRAs subdirectory.
-The second section handles writing the fastq files with NCBI SRA Tools' fasterq-dump, checking the reads' qualities using fastp and mapping quality passed reads with minimap2.  For samples that don't have known primers, fastp also trims 25nts from the 5' end of the reads. The outputs for this section are written in the fastqs subdirectory or the sams subdirectory for the mapping.  The final section continues to process samples that have over 500 reads that mapped to the reference SARS-CoV-2 genome (NC_045512.2).  This section trims primers, calls variants and generates consensus using ivar, and assigns lineages with freyja.  Trimmed mapped reads are written to the sams subdirectory in bam format.  For each sample processed fully, the endpoints subdirectory will contain the tsv files for the variants and lineages, depth and quality files, and fasta files for the consensus sequence.  Data for all processed samples are aggregated into VCs.tsv for variants, Lineages.tsv for lineages and Consensus.fa for consensus.
+For the current run, the latter will also be written to sra_meta_collect_current.tsv.  With these results, the pipeline will download sra files for each sample via NCBI SRA Tools' prefetch in the SRAs subdirectory, write the fastq files with NCBI SRA Tools' fasterq-dump, check the reads' qualities using fastp and mapping reads with minimap2.  For samples that don't have known primers, fastp also trims 25nts from the 5' end of the reads. The outputs for the latter functions are written in the fastqs subdirectory or the sams subdirectory for the mapping.  The second section continues to process samples that have over 500 reads that mapped to the reference SARS-CoV-2 genome (NC_045512.2).  This section trims primers, calls variants and generates consensus using ivar, and assigns lineages with freyja.  Trimmed mapped reads are written to the sams subdirectory in bam format.  For each sample processed fully, the endpoints subdirectory will contain the tsv files for the variants and lineages, depth and quality files, and fasta files for the consensus sequence.  Data for all processed samples are aggregated into VCs.tsv for variants, Lineages.tsv for lineages and Consensus.fa for consensus.
 
 ## Output file details
+Files preceded by an astriks indicate intermediate files removed the by the clean up functions.
 
 The querying process generates 6 files in the working directory, all but one using the timestamp or user defined id in the name.
 search_results_TIMESTAMP.html - Webpage showing the first page of the query result and contains search id and key used for downloading metadata
@@ -93,21 +101,21 @@ sra_meta_collect_current - the sra accession, collection date, geographic locati
 For each sample from the current query, the pipeline will generate intermediate and endpoint files.  For the following are examples for the accession SRR17866146:
 SRAs/SRR17866146/SRR17866146.sra - sequencing data in a compressed format downloaded by SRA Tools prefetch, if no data was found SRR17866146.no.data would be written no further processing would occur
 
-fastqs/SRR17866146_1.fastq, SRR17866146_2.fastq - fastq files of the sequencing data.  If single end data, the file would be SRR17866146.fastq. Generated by SRA Tools fasterq-dump
+*fastqs/SRR17866146_1.fastq, SRR17866146_2.fastq - fastq files of the sequencing data.  If single end data, the file would be SRR17866146.fastq. Generated by SRA Tools fasterq-dump
 
-fastqs/SRR17866146_1.qc.fq, SRR17866146_2.qc.fq - quality filtered fastq files generated by fastp. If single end data, the file would be SRR17866146.qc.fq.
+*fastqs/SRR17866146_1.qc.fq, SRR17866146_2.qc.fq - quality filtered fastq files generated by fastp. If single end data, the file would be SRR17866146.qc.fq.
 
 fastqs/SRR17866146.pe.json - quality report generated by fastp. pe indicated paired end, se would be used for single end data.
 
 fastqs/SRR17866146.pe.html - quality report generated by fastp with graphics. pe indicated paired end, se would be used for single end data.
 
-sams/SRR17866146.sam - reads mapped to SARS-CoV-2 by minimap2
+*sams/SRR17866146.sam - reads mapped to SARS-CoV-2 by minimap2
 
-sams/SRR17866146.bam - the above same in a sorted bam format generated by samtools (packaged with ivar).  This file will not be generated and no further processing continued if there are not at least 500 reads mapped.
+*sams/SRR17866146.bam - the above same in a sorted bam format generated by samtools (packaged with ivar).  This file will not be generated and no further processing continued if there are not at least 500 reads mapped.
 
 sams/SRR17866146.bam.bai - index of the above bam generated by samtools (packaged with ivar)
 
-sams/SRR17866146.trimmed.bam - mapped reads trimmed of primers by ivar
+*sams/SRR17866146.trimmed.bam - mapped reads trimmed of primers by ivar
 
 sams/SRR17866146.trimmed.sorted.bam - sorted bam of the primer trimmed reads (samtools)
 

@@ -2,8 +2,7 @@
 Writen by Devon Gregory
 This snakefile is meant to be run via snakemake to finish the
 bioinformatics processing for SRA samples.
-Last edited on 11-21-22
-to do: impliment clean up
+Last edited on 11-23-22
 """
 import os
 #from snakemake.utils import min_version
@@ -18,57 +17,46 @@ configfile: f"{snakepath}/config.yaml"
 include: f"{snakepath}/modules/snakefunctions.py"
 
 # dertermine working dir path
+if not config["work_path"]:
+    config["work_path"] = os.getcwd()
 workdir: config["work_path"]
 
 UPDATE = config["freyja_update"]
 sra_accs = get_sample_acc2(config["reprocess"])
-qc_passed = qc_pass(sra_accs)
 
 rule all:
     """
     Establishes targets for snakemake and initial wildcard values
     """
     input:
-        expand("sams/{sra_acc_qced}.bam", sra_acc_qced=qc_passed),
+        expand("sams/{sra_acc}.trim.done", sra_acc=sra_accs),
         "endpoints/aggregate.done",
-
-
-rule sam2bam:
-    """
-    convert, sort and index the sams to bams using samtools (comes with ivar)
-    """
-    input:
-        "sams/{sra_acc_qced}.sam",
-    output:
-        "sams/{sra_acc_qced}.bam",
-    log:
-        "logs/{sra_acc_qced}.bam.log",
-    conda:
-        "envs/freyja.yaml"
-    threads: 4
-    shell:
-        "samtools sort {input} -o {output} -@ 4 >>{log} 2>&1 && samtools index {output} >>{log} 2>&1"
-
+        expand("{sra_acc}.cleanup2.done", sra_acc=sra_accs),
 
 rule primer_trim:
     """
     trim primers from samples where the sequencing primers can be determined using ivar
     """
     input:
-        "sams/{sra_acc_qced}.bam",
+        "sams/{sra_acc}.bam",
     output:
-        touch("sams/{sra_acc_qced}.trim.done"),
+        temp(touch("sams/{sra_acc}.trim.done")),
     params:
-        bed=lambda wildcards: (sra_accs[wildcards.sra_acc_qced]["bed"]),
+        bed=lambda wildcards: (sra_accs[wildcards.sra_acc]["bed"]),
     log:
-        "logs/{sra_acc_qced}.trim.log",
+        "logs/{sra_acc}.trim.log",
     conda:
         "envs/freyja.yaml"
     shell:
-        "if [ ! {params.bed} == 'Unknown' ]; then ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc_qced}.trimmed \
+        """
+        if [ ! {params.bed} == 'Unknown' ]
+        then
+        ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc}.trimmed \
         -i {input} -e -q 15 -m 30 -s 4  >>{log} 2>&1 && \
-        samtools sort sams/{wildcards.sra_acc_qced}.trimmed.bam -o sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 \
-        && samtools index sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam >>{log} 2>&1 ; fi"
+        samtools sort sams/{wildcards.sra_acc}.trimmed.bam -o sams/{wildcards.sra_acc}.trimmed.sorted.bam >>{log} 2>&1 \
+        && samtools index sams/{wildcards.sra_acc}.trimmed.sorted.bam >>{log} 2>&1
+        fi
+        """
 
 
 rule consensus:
@@ -77,23 +65,23 @@ rule consensus:
     uses primer trimmed bam if available, otherwise uses basal bam
     """
     input:
-        "sams/{sra_acc_qced}.trim.done",
+        "sams/{sra_acc}.trim.done",
         fa=f"{snakepath}/data/SARS2.fasta",
     output:
-        "endpoints/{sra_acc_qced}.fa",
+        "endpoints/{sra_acc}.fa",
     log:
-        "logs/{sra_acc_qced}.con.log",
+        "logs/{sra_acc}.con.log",
     conda:
         "envs/freyja.yaml"
     shell:
         """
-        if [[ -f sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam ]]
+        if [[ -f sams/{wildcards.sra_acc}.trimmed.sorted.bam ]]
         then
-        samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam 2>>{log} | \
-        ivar consensus -p endpoints/{wildcards.sra_acc_qced} -q 15 -t 0.5 >>{log} 2>&1
+        samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc}.trimmed.sorted.bam 2>>{log} | \
+        ivar consensus -p endpoints/{wildcards.sra_acc} -q 15 -t 0.5 >>{log} 2>&1
         else
-        samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc_qced}.bam 2>>{log} | \
-        ivar consensus -p endpoints/{wildcards.sra_acc_qced} -q 15 -t 0.5 >>{log} 2>&1
+        samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc}.bam 2>>{log} | \
+        ivar consensus -p endpoints/{wildcards.sra_acc} -q 15 -t 0.5 >>{log} 2>&1
         fi
         """
 
@@ -104,31 +92,31 @@ rule vc:
     trimmed bams are used if primers were discovered, otherwise basal bams are used
     """
     input:
-        "sams/{sra_acc_qced}.trim.done",
+        "sams/{sra_acc}.trim.done",
         fa=f"{snakepath}/data/SARS2.fasta",
         gff=f"{snakepath}/data/NC_045512.2.gff3",
     output:
-        tsv="endpoints/{sra_acc_qced}.tsv",
-        depth="endpoints/{sra_acc_qced}.depth",
+        tsv="endpoints/{sra_acc}.tsv",
+        depth="endpoints/{sra_acc}.depth",
     log:
-        "logs/{sra_acc_qced}.ivar.log",
+        "logs/{sra_acc}.ivar.log",
     conda:
         "envs/freyja.yaml"
     shell:
         """
-        if [[ -f sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam ]]
+        if [[ -f sams/{wildcards.sra_acc}.trimmed.sorted.bam ]]
         then
         samtools mpileup -aa -A -d 600000 -B -Q 0 \
-        sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam | ivar variants -p \
-        endpoints/{wildcards.sra_acc_qced} -q 0 -t 0 -r {input.fa} -g {input.gff} > {log} 2>&1
+        sams/{wildcards.sra_acc}.trimmed.sorted.bam | ivar variants -p \
+        endpoints/{wildcards.sra_acc} -q 0 -t 0 -r {input.fa} -g {input.gff} > {log} 2>&1
         samtools mpileup -aa -A -d 600000 -Q 0 -q 0 -B -f {input.fa} \
-        sams/{wildcards.sra_acc_qced}.trimmed.sorted.bam | cut -f1-4 > {output.depth} 2> {log}
+        sams/{wildcards.sra_acc}.trimmed.sorted.bam | cut -f1-4 > {output.depth} 2> {log}
         else
         samtools mpileup -aa -A -d 600000 -B -Q 0 \
-        sams/{wildcards.sra_acc_qced}.bam | ivar variants -p \
-        endpoints/{wildcards.sra_acc_qced} -q 0 -t 0 -r {input.fa} -g {input.gff} > {log} 2>&1
+        sams/{wildcards.sra_acc}.bam | ivar variants -p \
+        endpoints/{wildcards.sra_acc} -q 0 -t 0 -r {input.fa} -g {input.gff} > {log} 2>&1
         samtools mpileup -aa -A -d 600000 -Q 20 -q 0 -B -f {input.fa} \
-        sams/{wildcards.sra_acc_qced}.bam | cut -f1-4 > {output.depth} 2> {log}
+        sams/{wildcards.sra_acc}.bam | cut -f1-4 > {output.depth} 2> {log}
         fi
         """
 
@@ -153,9 +141,9 @@ rule lineages:
         rules.update_freyja.output,
         infiles=rules.vc.output,
     output:
-        "endpoints/{sra_acc_qced}.lineages.tsv",
+        "endpoints/{sra_acc}.lineages.tsv",
     log:
-        "logs/{sra_acc_qced}.lin.log",
+        "logs/{sra_acc}.lin.log",
     conda:
         "envs/freyja.yaml"
     threads: 10
@@ -170,17 +158,35 @@ rule aggregate:
     """
     input:
         vcs=expand(
-            "endpoints/{sra_acc_qced}.tsv", sra_acc_qced=qc_passed, allow_missing=True
-        ),
+            "endpoints/{sra_acc}.tsv", sra_acc=sra_accs
+            ),
         cons=expand(
-            "endpoints/{sra_acc_qced}.fa", sra_acc_qced=qc_passed, allow_missing=True
-        ),
+            "endpoints/{sra_acc}.fa", sra_acc=sra_accs
+            ),
         lins=expand(
-            "endpoints/{sra_acc_qced}.lineages.tsv",
-            sra_acc_qced=qc_passed,
-            allow_missing=True,
-        ),
+            "endpoints/{sra_acc}.lineages.tsv",
+            sra_acc=sra_accs,
+            ),
     output:
-        touch("endpoints/aggregate.done"),
+        temp(touch("endpoints/aggregate.done")),
     run:
         aggregate_endpoints(input.vcs, input.cons, input.lins, config["reprocess"])
+
+
+rule cleanup:
+    """
+    removes unwanted intermediate files
+    """
+    input:
+        rules.aggregate.output,
+        "endpoints/{sra_acc}.tsv",
+        "endpoints/{sra_acc}.fa",
+        "endpoints/{sra_acc}.lineages.tsv",
+    output:
+        temp(touch("{sra_acc}.cleanup2.done")),
+    run:
+        if config["cleanup"]:
+            shell("rm sams/{wildcards.sra_acc}*trimmed.bam")
+            if os.path.isfile(f"sams/{wildcards.sra_acc}.trimmed.sorted.bam"):
+                shell("rm sams/{wildcards.sra_acc}.bam")
+                shell("rm sams/{wildcards.sra_acc}.bam.bai")
