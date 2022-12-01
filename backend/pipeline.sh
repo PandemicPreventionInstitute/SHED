@@ -12,6 +12,10 @@ read -r cores
 # cores=1
 workingdir=$( dirname -- "$( readlink -f -- "$0"; )"; )
 
+starttime=$(date +'%Y-%m-%d.%T')
+echo Pipeline run starting at "${starttime}"
+echo Start time: "$starttime" > Pipeline.times
+
 # Queries NCBI's SRA for matches to the config.yaml query string
 # downloads the sra formated sample file for each match
 # Writes fastq files based on the sra files and runs a quality check
@@ -36,3 +40,7 @@ else
 echo "snakemake2 run failed"
 exit 1
 fi
+
+endtime=$(date +'%Y-%m-%d.%T')
+echo Pipeline run ending at "${endtime}"
+echo End time: "$endtime" >> Pipeline.times

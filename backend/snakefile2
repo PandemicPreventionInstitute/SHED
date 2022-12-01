@@ -130,7 +130,13 @@ rule update_freyja:
     conda:
         "envs/freyja.yaml"
     shell:
-        "if [[ {UPDATE} == True ]]; then freyja update; fi"
+        """
+        if [[ {UPDATE} == True ]]
+        then
+        freyja update
+        echo $(date +'%Y-%m-%d.%T') > freya.updated
+        fi
+        """
 
 
 rule lineages:

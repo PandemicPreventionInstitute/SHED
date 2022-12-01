@@ -1,6 +1,7 @@
 import os
 import re
 import datetime
+import itertools
 from multiprocessing import Pool, cpu_count
 import pandas as pd
 import duckdb
@@ -36,10 +37,10 @@ def get_pipeline_run_metadata(timestamp: str) -> pd.DataFrame:
     return df
 
 
-def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
+def parse_full_lineages(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     df = pd.read_csv(
-        f"endpoints/{SRA_ID}.lineages.tsv",
+        f"{work_path}/endpoints/{SRA_ID}.lineages.tsv",
         sep="\t| ",
         header=None,
         engine="python",  # regex parsing requires python engine
@@ -58,10 +59,10 @@ def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
     return df
 
 
-def load_full_df(SRA_ID: str) -> pd.DataFrame:
+def load_full_df(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     try:
-        df = parse_full_lineages(SRA_ID)
+        df = parse_full_lineages(SRA_ID, work_path)
 
     except FileNotFoundError:
         df = pd.DataFrame(columns=["SRA_ID", "lineages", "abundances"])
@@ -77,12 +78,12 @@ def parse_pattern(name: str, regex_pattern: re.Pattern) -> str:
     return re.findall(regex_pattern, name)[0]
 
 
-def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
+def parse_summarized_lineages(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     regex = compile_regex()
 
     df = pd.read_table(
-        f"endpoints/{SRA_ID}.lineages.tsv",
+        f"{work_path}/endpoints/{SRA_ID}.lineages.tsv",
         skiprows=1,
         header=None,
         engine="python",
@@ -106,10 +107,10 @@ def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
     )
 
 
-def load_summarized_df(SRA_ID: str) -> pd.DataFrame:
+def load_summarized_df(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     try:
-        df = parse_summarized_lineages(SRA_ID)
+        df = parse_summarized_lineages(SRA_ID, work_path)
 
     except FileNotFoundError:
         df = pd.DataFrame(columns=["SRA_ID", "name", "p"])
@@ -117,11 +118,11 @@ def load_summarized_df(SRA_ID: str) -> pd.DataFrame:
     return df
 
 
-def get_sample_metadata() -> pd.DataFrame:
+def get_sample_metadata(work_path: str) -> pd.DataFrame:
     con = duckdb.connect(":memory:")
     meta = con.execute(
-        """
-        SELECT DISTINCT * FROM read_csv_auto('sra_meta_collect_*.tsv',
+        f"""
+        SELECT DISTINCT * FROM read_csv_auto('{work_path}/sra_meta_collect_*.tsv',
         header=True)
         """
     ).df()
@@ -133,11 +134,23 @@ if __name__ == "__main__":
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
         "%Y-%m-%d_%H.%M.%S"
     )
+    with open("Pipeline.times", "r", encoding="utf-8") as times_fh:
+        start_time = times_fh.readline().split(" ")[-1].strip()
+        end_time = times_fh.readline().split(" ")[-1].strip()
     # Duckdb is automatically executed on all cores
-    sample_metadata = get_sample_metadata()
-    sample_metadata["run_at"] = timestamp
 
     run_metadata = get_pipeline_run_metadata(timestamp)
+    work_path = run_metadata["work_path"][0]
+    if work_path:
+        work_path = os.path.realpath(work_path)
+    else:
+        work_path = os.getcwd()
+
+    sample_metadata = get_sample_metadata(work_path)
+    sample_metadata["run_at"] = timestamp
+    sample_metadata["start_at"] = start_time
+    sample_metadata["end_at"] = end_time
+
     run_metadata.to_csv(f"{timestamp}_run_meta.csv", index=False)
     regex = compile_regex()
     SRA_IDs = sample_metadata["Accession"].tolist()
@@ -146,14 +159,20 @@ if __name__ == "__main__":
     with Pool(processes=cpu_count()) as pool:
 
         # Get the full lineage outputs
-        res = pool.map(load_full_df, SRA_IDs)
+        res = pool.starmap(load_full_df, zip(SRA_IDs, itertools.repeat(work_path)))
         full_lineage_output = pd.concat(res, ignore_index=True)
         full_lineage_output["run_at"] = timestamp
+        full_lineage_output["start_at"] = start_time
+        full_lineage_output["end_at"] = end_time
 
         # Get the summarized lineage outputs
-        res = pool.map(load_summarized_df, SRA_IDs)
+        res = pool.starmap(
+            load_summarized_df, zip(SRA_IDs, itertools.repeat(work_path))
+        )
         summarized_lineage_output = pd.concat(res, ignore_index=True)
         summarized_lineage_output["run_at"] = timestamp
+        summarized_lineage_output["start_at"] = start_time
+        summarized_lineage_output["end_at"] = end_time
 
     summarized_lineage_output.to_csv(
         f"{timestamp}_summarized_lineage_meta.csv", index=False
