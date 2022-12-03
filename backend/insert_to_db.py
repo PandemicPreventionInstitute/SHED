@@ -1,6 +1,7 @@
 import os
 import re
 import datetime
+import itertools
 from multiprocessing import Pool, cpu_count
 import pandas as pd
 import duckdb
@@ -29,17 +30,17 @@ def get_pipeline_run_metadata(timestamp: str) -> pd.DataFrame:
 
     df = get_run_config_file()
 
-    df["run_at"] = timestamp
+    df["db_collection_time"] = timestamp
 
     df["git_hash"] = latest_git_hash
 
     return df
 
 
-def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
+def parse_full_lineages(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     df = pd.read_csv(
-        f"endpoints/{SRA_ID}.lineages.tsv",
+        f"{work_path}/endpoints/{SRA_ID}.lineages.tsv",
         sep="\t| ",
         header=None,
         engine="python",  # regex parsing requires python engine
@@ -58,10 +59,10 @@ def parse_full_lineages(SRA_ID: str) -> pd.DataFrame:
     return df
 
 
-def load_full_df(SRA_ID: str) -> pd.DataFrame:
+def load_full_df(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     try:
-        df = parse_full_lineages(SRA_ID)
+        df = parse_full_lineages(SRA_ID, work_path)
 
     except FileNotFoundError:
         df = pd.DataFrame(columns=["SRA_ID", "lineages", "abundances"])
@@ -77,12 +78,12 @@ def parse_pattern(name: str, regex_pattern: re.Pattern) -> str:
     return re.findall(regex_pattern, name)[0]
 
 
-def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
+def parse_summarized_lineages(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     regex = compile_regex()
 
     df = pd.read_table(
-        f"endpoints/{SRA_ID}.lineages.tsv",
+        f"{work_path}/endpoints/{SRA_ID}.lineages.tsv",
         skiprows=1,
         header=None,
         engine="python",
@@ -106,10 +107,10 @@ def parse_summarized_lineages(SRA_ID: str) -> pd.DataFrame:
     )
 
 
-def load_summarized_df(SRA_ID: str) -> pd.DataFrame:
+def load_summarized_df(SRA_ID: str, work_path: str) -> pd.DataFrame:
 
     try:
-        df = parse_summarized_lineages(SRA_ID)
+        df = parse_summarized_lineages(SRA_ID, work_path)
 
     except FileNotFoundError:
         df = pd.DataFrame(columns=["SRA_ID", "name", "p"])
@@ -117,11 +118,11 @@ def load_summarized_df(SRA_ID: str) -> pd.DataFrame:
     return df
 
 
-def get_sample_metadata() -> pd.DataFrame:
+def get_sample_metadata(work_path: str) -> pd.DataFrame:
     con = duckdb.connect(":memory:")
     meta = con.execute(
-        """
-        SELECT DISTINCT * FROM read_csv_auto('sra_meta_collect_*.tsv',
+        f"""
+        SELECT DISTINCT * FROM read_csv_auto('{work_path}/sra_meta_collect_*.tsv',
         header=True)
         """
     ).df()
@@ -133,12 +134,41 @@ if __name__ == "__main__":
     timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
         "%Y-%m-%d_%H.%M.%S"
     )
+    with open("Pipeline.times", "r", encoding="utf-8") as times_fh:
+        start_time = times_fh.readline().split(" ")[-1].strip()
+        end_time = times_fh.readline().split(" ")[-1].strip()
     # Duckdb is automatically executed on all cores
-    sample_metadata = get_sample_metadata()
-    sample_metadata["run_at"] = timestamp
 
     run_metadata = get_pipeline_run_metadata(timestamp)
+    work_path = run_metadata["work_path"][0]
+    if work_path:
+        work_path = os.path.realpath(work_path)
+    else:
+        work_path = os.getcwd()
+
+    run_metadata["db_collection_time"] = timestamp
+    run_metadata["run_start_time"] = start_time
+    run_metadata["run_end_time"] = end_time
+    if os.path.isfile(os.path.join(work_path, "freyja.update.times")):
+        with open(
+            os.path.join(work_path, "freyja.update.times"), "r", encoding="utf-8"
+        ) as freyja_fh:
+            if freyja_fh.read():
+                freyja_fh.seek(0)
+                run_metadata["Freyja updated"] = freyja_fh.readlines()[-1].strip()
+
+    run_metadata["snakemake"] = check_output(["snakemake", "-v"]).decode().strip()
+
+    for file in os.listdir("envs/"):
+        if file.endswith(".yaml"):
+            with open(os.path.join("envs/", file), "r", encoding="utf-8") as yaml_fh:
+                run_metadata[file.split(".yaml")[0]] = " ".join(
+                    yaml_fh.readlines()[-1].strip().split("=")[1:]
+                )
+
     run_metadata.to_csv(f"{timestamp}_run_meta.csv", index=False)
+
+    sample_metadata = get_sample_metadata(work_path)
     regex = compile_regex()
     SRA_IDs = sample_metadata["Accession"].tolist()
 
@@ -146,19 +176,25 @@ if __name__ == "__main__":
     with Pool(processes=cpu_count()) as pool:
 
         # Get the full lineage outputs
-        res = pool.map(load_full_df, SRA_IDs)
+        res = pool.starmap(load_full_df, zip(SRA_IDs, itertools.repeat(work_path)))
         full_lineage_output = pd.concat(res, ignore_index=True)
-        full_lineage_output["run_at"] = timestamp
+        full_lineage_output["db_collection_time"] = timestamp
+        full_lineage_output["run_start_time"] = start_time
+        full_lineage_output["run_end_time"] = end_time
 
         # Get the summarized lineage outputs
-        res = pool.map(load_summarized_df, SRA_IDs)
+        res = pool.starmap(
+            load_summarized_df, zip(SRA_IDs, itertools.repeat(work_path))
+        )
         summarized_lineage_output = pd.concat(res, ignore_index=True)
-        summarized_lineage_output["run_at"] = timestamp
+        summarized_lineage_output["db_collection_time"] = timestamp
+        summarized_lineage_output["run_start_time"] = start_time
+        summarized_lineage_output["run_end_time"] = end_time
 
-    summarized_lineage_output.to_csv(
-        f"{timestamp}_summarized_lineage_meta.csv", index=False
-    )
-    full_lineage_output.to_csv(f"{timestamp}_full_lineage_meta.csv", index=False)
+        summarized_lineage_output.to_csv(
+            f"{timestamp}_summarized_lineage_meta.csv", index=False
+        )
+        full_lineage_output.to_csv(f"{timestamp}_full_lineage_meta.csv", index=False)
 
     try:
         s3_access_key_id = os.environ["s3_access_key_id"]
@@ -171,13 +207,13 @@ if __name__ == "__main__":
         con.execute(
             f"""
 
-        INSTALL httpfs;
-        LOAD httpfs;
-        SET s3_region='us-east-1';
-        SET s3_access_key_id='{s3_access_key_id}';
-        SET s3_secret_access_key='{s3_secret_access_key}';
+            INSTALL httpfs;
+            LOAD httpfs;
+            SET s3_region='us-east-1';
+            SET s3_access_key_id='{s3_access_key_id}';
+            SET s3_secret_access_key='{s3_secret_access_key}';
 
-                   """
+            """
         )
 
         for dataset in [
@@ -190,14 +226,14 @@ if __name__ == "__main__":
             con.execute(
                 f"""
 
-            COPY (
+                COPY (
 
-            SELECT *
-            FROM {dataset}
+                SELECT *
+                FROM {dataset}
 
-                 )
+                )
 
-            TO 's3://ppi-dev/shed/{dataset}/{timestamp}.parquet';
+                TO 's3://ppi-dev/shed/{dataset}/{timestamp}.parquet';
 
-            """
+                """
             )
