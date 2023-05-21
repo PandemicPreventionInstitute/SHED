@@ -11,5 +11,5 @@ backend/logs/
 *.csv
 *.xml
 *.html
-.snakemake
+.snakemake/
 */--anyauth

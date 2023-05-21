@@ -2,7 +2,7 @@
 Written by Devon Gregory
 This snakefile is meant to be run via snakemake to perform the
 query and SRA download for the bioinformatics pipeline.
-Last edited on 11-23-22
+Last edited on 5-21-23
 """
 import os
 import time
@@ -26,10 +26,12 @@ if config["query"]:
         RUN_ID = config["run_ID"]
     else:
         RUN_ID = time.time()
-    sra_query(config["query"], RUN_ID)
-    parse_xml_meta(RUN_ID)
+    sra_query(config["query"], RUN_ID, config["overwrite"])
+    parse_xml_meta(RUN_ID, config["overwrite"])
+
 acc_list = get_sample_acc1(config["reprocess"])
 
+config["overwrite"] = False
 
 rule all:
     """
@@ -37,7 +39,6 @@ rule all:
     """
     input:
         expand("sams/{sra_acc}.bam.done", sra_acc=acc_list),
-        expand("{sra_acc}.cleanup.done", sra_acc=acc_list),
 
 rule download_sra:
     """
@@ -206,18 +207,3 @@ rule sam2bam:
         samtools index sams/{wildcards.sra_acc}.bam >>{log} 2>&1
         fi
         """
-
-
-rule cleanup:
-    """
-    removes unwanted intermediate files
-    """
-    input:
-        rules.sam2bam.output,
-    output:
-        temp(touch("{sra_acc}.cleanup.done")),
-    run:
-        if config["cleanup"]:
-            shell("rm fastqs/{wildcards.sra_acc}*.fastq")
-            shell("rm fastqs/{wildcards.sra_acc}*.fq")
-            shell("rm sams/{wildcards.sra_acc}.sam")

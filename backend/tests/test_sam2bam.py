@@ -12,6 +12,9 @@ def test_sam2bam():
     """
 
     additional_variable = [
+        "--config",
+        "query=''",
+        "run_ID=test",
         "--snakefile",
         "snakefile1",
     ]

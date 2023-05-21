@@ -200,8 +200,10 @@ if __name__ == "__main__":
         s3_access_key_id = os.environ["s3_access_key_id"]
         s3_secret_access_key = os.environ["s3_secret_access_key"]
     except KeyError:
-        print("s3 keys not found, skipping upload")
+        print("s3 keys not found, skipping write")
     else:
+        print("writing to s3")
+        print(f"timestamp {timestamp}")
         con = duckdb.connect(":memory:")  # in-memory db
 
         con.execute(

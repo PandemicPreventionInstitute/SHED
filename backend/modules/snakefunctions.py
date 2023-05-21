@@ -2,7 +2,7 @@
 Writen by Devon Gregory
 This script has functions called by the snakefiles to query NCBI'
 SRA and download and process the files for the results.
-Last edited on 11-23-22
+Last edited on 5-21-23
 """
 
 import os
@@ -15,7 +15,7 @@ import shutil
 snakemodpath = os.path.realpath(os.path.join(sys.path[0], ".."))
 
 
-def sra_query(search_str: str, date_stamp: str) -> int:
+def sra_query(search_str: str, date_stamp: str, overwrite: bool) -> int:
     """
     Called to query NCBI's SRA and collect metadata for the query results.
 
@@ -35,16 +35,17 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         Return: 0 if no exceptions were raised
     """
 
-    subprocess.run(
-        [
-            "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) "
-            "Gecko/20100101 Firefox/50.0' -L "
-            f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' "
-            f"-o search_results_{date_stamp}.html"
-        ],
-        shell=True,
-        check=True,
-    )
+    if overwrite or not os.path.isfile(f"search_results_{date_stamp}.html"):
+        subprocess.run(
+            [
+                "curl -A 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:50.0) "
+                "Gecko/20100101 Firefox/50.0' -L "
+                f"'https://www.ncbi.nlm.nih.gov/sra/?term={search_str}' "
+                f"-o search_results_{date_stamp}.html"
+            ],
+            shell=True,
+            check=True,
+        )
     mcid = ""
     key = -1
     try:
@@ -58,24 +59,26 @@ def sra_query(search_str: str, date_stamp: str) -> int:
         print("Query results can't be used to download metadata")
         print(err)
         sys.exit(2)
-    subprocess.run(
-        [
-            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
-            f"cgi?rettype=runinfo&WebEnv=MCID_{mcid}&query_key={key}' "
-            f"-L -o sra_data_{date_stamp}.csv"
-        ],
-        shell=True,
-        check=True,
-    )
-    subprocess.run(
-        [
-            "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
-            f"cgi?rettype=exp&WebEnv=MCID_{mcid}&query_key={key}' "
-            f"-L -o sra_meta_{date_stamp}.xml"
-        ],
-        shell=True,
-        check=True,
-    )
+    if overwrite or not os.path.isfile(f"sra_data_{date_stamp}.csv"):
+        subprocess.run(
+            [
+                "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
+                f"cgi?rettype=runinfo&WebEnv=MCID_{mcid}&query_key={key}' "
+                f"-L -o sra_data_{date_stamp}.csv"
+            ],
+            shell=True,
+            check=True,
+        )
+    if overwrite or not os.path.isfile(f"sra_meta_{date_stamp}.xml"):
+        subprocess.run(
+            [
+                "curl 'https://trace.ncbi.nlm.nih.gov/Traces/sra-db-be/sra-db-be."
+                f"cgi?rettype=exp&WebEnv=MCID_{mcid}&query_key={key}' "
+                f"-L -o sra_meta_{date_stamp}.xml"
+            ],
+            shell=True,
+            check=True,
+        )
     return 0
 
 
@@ -318,7 +321,7 @@ def data_fun(data, element_strs, elements_dict, flags, out_fh):
     return elements_dict
 
 
-def parse_xml_meta(date_stamp: str) -> int:
+def parse_xml_meta(date_stamp: str, overwrite: bool) -> int:
     """
     Called to process the metadata xml for the current query and produce a
     human readable txt file and collect specific sample information into a tsv.
@@ -335,46 +338,50 @@ def parse_xml_meta(date_stamp: str) -> int:
     Returns 0 if no exceptions were raised
     """
 
-    with open(f"sra_meta_{date_stamp}.xml", "r", encoding="utf-8") as full_meta_in_fh:
-        with open(f"sra_meta_{date_stamp}.txt", "w", encoding="utf-8") as out_fh:
-            with open(
-                f"sra_meta_collect_{date_stamp}.tsv", "w", encoding="utf-8"
-            ) as lite_out_fh:
-                lite_out_fh.write(
-                    "Accession\tsample_collection_date\tgeo_loc\tprimers\n"
-                )
-                parse_xml = xml.parsers.expat.ParserCreate()
-                element_strs = []
-                elements_dict = {
-                    "accession": "",
-                    "date": "",
-                    "loc": "",
-                    "primers": [],
-                }
-                flags = {"date": False, "loc": False}
-                # 3 handler functions
-                def start_element(name, attrs):
-                    element_strs.append(name)
-                    start_ele_fun(name, attrs, element_strs, elements_dict, out_fh)
+    if overwrite or not os.path.isfile("sra_meta_collect_current.tsv"):
+        with open(
+            f"sra_meta_{date_stamp}.xml", "r", encoding="utf-8"
+        ) as full_meta_in_fh:
+            with open(f"sra_meta_{date_stamp}.txt", "w", encoding="utf-8") as out_fh:
+                with open(
+                    f"sra_meta_collect_{date_stamp}.tsv", "w", encoding="utf-8"
+                ) as lite_out_fh:
+                    lite_out_fh.write(
+                        "Accession\tsample_collection_date\tgeo_loc\tprimers\n"
+                    )
+                    parse_xml = xml.parsers.expat.ParserCreate()
+                    element_strs = []
+                    elements_dict = {
+                        "accession": "",
+                        "date": "",
+                        "loc": "",
+                        "primers": [],
+                    }
+                    flags = {"date": False, "loc": False}
+                    # 3 handler functions
+                    def start_element(name, attrs):
+                        element_strs.append(name)
+                        start_ele_fun(name, attrs, element_strs, elements_dict, out_fh)
 
-                def end_element(name):
-                    # name is used by parse_xml and must be a parameter of this function
-                    assert name
-                    element_strs.pop()
-                    end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh)
+                    def end_element(name):
+                        # name is used by parse_xml and must be a parameter of this function
+                        assert name
+                        element_strs.pop()
+                        end_ele_fun(element_strs, elements_dict, out_fh, lite_out_fh)
 
-                def char_data(data):
-                    if data and data.strip():
-                        data_fun(data, element_strs, elements_dict, flags, out_fh)
+                    def char_data(data):
+                        if data and data.strip():
+                            data_fun(data, element_strs, elements_dict, flags, out_fh)
 
-                parse_xml.StartElementHandler = start_element
-                parse_xml.EndElementHandler = end_element
-                parse_xml.CharacterDataHandler = char_data
-                parse_xml.Parse(full_meta_in_fh.read())
-    shutil.copyfile(
-        f"sra_meta_collect_{date_stamp}.tsv",
-        "sra_meta_collect_current.tsv",
-    )
+                    parse_xml.StartElementHandler = start_element
+                    parse_xml.EndElementHandler = end_element
+                    parse_xml.CharacterDataHandler = char_data
+                    parse_xml.Parse(full_meta_in_fh.read())
+
+        shutil.copyfile(
+            f"sra_meta_collect_{date_stamp}.tsv",
+            "sra_meta_collect_current.tsv",
+        )
     return 0
 
 
@@ -394,10 +401,10 @@ def get_sample_acc1(redo: bool) -> dict:
     Returns a dict of the accessions with primer trimming instructions.
     """
     prev_accs = []
-    if (not redo) and os.path.isdir("sams"):
-        for file in os.listdir("sams/"):
-            if file.endswith(".bam.bai") or file.endswith("qc.failed"):
-                prev_accs.append(file.split(".")[0])
+    if (not redo) and os.path.isfile("processed_SRA_Accessions.txt"):
+        with open("processed_SRA_Accessions.txt", "r", encoding="utf-8") as list_fh:
+            for line in list_fh:
+                prev_accs.append(line.strip())
     accs = {}
     with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:
         for line in in_fh:
@@ -476,193 +483,3 @@ def qc_pass(sample_acc: str) -> int:
                 passed = 1
 
     return passed
-
-
-def add_sample(agg, file, samp):
-    """
-    This function adds the pased sample data to the passed file
-
-    Parameters:
-    agg - aggregate file - open file handle
-    file - name of the sample file - str
-    samp - sample accession - str
-
-    Functionality:
-        Opens the sample file and writes date from it to the aggreagate file
-
-    Returns
-    """
-
-    with open(file, "r", encoding="utf-8") as samp_fh:
-        if file.endswith(".tsv"):
-            agg.write(samp)
-            agg.write("\n")
-        agg.write(samp_fh.read())
-        if file.endswith(".tsv"):
-            agg.write("\n--------\n")
-
-
-def check_if_present(agg, redo, file, samp):
-    """
-    This function checks if the sample is present in the aggregated file.
-
-    Parameters:
-    agg - aggregate file - open file handle
-    redo - boolean to indicate if samples are to be reprocessed - bool
-    file - name of the sample file - str
-    samp - sample accession - str
-
-    Functionality:
-        Parses the aggreagate file data from the current sample.  If not found
-        the data is added to the aggregate file.  If it is found and redo is
-        True, re_write is set to true.
-
-    Returns re_write
-    """
-
-    agg.seek(0)
-    present = samp in agg.read()
-    re_write = False
-
-    if redo and present:
-        re_write = True
-    elif not present:
-        add_sample(agg, file, samp)
-
-    return re_write
-
-
-def re_write_tsv_file(re_write_file, samp, file):
-    """
-    This function takes the variant call or lineage call tsv file and adds the
-    new variant calls as necessary.
-
-    Parameters:
-    re_write_file - aggregate file - str
-    samp - sample accession - str
-    file - name of the sample file - str
-
-    Functionality:
-        Reads the current aggregate file and re-writes it without the old data
-        for the sample and with the new data
-
-    Returns
-    """
-
-    old_file = ""
-    new_file = ""
-
-    with open(re_write_file, "r", encoding="utf-8") as agg:
-        old_file = agg.read()
-    old_split = old_file.split("\n--------\n")
-
-    for data in old_split:
-        if (not data.startswith(samp)) and data.strip():
-            new_file += data
-            new_file += "\n--------\n"
-
-    with open(re_write_file, "w", encoding="utf-8") as agg:
-        agg.write(new_file)
-        with open(file, "r", encoding="utf-8") as samp_fh:
-            agg.write(samp)
-            agg.write("\n")
-            agg.write(samp_fh.read())
-            agg.write("\n--------\n")
-
-
-def re_write_consensus_file(con_file, samp, file):
-    """
-    This function re-writes the consensus file if necessary. This function is
-    separate from the more general re_write_tsv_file() because the consensus
-    is in fasta format.
-
-    Parameters:
-    con_file - aggregate file - str
-    samp - sample accession - str
-    file - name of the sample file - str
-
-    Functionality:
-        Reads the current aggregate file and re-writes it without the old data
-        for the sample and with the new data
-
-    Returns
-    """
-
-    old_file = ""
-    new_file = ""
-
-    with open(con_file, "r", encoding="utf-8") as agg:
-        old_file = agg.read()
-
-    old_split = old_file.split(">")
-
-    for data in old_split:
-        if (not samp in data) and data.strip():
-            new_file += ">"
-            new_file += data
-
-    with open(con_file, "w", encoding="utf-8") as agg:
-        agg.write(new_file)
-        with open(file, "r", encoding="utf-8") as samp_fh:
-            agg.write(samp_fh.read())
-
-
-def aggregate_endpoints(vc_list, con_list, lin_list, redo) -> int:
-    """
-    Called to aggregate the individual sample endpoints.
-
-    Parameters:
-    vc_list - list files for variant calls - list
-    con_list - list files for consensus - list
-    lin_list - list files for lineages - list
-    redo - boolean for the samples being reprocessed - bool
-
-    Functionality:
-        Adds sample data to the aggregate files unless it is
-        already present and reprocessing isn't being done
-
-    Returns 0 if successful.
-    """
-
-    vc_file = "endpoints/VCs.tsv"
-    con_file = "endpoints/Consensus.fa"
-    lineage_file = "endpoints/Lineages.tsv"
-
-    ####################
-    # Iterate through variant calls, adding to summary file if not yet present
-
-    for file in vc_list:
-        samp = file.split("/")[1].split(".")[0]
-
-        with open(vc_file, "a+", encoding="utf-8") as agg:
-            re_write = check_if_present(agg, redo, file, samp)
-
-        if re_write:
-            re_write_tsv_file(vc_file, samp, file)
-
-    ####################
-    # Iterate through consensus definitions, adding to summary file if not yet
-    # present
-
-    for file in con_list:
-        samp = file.split("/")[1].split(".")[0]
-
-        with open(con_file, "a+", encoding="utf-8") as agg:
-            re_write = check_if_present(agg, redo, file, samp)
-
-        if re_write:
-            re_write_consensus_file(con_file, samp, file)
-
-    ####################
-    # Iterate through lineages, adding to summary file if not yet present
-
-    for file in lin_list:
-        samp = file.split("/")[1].split(".")[0]
-
-        with open(lineage_file, "a+", encoding="utf-8") as agg:
-            re_write = check_if_present(agg, redo, file, samp)
-
-        if re_write:
-            re_write_tsv_file(lineage_file, samp, file)
-
-    return 0
