@@ -2,7 +2,7 @@
 
 # Writen by Devon Gregory
 # bash pipeline.sh to execute the backend pipeline
-# Last edited on 5-21-23
+# Last edited on 5-29-23
 
 aws configure set aws_access_key_id "${s3_access_key_id}"
 aws configure set aws_secret_access_key "${s3_secret_access_key}"
@@ -30,24 +30,14 @@ echo Start time: "$starttime" > Pipeline.times
 # downloads the sra formated sample file for each match
 # Writes fastq files based on the sra files and runs a quality check
 # and trims if no primers are identified, then maps
-run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile1 --resources download_streams=20"
-if $run
-then
-echo "snakefile1 run successful"
-else
-echo "snakemake1 run failed"
-exit 1
-fi
-
-# checks which samples passed the quality check
-# those that did are primer trimmed if applicable
+# primer trimming if applicable
 # variants are called, consensus sequences generated and lineages assigned
-run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile2"
+run="snakemake -c${cores} --use-conda -k -F -s $workingdir/snakefile --resources download_streams=20"
 if $run
 then
-echo "snakefile2 run successful"
+echo "snakemake run successful"
 else
-echo "snakemake2 run failed"
+echo "snakemake run failed"
 exit 1
 fi
 
