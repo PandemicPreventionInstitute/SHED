@@ -1,0 +1,17 @@
+{
+  "containerOverrides": [
+    {
+      "name": "Process-test",
+	  "environment": [
+        {
+          "name": "count",
+          "value": "count_string"
+        },
+        {
+          "name": "timestamp",
+          "value": "timestamp_string"
+        }
+        ]
+    }
+    ]
+}

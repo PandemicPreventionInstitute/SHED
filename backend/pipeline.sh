@@ -38,7 +38,7 @@ then
 echo "snakemake run successful"
 else
 echo "snakemake run failed"
-exit 1
+# exit 1
 fi
 
 endtime=$(date +'%Y-%m-%d.%T')

@@ -1,0 +1,242 @@
+"""
+Written by Devon Gregory
+This snakefile is meant to be run via snakemake to perform the
+query and SRA download for the bioinformatics pipeline.
+Last edited on 7-28-23
+"""
+import os
+import time
+
+snakepath = os.path.realpath(sys.path[0])
+
+workdir: os.getcwd()
+
+acc_list = {}
+with open("sra_meta_collect_current.tsv", "r", encoding="utf-8") as in_fh:
+    for line in in_fh:
+        split_line = line.strip("\n").split("\t")
+        if (
+            split_line[0]
+            and (split_line[0].startswith("SRR") or split_line[0].startswith("ERR"))
+        ):
+            acc_list[split_line[0]] = {"bed": split_line[3], "cut": ""}
+            if split_line[3] == "Unknown":
+                acc_list[split_line[0]]["cut"] = "-f 25 "
+
+rule all:
+    """
+    Establishes targets for snakemake and initial wildcard values
+    """
+    input:
+        expand("{sra_acc}.done", sra_acc=acc_list),
+
+rule update_freyja:
+    """
+    makes sure freyja is up to date
+    """
+    output:
+        temp(touch("freyja.updated")),
+    conda:
+        "envs/shed-be.yaml"
+    shell:
+        """
+        freyja update
+        echo $(date +'%Y-%m-%d.%T') >> freyja.update.times
+        """
+
+rule process_acc:
+    """
+    Fully processes one SRA sample, removing all intermediates as soon as they are no longer needed
+    """
+    input:
+        rules.update_freyja.output,
+        fa=f"{snakepath}/data/SARS2.fasta",
+        gff=f"{snakepath}/data/NC_045512.2.gff3",
+    output:
+        temp(touch("{sra_acc}.done")),
+    params:
+        gen="--dont_eval_duplication -5 -3 -l 50 ",
+        cutting=lambda wildcards: acc_list[wildcards.sra_acc]["cut"],
+        bed=lambda wildcards: (acc_list[wildcards.sra_acc]["bed"]),
+    threads: 4
+    conda:
+        "envs/shed-be.yaml",
+    resources: download_streams=1,
+    shell:
+            """
+            set +e
+
+            echo {wildcards.sra_acc}
+
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            echo 'storage limit 1'
+            exit 2
+            fi
+
+            if [[ ! -d SRAs ]]
+            then
+            mkdir SRAs
+            fi
+
+            prefetch {wildcards.sra_acc} -O SRAs
+            exitcode=$?
+            if [ $exitcode -eq 3 ]
+            then
+                touch 'SRAs/'{wildcards.sra_acc}'.no.data'
+            elif [ $exitcode -ne 0 ]
+            then
+                echo "prefetch failed with exitcode:"
+                echo "$exitcode"
+                exit 1
+            fi
+
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            echo 'storage limit 2'
+            exit 2
+            fi
+
+            cd SRAs
+            fasterq-dump --split-files -f -O ../fastqs {wildcards.sra_acc}
+            exitcode=$?
+            if [ $exitcode -eq 3 ]
+            then
+                touch '../fastqs/'{wildcards.sra_acc}'.no.data'
+            elif [ $exitcode -ne 0 ]
+            then
+                echo "prefetch failed with exitcode:"
+                echo "$exitcode"
+                exit 1
+            fi
+            cd ..
+
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            echo 'storage limit 3'
+            exit 2
+            fi
+
+            if [[ -d {wildcards.sra_acc} ]]
+            then
+            rm -fr {wildcards.sra_acc}
+            fi
+
+            if [[ -f fastqs/{wildcards.sra_acc}.fastq ]]
+            then
+            fastp {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}.fastq -o fastqs/{wildcards.sra_acc}.qc.fq \
+            -j fastqs/{wildcards.sra_acc}.se.json -h fastqs/{wildcards.sra_acc}.se.html
+            rm fastqs/{wildcards.sra_acc}.fastq
+            fi
+            if [[ -f fastqs/{wildcards.sra_acc}_1.fastq ]]
+            then
+            fastp --detect_adapter_for_pe {params.gen}{params.cutting}-i fastqs/{wildcards.sra_acc}_1.fastq \
+            -I fastqs/{wildcards.sra_acc}_2.fastq -o fastqs/{wildcards.sra_acc}_1.qc.fq -O fastqs/{wildcards.sra_acc}_2.qc.fq \
+            -j fastqs/{wildcards.sra_acc}.pe.json -h fastqs/{wildcards.sra_acc}.pe.html
+            rm fastqs/{wildcards.sra_acc}_1.fastq
+            rm fastqs/{wildcards.sra_acc}_2.fastq
+            fi
+
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            echo 'storage limit 4'
+            exit 2
+            fi
+
+            if [[ ! -d sams ]]
+            then
+            mkdir sams
+            fi
+
+            if [[ -f fastqs/{wildcards.sra_acc}_1.qc.fq && -f fastqs/{wildcards.sra_acc}_2.qc.fq ]]
+            then
+            minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}_1.qc.fq fastqs/{wildcards.sra_acc}_2.qc.fq \
+            -o sams/{wildcards.sra_acc}.sam --secondary=no --sam-hit-only
+            rm fastqs/{wildcards.sra_acc}_1.qc.fq
+            rm fastqs/{wildcards.sra_acc}_2.qc.fq
+            elif [[ -f fastqs/{wildcards.sra_acc}.qc.fq ]]
+            then
+            minimap2 -ax sr {input.fa} fastqs/{wildcards.sra_acc}.qc.fq \
+            -o sams/{wildcards.sra_acc}.sam --secondary=no --sam-hit-only
+            rm fastqs/{wildcards.sra_acc}.qc.fq
+            fi
+
+            mapped_num=0
+            if [[ -f sams/{wildcards.sra_acc}.sam ]]
+            then
+            mapped_num=$(wc -l < sams/{wildcards.sra_acc}.sam)
+            fi
+            if [[ mapped_num -gt 501  ]]
+            then
+            touch sams/{wildcards.sra_acc}.qc.passed
+            else
+            touch sams/{wildcards.sra_acc}.qc.failed
+            exit 0
+            fi
+
+            if [[ -f sams/{wildcards.sra_acc}.qc.passed ]]
+            then
+            samtools sort sams/{wildcards.sra_acc}.sam -o sams/{wildcards.sra_acc}.bam -@ 4
+            samtools index sams/{wildcards.sra_acc}.bam
+
+            if [[ -f sams/{wildcards.sra_acc}.sam ]]
+            then
+            rm sams/{wildcards.sra_acc}.sam
+            fi
+
+            if [ ! {params.bed} == 'Unknown' ]
+            then
+            ivar trim -b {snakepath}/{params.bed} -p sams/{wildcards.sra_acc}.trimmed \
+            -i sams/{wildcards.sra_acc}.bam -e -q 15 -m 30 -s 4 && \
+            samtools sort sams/{wildcards.sra_acc}.trimmed.bam -o sams/{wildcards.sra_acc}.trimmed.sorted.bam \
+            && samtools index sams/{wildcards.sra_acc}.trimmed.sorted.bam
+            rm sams/{wildcards.sra_acc}.bam
+            rm sams/{wildcards.sra_acc}.trimmed.bam
+            fi
+
+            if [[ ! -d endpoints ]]
+            then
+            mkdir endpoints
+            fi
+
+            if [[ -f sams/{wildcards.sra_acc}.trimmed.sorted.bam ]]
+            then
+            samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc}.trimmed.sorted.bam | \
+            ivar consensus -p endpoints/{wildcards.sra_acc} -q 15 -t 0.5
+            else
+            samtools mpileup -aa -A -d 600000 -B -Q 0 sams/{wildcards.sra_acc}.bam | \
+            ivar consensus -p endpoints/{wildcards.sra_acc} -q 15 -t 0.5
+            fi
+            if [[ -f sams/{wildcards.sra_acc}.trimmed.sorted.bam ]]
+            then
+            samtools mpileup -aa -A -d 600000 -B -Q 0 \
+            sams/{wildcards.sra_acc}.trimmed.sorted.bam | ivar variants -p \
+            endpoints/{wildcards.sra_acc} -q 0 -t 0 -r {input.fa} -g {input.gff}
+            samtools mpileup -aa -A -d 600000 -Q 0 -q 0 -B -f {input.fa} \
+            sams/{wildcards.sra_acc}.trimmed.sorted.bam | cut -f1-4 > endpoints/{wildcards.sra_acc}.depth
+            rm sams/{wildcards.sra_acc}.trimmed.sorted.bam
+            else
+            samtools mpileup -aa -A -d 600000 -B -Q 0 \
+            sams/{wildcards.sra_acc}.bam | ivar variants -p \
+            endpoints/{wildcards.sra_acc} -q 0 -t 0 -r {input.fa} -g {input.gff}
+            samtools mpileup -aa -A -d 600000 -Q 20 -q 0 -B -f {input.fa} \
+            sams/{wildcards.sra_acc}.bam | cut -f1-4 > endpoints/{wildcards.sra_acc}.depth
+            rm sams/{wildcards.sra_acc}.bam
+            fi
+            freyja demix endpoints/{wildcards.sra_acc}.tsv endpoints/{wildcards.sra_acc}.depth --output endpoints/{wildcards.sra_acc}.lineages.tsv
+            exitcode=$?
+            if [ $exitcode -ne 0 ]
+            then
+                echo "freyja processing failed with exitcode:"
+                echo "$exitcode"
+                exit 0
+            fi
+            touch endpoints/{wildcards.sra_acc}.finished
+
+            fi
+
+            """

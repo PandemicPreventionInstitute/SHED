@@ -1,0 +1,6 @@
+channels:
+  - bioconda
+dependencies:
+  - minimap2=2.26
+  - freyja=1.4.4
+  - fastp=0.23.4

@@ -78,6 +78,11 @@ rule process_acc:
     shell:
             """
             set +e
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            exit 2
+            fi
             if [[ ! -d SRAs ]]
             then
             mkdir SRAs
@@ -94,6 +99,11 @@ rule process_acc:
                 exit 1
             fi
 
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            exit 2
+            fi
             cd SRAs
             fasterq-dump --split-files -f -O ../fastqs {wildcards.sra_acc} >>../{log} 2>&1
             exitcode=$?
@@ -107,6 +117,12 @@ rule process_acc:
                 exit 1
             fi
             cd ..
+
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            exit 2
+            fi
 
             if [[ -d {wildcards.sra_acc} ]]
             then
@@ -125,6 +141,12 @@ rule process_acc:
             -j fastqs/{wildcards.sra_acc}.pe.json -h fastqs/{wildcards.sra_acc}.pe.html >>{log} 2>&1
             rm fastqs/{wildcards.sra_acc}_1.fastq
             rm fastqs/{wildcards.sra_acc}_2.fastq
+            fi
+
+            freespace=$(df -Pk . | sed 1d | grep -v used | awk '{{ print $4 "\t" }}')
+            if [[ $freespace -lt 5000000 ]]
+            then
+            exit 2
             fi
 
             if [[ ! -d sams ]]
